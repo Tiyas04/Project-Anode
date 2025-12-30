@@ -10,7 +10,34 @@ import {
   ArrowRight,
 } from "lucide-react";
 
+import { useState, useEffect } from "react";
+
 export default function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch("/api/auth/profile");
+        if (res.ok) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } catch (error) {
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkAuth();
+
+    // Listen for custom event just in case
+    window.addEventListener("auth-updated", checkAuth);
+    return () => {
+      window.removeEventListener("auth-updated", checkAuth);
+    }
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -37,12 +64,14 @@ export default function Home() {
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
-              <Link
-                href="/auth"
-                className="inline-flex items-center gap-2 px-6 py-3 border border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition"
-              >
-                Create Account
-              </Link>
+              {!isLoggedIn && (
+                <Link
+                  href="/auth"
+                  className="inline-flex items-center gap-2 px-6 py-3 border border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition"
+                >
+                  Create Account
+                </Link>
+              )}
             </div>
           </div>
         </section>

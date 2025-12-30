@@ -22,25 +22,7 @@ export const products: Product[] = [
         molecularWeight: 58.08,
         hazards: ["Flammable", "Irritant"],
         inStock: true,
-        stockLevel: 120,
-        reviews: [
-            {
-                _id: "r1",
-                userName: "LabTech India",
-                rating: 5,
-                comment: "Excellent purity and packaging.",
-                date: "2024-11-12",
-            },
-            {
-                _id: "r2",
-                userName: "Research Labs Pvt Ltd",
-                rating: 4,
-                comment: "Consistent quality, delivery was on time.",
-                date: "2024-10-05",
-            },
-        ],
-        averageRating: 4.6,
-        reviewCount: 18,
+        stockLevel: 120
     },
     {
         _id: "p2",
@@ -56,17 +38,6 @@ export const products: Product[] = [
         hazards: ["Flammable"],
         inStock: true,
         stockLevel: 200,
-        reviews: [
-            {
-                _id: "r3",
-                userName: "BioChem Labs",
-                rating: 5,
-                comment: "Perfect for HPLC work.",
-                date: "2024-09-18",
-            },
-        ],
-        averageRating: 4.5,
-        reviewCount: 22,
     },
     {
         _id: "p3",
@@ -82,17 +53,7 @@ export const products: Product[] = [
         hazards: ["Flammable", "Toxic"],
         inStock: true,
         stockLevel: 95,
-        reviews: [
-            {
-                _id: "r4",
-                userName: "Analytical Chemist",
-                rating: 4,
-                comment: "Good quality but hazardous handling required.",
-                date: "2024-08-22",
-            },
-        ],
-        averageRating: 4.4,
-        reviewCount: 16,
+        
     },
     {
         _id: "p4",
@@ -108,17 +69,7 @@ export const products: Product[] = [
         hazards: ["Flammable"],
         inStock: true,
         stockLevel: 140,
-        reviews: [
-            {
-                _id: "r5",
-                userName: "Electronics Lab",
-                rating: 5,
-                comment: "Very effective for cleaning applications.",
-                date: "2024-10-01",
-            },
-        ],
-        averageRating: 4.3,
-        reviewCount: 19,
+        
     },
     {
         _id: "p5",
@@ -134,17 +85,6 @@ export const products: Product[] = [
         hazards: ["Corrosive"],
         inStock: true,
         stockLevel: 60,
-        reviews: [
-            {
-                _id: "r6",
-                userName: "Industrial Chem",
-                rating: 4,
-                comment: "Strong acid, packaging was secure.",
-                date: "2024-07-14",
-            },
-        ],
-        averageRating: 4.2,
-        reviewCount: 11,
     },
     {
         _id: "p6",
@@ -160,17 +100,6 @@ export const products: Product[] = [
         hazards: ["Corrosive"],
         inStock: true,
         stockLevel: 75,
-        reviews: [
-            {
-                _id: "r7",
-                userName: "QA Lab",
-                rating: 4,
-                comment: "Consistent concentration.",
-                date: "2024-09-02",
-            },
-        ],
-        averageRating: 4.1,
-        reviewCount: 9,
     },
     {
         _id: "p7",
@@ -186,17 +115,6 @@ export const products: Product[] = [
         hazards: ["Corrosive", "Oxidizer"],
         inStock: true,
         stockLevel: 40,
-        reviews: [
-            {
-                _id: "r8",
-                userName: "Chem Research Unit",
-                rating: 4,
-                comment: "Works well, requires careful handling.",
-                date: "2024-06-28",
-            },
-        ],
-        averageRating: 4.0,
-        reviewCount: 7,
     },
     {
         _id: "p8",
@@ -212,17 +130,7 @@ export const products: Product[] = [
         hazards: ["Corrosive"],
         inStock: false,
         stockLevel: 0,
-        reviews: [
-            {
-                _id: "r9",
-                userName: "Process Engineer",
-                rating: 4,
-                comment: "Good quality, currently out of stock.",
-                date: "2024-05-19",
-            },
-        ],
-        averageRating: 4.3,
-        reviewCount: 14,
+        
     },
     {
         _id: "p9",
@@ -238,17 +146,7 @@ export const products: Product[] = [
         hazards: [],
         inStock: true,
         stockLevel: 180,
-        reviews: [
-            {
-                _id: "r10",
-                userName: "Biotech Lab",
-                rating: 5,
-                comment: "Very consistent batch quality.",
-                date: "2024-10-08",
-            },
-        ],
-        averageRating: 4.5,
-        reviewCount: 12,
+        
     },
     {
         _id: "p10",
@@ -264,17 +162,7 @@ export const products: Product[] = [
         hazards: ["Oxidizer"],
         inStock: true,
         stockLevel: 70,
-        reviews: [
-            {
-                _id: "r11",
-                userName: "Medical Supplies",
-                rating: 4,
-                comment: "Meets required concentration standards.",
-                date: "2024-09-11",
-            },
-        ],
-        averageRating: 4.2,
-        reviewCount: 10,
+        
     },
     {
         _id: "p11",
@@ -290,17 +178,7 @@ export const products: Product[] = [
         hazards: ["Toxic", "Corrosive"],
         inStock: true,
         stockLevel: 40,
-        reviews: [
-            {
-                _id: "r12",
-                userName: "Organic Chemist",
-                rating: 4,
-                comment: "High purity, well packed.",
-                date: "2024-07-30",
-            },
-        ],
-        averageRating: 4.1,
-        reviewCount: 9,
+        
     },
     {
         _id: "p12",
@@ -316,17 +194,7 @@ export const products: Product[] = [
         hazards: [],
         inStock: true,
         stockLevel: 210,
-        reviews: [
-            {
-                _id: "r13",
-                userName: "Agro Research",
-                rating: 5,
-                comment: "Excellent quality for experiments.",
-                date: "2024-08-16",
-            },
-        ],
-        averageRating: 4.6,
-        reviewCount: 21,
+        
     },
     {
         _id: "p13",
@@ -342,17 +210,7 @@ export const products: Product[] = [
         hazards: [],
         inStock: true,
         stockLevel: 190,
-        reviews: [
-            {
-                _id: "r14",
-                userName: "Biochemistry Lab",
-                rating: 5,
-                comment: "Perfect for enzyme assays.",
-                date: "2024-09-25",
-            },
-        ],
-        averageRating: 4.7,
-        reviewCount: 28,
+        
     },
     {
         _id: "p14",
@@ -368,17 +226,7 @@ export const products: Product[] = [
         hazards: [],
         inStock: true,
         stockLevel: 300,
-        reviews: [
-            {
-                _id: "r15",
-                userName: "Hospital Pharmacy",
-                rating: 5,
-                comment: "Reliable and consistent quality.",
-                date: "2024-10-03",
-            },
-        ],
-        averageRating: 4.7,
-        reviewCount: 26,
+       
     },
     {
         _id: "p15",
@@ -394,17 +242,7 @@ export const products: Product[] = [
         hazards: ["Oxidizer"],
         inStock: true,
         stockLevel: 55,
-        reviews: [
-            {
-                _id: "r16",
-                userName: "Analytical Lab",
-                rating: 4,
-                comment: "Consistent oxidizing strength.",
-                date: "2024-06-21",
-            },
-        ],
-        averageRating: 4.3,
-        reviewCount: 9,
+        
     },
     {
         _id: "p16",
@@ -420,17 +258,7 @@ export const products: Product[] = [
         hazards: ["Irritant"],
         inStock: true,
         stockLevel: 140,
-        reviews: [
-            {
-                _id: "r17",
-                userName: "Materials Lab",
-                rating: 4,
-                comment: "Works well as drying agent.",
-                date: "2024-08-11",
-            },
-        ],
-        averageRating: 4.4,
-        reviewCount: 15,
+        
     },
     {
         _id: "p17",
@@ -446,17 +274,7 @@ export const products: Product[] = [
         hazards: ["Irritant"],
         inStock: true,
         stockLevel: 165,
-        reviews: [
-            {
-                _id: "r18",
-                userName: "Inorganic Lab",
-                rating: 4,
-                comment: "Good solubility and purity.",
-                date: "2024-09-04",
-            },
-        ],
-        averageRating: 4.2,
-        reviewCount: 13,
+
     },
     {
         _id: "p18",
@@ -472,17 +290,7 @@ export const products: Product[] = [
         hazards: [],
         inStock: true,
         stockLevel: 155,
-        reviews: [
-            {
-                _id: "r19",
-                userName: "Organic Lab",
-                rating: 5,
-                comment: "Excellent drying efficiency.",
-                date: "2024-08-29",
-            },
-        ],
-        averageRating: 4.6,
-        reviewCount: 17,
+        
     },
     {
         _id: "p19",
@@ -498,17 +306,7 @@ export const products: Product[] = [
         hazards: ["Toxic"],
         inStock: true,
         stockLevel: 90,
-        reviews: [
-            {
-                _id: "r20",
-                userName: "Chemistry Dept",
-                rating: 4,
-                comment: "Color and purity as expected.",
-                date: "2024-07-07",
-            },
-        ],
-        averageRating: 4.3,
-        reviewCount: 12,
+       
     },
     {
         _id: "p20",
@@ -524,17 +322,7 @@ export const products: Product[] = [
         hazards: [],
         inStock: true,
         stockLevel: 130,
-        reviews: [
-            {
-                _id: "r21",
-                userName: "Materials Research",
-                rating: 5,
-                comment: "Very fine particle size, great quality.",
-                date: "2024-10-12",
-            },
-        ],
-        averageRating: 4.5,
-        reviewCount: 20,
+        
     },
 ];
 
@@ -602,12 +390,6 @@ const ProductCard = ({ product }: { product: Product }) => {
                     {product.hazards.join(", ")}
                 </div>
             )}
-
-            {/* RATING */}
-            <div className="mt-2 flex items-center gap-1 text-sm text-gray-600">
-                <Star className="w-4 h-4 text-yellow-400" />
-                {product.averageRating} ({product.reviewCount})
-            </div>
 
             {/* PRICE */}
             <div className="mt-4 mb-4">

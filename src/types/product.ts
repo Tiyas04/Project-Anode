@@ -1,5 +1,3 @@
-import { Review } from "./review";
-
 export interface Product {
   _id: string;
   name: string;
@@ -14,7 +12,4 @@ export interface Product {
   hazards: string[];
   inStock: boolean;
   stockLevel: number;
-  reviews: Review[];
-  averageRating: number;
-  reviewCount: number;
 }

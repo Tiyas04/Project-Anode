@@ -4,6 +4,7 @@ import { ShoppingCart, LogIn, FlaskConical } from "lucide-react";
 
 export default function Navbar() {
   const [cartCount, setCartCount] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const updateCount = () => {
@@ -12,16 +13,46 @@ export default function Navbar() {
       setCartCount(count);
     };
 
-    // Initial count
-    updateCount();
+    const checkAuth = async () => {
+      try {
+        // We can check if the user is logged in by trying to fetch the profile
+        // or by checking a non-httpOnly cookie if we had one.
+        // For now, let's assume if the /api/auth/profile call succeeds, they are logged in.
+        // However, to avoid excessive API calls on every page load if not needed, we can try a lighter approach
+        // or just rely on the API. using fetch for now.
+        const res = await fetch("/api/auth/profile", {
+          headers: {
+            // We need to ensure credentials are sent if we are using cookies
+            // But usually fetch() credentials: 'include' is needed.
+            // Since this is Next.js app router/pages router mix, let's be careful.
+            // Actually, axios in User page used default headers? No, it used nothing. 
+            // But cookies are sent automatically by browser to same origin.
+          }
+        });
+        // The Profile route returns 200 if found.
+        if (res.ok) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } catch (error) {
+        setIsLoggedIn(false);
+      }
+    }
 
-    // Listen for custom event and storage event
+    // Initial checks
+    updateCount();
+    checkAuth();
+
+    // Listen for custom events
     window.addEventListener("cart-updated", updateCount);
     window.addEventListener("storage", updateCount);
+    window.addEventListener("auth-updated", checkAuth);
 
     return () => {
       window.removeEventListener("cart-updated", updateCount);
       window.removeEventListener("storage", updateCount);
+      window.removeEventListener("auth-updated", checkAuth);
     };
   }, []);
 
@@ -62,13 +93,23 @@ export default function Navbar() {
             Cart
           </Link>
 
-          <Link
-            href="/auth"
-            className="flex items-center gap-1 text-gray-700 hover:text-blue-600"
-          >
-            <LogIn className="w-4 h-4" />
-            Login
-          </Link>
+          {isLoggedIn ? (
+            <Link
+              href="/user"
+              className="flex items-center gap-1 text-gray-700 hover:text-blue-600"
+            >
+              <FlaskConical className="w-4 h-4" /> {/* Using different icon or User icon if available */}
+              Profile
+            </Link>
+          ) : (
+            <Link
+              href="/auth"
+              className="flex items-center gap-1 text-gray-700 hover:text-blue-600"
+            >
+              <LogIn className="w-4 h-4" />
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </nav>
