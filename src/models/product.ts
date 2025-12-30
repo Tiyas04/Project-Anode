@@ -6,6 +6,7 @@ export interface Product extends Document {
     casNumber: string;
     category: string;
     price: number;
+    quantity: string;
     image: string;
     description: string;
     purity: string;
@@ -13,8 +14,7 @@ export interface Product extends Document {
     hazards: string[];
     inStock: boolean;
     stockLevel: number;
-    reviews: mongoose.Schema.Types.ObjectId[];
-    seller: mongoose.Schema.Types.ObjectId;
+    seller: mongoose.Types.ObjectId;
 }
 
 const ProductSchema: Schema<Product> = new Schema(
@@ -22,30 +22,34 @@ const ProductSchema: Schema<Product> = new Schema(
         name: {
             type: String,
             required: true,
-            index:true,
-            trim:true
+            index: true,
+            trim: true
         },
         formula: {
             type: String,
             required: true,
-            index:true,
-            trim:true
+            index: true,
+            trim: true
         },
         casNumber: {
             type: String,
             required: true,
-            unique:true,
-            index:true,
-            trim:true
+            unique: true,
+            index: true,
+            trim: true
         },
         category: {
             type: String,
             required: true,
-            index:true,
-            trim:true
+            index: true,
+            trim: true
         },
         price: {
             type: Number,
+            required: true
+        },
+        quantity: {
+            type: String,
             required: true
         },
         image: {
@@ -55,17 +59,17 @@ const ProductSchema: Schema<Product> = new Schema(
         description: {
             type: String,
             required: true,
-            trim:true
+            trim: true
         },
         purity: {
             type: String,
             required: true,
-            trim:true
+            trim: true
         },
         molecularWeight: {
             type: Number,
             required: true,
-            index:true
+            index: true
         },
         hazards: [{
             type: String,
@@ -79,10 +83,6 @@ const ProductSchema: Schema<Product> = new Schema(
             type: Number,
             required: true
         },
-        reviews:[{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Review"
-        }],
         seller: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"

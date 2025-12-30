@@ -3,14 +3,13 @@
 import { use, useState, useEffect } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import axios from "axios";
 import {
   AlertTriangle,
-  Star,
   FlaskConical,
   ShoppingCart,
   Check
 } from "lucide-react";
-import { products } from "@/pages/Product";
 import Navbar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 
@@ -26,13 +25,25 @@ export default function ProductDetailsPage({
   const [added, setAdded] = useState(false);
 
   useEffect(() => {
-    const found = products.find((p) => {
-      const pSlug = `${p.name.toLowerCase().replace(/\s+/g, "-")}-${p.casNumber}`;
-      return pSlug === slug;
-    });
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get("/api/getallproducts");
+        if (response.data.success) {
+          const products = response.data.data;
+          const found = products.find((p: any) => {
+            const pSlug = `${p.name.toLowerCase().replace(/\s+/g, "-")}-${p.casNumber}`;
+            return pSlug === slug;
+          });
+          setProduct(found || null);
+        }
+      } catch (error) {
+        console.error("Failed to fetch product", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    setProduct(found || null);
-    setLoading(false);
+    fetchProduct();
   }, [slug]);
 
   if (!loading && !product) notFound();

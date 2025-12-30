@@ -46,12 +46,30 @@ export async function middleware(request: NextRequest) {
     requestHeaders.set("userid", user._id.toString())
     requestHeaders.set("role", user.role)
 
+    // Admin Access Control
+    if (request.nextUrl.pathname.startsWith("/admin")) {
+      if (user.role !== "admin") {
+        // Rewrite to show 404 page while keeping URL same
+        return NextResponse.rewrite(new URL("/404", request.url))
+      }
+
+      // If admin visits /admin directly, redirect to dashboard
+      if (request.nextUrl.pathname === "/admin") {
+        return NextResponse.redirect(new URL("/admin/dashboard", request.url))
+      }
+    }
+
     return NextResponse.next({
       request: {
         headers: requestHeaders,
       },
     })
   } catch (error: any) {
+    // If accessing admin pages with invalid token, rewrite to 404
+    if (request.nextUrl.pathname.startsWith("/admin")) {
+      return NextResponse.rewrite(new URL("/404", request.url))
+    }
+
     return NextResponse.json(
       {
         success: false,
@@ -63,5 +81,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/auth/:path*"]
+  matcher: ["/api/auth/:path*", "/admin/:path*"]
 }

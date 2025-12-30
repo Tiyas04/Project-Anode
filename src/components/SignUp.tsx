@@ -39,7 +39,7 @@ export default function Signup() {
     try {
       setLoading(true);
 
-      await axios.post("/api/auth/signup", form, {
+      await axios.post("/api/register", form, {
         withCredentials: true,
       });
 
@@ -58,7 +58,7 @@ export default function Signup() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4 text-gray-700">
       <input
         name="name"
         placeholder="Full Name"
@@ -95,7 +95,7 @@ export default function Signup() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 cursor-pointer"
       >
         {loading ? "Creating account..." : "Sign Up"}
       </button>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import axios from "axios";
 import { PlusCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -17,7 +18,9 @@ const hazardOptions = [
 
 export default function AddProductPage() {
   const router = useRouter();
+
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const [form, setForm] = useState({
     name: "",
@@ -25,30 +28,33 @@ export default function AddProductPage() {
     casNumber: "",
     category: "",
     price: "",
-    image: "",
     description: "",
     purity: "",
+    quantity: "",
     molecularWeight: "",
     hazards: [] as string[],
     inStock: true,
     stockLevel: "",
   });
 
+  /* 🔹 IMAGE */
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setForm((prev) => ({ ...prev, image: file.name }));
+    setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
   };
 
+  /* 🔹 TEXT INPUT */
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  /* 🔹 HAZARDS */
   const toggleHazard = (hazard: string) => {
     setForm((prev) => ({
       ...prev,
@@ -58,35 +64,62 @@ export default function AddProductPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  /* 🔹 SUBMIT */
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // ❌ Validation
     if (
       !form.name ||
+      !form.formula ||
       !form.casNumber ||
-      !form.price ||
       !form.category ||
-      !form.image
+      !form.price ||
+      !form.description ||
+      !form.purity ||
+      !form.quantity ||
+      !form.molecularWeight ||
+      !form.stockLevel ||
+      !imageFile
     ) {
       toast.error("All required fields must be filled");
       return;
     }
 
-    // ✅ Simulate success
-    console.log("NEW PRODUCT:", {
-      ...form,
-      price: Number(form.price),
-      molecularWeight: Number(form.molecularWeight),
-      stockLevel: Number(form.stockLevel),
-    });
+    try {
+      const formData = new FormData();
 
-    toast.success("Product added successfully");
+      formData.append("name", form.name);
+      formData.append("formula", form.formula);
+      formData.append("casNumber", form.casNumber);
+      formData.append("category", form.category);
+      formData.append("price", form.price);
+      formData.append("quantity", form.quantity);
+      formData.append("description", form.description);
+      formData.append("purity", form.purity);
+      formData.append("molecularWeight", form.molecularWeight);
+      formData.append("inStock", String(form.inStock));
+      formData.append("stockLevel", form.stockLevel);
+      formData.append("hazards", JSON.stringify(form.hazards));
+      formData.append("image", imageFile);
 
-    // ⏳ Redirect after toast
-    setTimeout(() => {
-      router.push("/admin/dashboard");
-    }, 2000);
+      await axios.post("/api/auth/addproduct", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      toast.success("Product added successfully");
+
+      setTimeout(() => {
+        router.push("/admin/dashboard");
+      }, 1500);
+
+    } catch (error: any) {
+      console.error(error);
+      toast.error(
+        error?.response?.data?.message || "Failed to add product"
+      );
+    }
   };
 
   return (
@@ -103,136 +136,69 @@ export default function AddProductPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5 text-gray-700">
 
-            {/* BASIC INFO */}
+            {/* BASIC */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Product Name *"
-                className="border rounded-md px-3 py-2"
-              />
-              <input
-                name="formula"
-                value={form.formula}
-                onChange={handleChange}
-                placeholder="Chemical Formula"
-                className="border rounded-md px-3 py-2"
-              />
+              <input name="name" placeholder="Product Name *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
+              <input name="formula" placeholder="Formula *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input
-                name="casNumber"
-                value={form.casNumber}
-                onChange={handleChange}
-                placeholder="CAS Number *"
-                className="border rounded-md px-3 py-2"
-              />
-              <input
-                name="category"
-                value={form.category}
-                onChange={handleChange}
-                placeholder="Category *"
-                className="border rounded-md px-3 py-2"
-              />
+              <input name="casNumber" placeholder="CAS Number *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
+              <input name="category" placeholder="Category *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
             </div>
 
-            {/* PRICE + STOCK */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <input
-                name="price"
-                type="number"
-                value={form.price}
-                onChange={handleChange}
-                placeholder="Price (₹) *"
-                className="border rounded-md px-3 py-2"
-              />
-              <input
-                name="stockLevel"
-                type="number"
-                value={form.stockLevel}
-                onChange={handleChange}
-                placeholder="Stock Level"
-                className="border rounded-md px-3 py-2"
-              />
+            {/* PRICE */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <input type="number" name="price" placeholder="Price *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
+              <input type="number" name="stockLevel" placeholder="Stock Level *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
               <select
+                className="border px-3 py-2 rounded-md"
                 value={form.inStock ? "yes" : "no"}
-                onChange={(e) =>
-                  setForm({ ...form, inStock: e.target.value === "yes" })
-                }
-                className="border rounded-md px-3 py-2"
+                onChange={(e) => setForm({ ...form, inStock: e.target.value === "yes" })}
               >
                 <option value="yes">In Stock</option>
                 <option value="no">Out of Stock</option>
               </select>
             </div>
 
-            {/* IMAGE UPLOAD */}
+            {/* IMAGE */}
             <div className="border rounded-md p-4">
-              <label className="text-sm font-medium mb-2 block">
-                Upload Product Image *
-              </label>
+              <label className="block mb-2 text-sm font-medium">Product Image *</label>
               <input type="file" accept="image/*" onChange={handleImageChange} />
-
               {imagePreview && (
-                <img
-                  src={imagePreview}
-                  className="mt-4 w-40 h-40 object-contain border rounded-md"
-                  alt="Preview"
-                />
+                <img src={imagePreview} className="mt-4 w-40 h-40 object-contain border rounded" />
               )}
             </div>
 
             {/* EXTRA */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input
-                name="purity"
-                value={form.purity}
-                onChange={handleChange}
-                placeholder="Purity"
-                className="border rounded-md px-3 py-2"
-              />
-              <input
-                name="molecularWeight"
-                type="number"
-                value={form.molecularWeight}
-                onChange={handleChange}
-                placeholder="Molecular Weight"
-                className="border rounded-md px-3 py-2"
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <input name="purity" placeholder="Purity *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
+              <input name="quantity" placeholder="Quantity *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
+              <input type="number" name="molecularWeight" placeholder="Molecular Weight *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
             </div>
 
             <textarea
               name="description"
-              value={form.description}
-              onChange={handleChange}
-              placeholder="Product Description"
+              placeholder="Description *"
               rows={4}
-              className="border rounded-md px-3 py-2 w-full"
+              onChange={handleChange}
+              className="border px-3 py-2 rounded-md w-full"
             />
 
             {/* HAZARDS */}
             <div>
               <p className="font-medium mb-2">Hazards</p>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex gap-4 flex-wrap">
                 {hazardOptions.map((hazard) => (
-                  <label key={hazard} className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={form.hazards.includes(hazard)}
-                      onChange={() => toggleHazard(hazard)}
-                    />
+                  <label key={hazard} className="flex gap-2 items-center">
+                    <input type="checkbox" onChange={() => toggleHazard(hazard)} />
                     {hazard}
                   </label>
                 ))}
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-md font-medium hover:bg-blue-700 transition cursor-pointer"
-            >
+            <button className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700">
               Add Product
             </button>
 

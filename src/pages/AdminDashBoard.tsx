@@ -7,10 +7,12 @@ import {
   ShoppingBag,
   PlusCircle,
   Calendar,
+  Pencil
 } from "lucide-react";
 import Navbar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-import { products } from "@/pages/Product";
+import { Product } from "@/types/product";
+import axios from "axios";
 
 /* TEMP MOCK ORDERS */
 const mockOrders = [
@@ -37,8 +39,28 @@ const mockOrders = [
   },
 ];
 
+
+
 export default function AdminDashboard() {
   const [orders, setOrders] = useState(mockOrders);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("/api/getallproducts");
+        if (response.data.success) {
+          setProducts(response.data.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch products", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   return (
     <>
@@ -48,17 +70,28 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto space-y-10">
 
           {/* HEADER */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <h1 className="text-3xl font-bold text-blue-700">
               Admin Dashboard
             </h1>
-<Link href="/admin/addproduct">
-            <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition cursor-pointer">
-              <PlusCircle className="w-5 h-5" />
-              Add Product
-            </button>
-            </Link>
+
+            <div className="flex gap-3">
+              <Link href="/admin/addproduct">
+                <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition cursor-pointer">
+                  <PlusCircle className="w-5 h-5" />
+                  Add Product
+                </button>
+              </Link>
+
+              <Link href="/admin/editproduct">
+                <button className="flex items-center gap-2 px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition cursor-pointer">
+                  <Pencil className="w-5 h-5" />
+                  Edit Product
+                </button>
+              </Link>
+            </div>
           </div>
+
 
           {/* STATS */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -126,6 +159,7 @@ export default function AdminDashboard() {
                   <tr>
                     <th className="py-2 text-left">Name</th>
                     <th className="py-2 text-left">Category</th>
+                    <th className="py-2 text-left">Quantity</th>
                     <th className="py-2 text-left">CAS</th>
                     <th className="py-2 text-right">Price</th>
                     <th className="py-2 text-center">Stock</th>
@@ -142,6 +176,7 @@ export default function AdminDashboard() {
                         {product.name}
                       </td>
                       <td>{product.category}</td>
+                      <td>{product.quantity}</td>
                       <td>{product.casNumber}</td>
                       <td className="text-right">
                         ₹{product.price}
@@ -197,9 +232,8 @@ function StatusBadge({ status }: { status: string }) {
 
   return (
     <span
-      className={`px-3 py-1 rounded-full text-xs font-medium ${
-        colors[status] || "bg-gray-100 text-gray-600"
-      }`}
+      className={`px-3 py-1 rounded-full text-xs font-medium ${colors[status] || "bg-gray-100 text-gray-600"
+        }`}
     >
       {status}
     </span>

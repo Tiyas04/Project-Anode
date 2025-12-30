@@ -4,327 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { FlaskConical, AlertTriangle, Star, ShoppingCart } from "lucide-react";
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { Product } from "@/types/product";
 import Navbar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-
-export const products: Product[] = [
-    {
-        _id: "p1",
-        name: "Acetone",
-        formula: "C₃H₆O",
-        casNumber: "67-64-1",
-        category: "Solvent",
-        price: 850,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "High purity acetone for laboratory and analytical use.",
-        purity: "99.9%",
-        molecularWeight: 58.08,
-        hazards: ["Flammable", "Irritant"],
-        inStock: true,
-        stockLevel: 120
-    },
-    {
-        _id: "p2",
-        name: "Ethanol",
-        formula: "C₂H₆O",
-        casNumber: "64-17-5",
-        category: "Solvent",
-        price: 540,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "Absolute ethanol suitable for pharma and lab use.",
-        purity: "99.8%",
-        molecularWeight: 46.07,
-        hazards: ["Flammable"],
-        inStock: true,
-        stockLevel: 200,
-    },
-    {
-        _id: "p3",
-        name: "Methanol",
-        formula: "CH₄O",
-        casNumber: "67-56-1",
-        category: "Solvent",
-        price: 480,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "HPLC grade methanol for analytical chemistry.",
-        purity: "99.9%",
-        molecularWeight: 32.04,
-        hazards: ["Flammable", "Toxic"],
-        inStock: true,
-        stockLevel: 95,
-        
-    },
-    {
-        _id: "p4",
-        name: "Isopropyl Alcohol",
-        formula: "C₃H₈O",
-        casNumber: "67-63-0",
-        category: "Solvent",
-        price: 510,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "IPA for cleaning and laboratory use.",
-        purity: "99.9%",
-        molecularWeight: 60.10,
-        hazards: ["Flammable"],
-        inStock: true,
-        stockLevel: 140,
-        
-    },
-    {
-        _id: "p5",
-        name: "Sulfuric Acid",
-        formula: "H₂SO₄",
-        casNumber: "7664-93-9",
-        category: "Acid",
-        price: 620,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "Concentrated sulfuric acid for industrial and lab use.",
-        purity: "98%",
-        molecularWeight: 98.08,
-        hazards: ["Corrosive"],
-        inStock: true,
-        stockLevel: 60,
-    },
-    {
-        _id: "p6",
-        name: "Hydrochloric Acid",
-        formula: "HCl",
-        casNumber: "7647-01-0",
-        category: "Acid",
-        price: 410,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "Analytical grade hydrochloric acid.",
-        purity: "37%",
-        molecularWeight: 36.46,
-        hazards: ["Corrosive"],
-        inStock: true,
-        stockLevel: 75,
-    },
-    {
-        _id: "p7",
-        name: "Nitric Acid",
-        formula: "HNO₃",
-        casNumber: "7697-37-2",
-        category: "Acid",
-        price: 690,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "Highly reactive nitric acid for lab use.",
-        purity: "69%",
-        molecularWeight: 63.01,
-        hazards: ["Corrosive", "Oxidizer"],
-        inStock: true,
-        stockLevel: 40,
-    },
-    {
-        _id: "p8",
-        name: "Sodium Hydroxide",
-        formula: "NaOH",
-        casNumber: "1310-73-2",
-        category: "Base",
-        price: 390,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "High purity sodium hydroxide pellets.",
-        purity: "98%",
-        molecularWeight: 40.00,
-        hazards: ["Corrosive"],
-        inStock: false,
-        stockLevel: 0,
-        
-    },
-    {
-        _id: "p9",
-        name: "Potassium Chloride",
-        formula: "KCl",
-        casNumber: "7447-40-7",
-        category: "Salt",
-        price: 260,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "Analytical grade potassium chloride.",
-        purity: "99%",
-        molecularWeight: 74.55,
-        hazards: [],
-        inStock: true,
-        stockLevel: 180,
-        
-    },
-    {
-        _id: "p10",
-        name: "Hydrogen Peroxide",
-        formula: "H₂O₂",
-        casNumber: "7722-84-1",
-        category: "Oxidizer",
-        price: 520,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "Hydrogen peroxide solution for lab use.",
-        purity: "30%",
-        molecularWeight: 34.01,
-        hazards: ["Oxidizer"],
-        inStock: true,
-        stockLevel: 70,
-        
-    },
-    {
-        _id: "p11",
-        name: "Phenol",
-        formula: "C₆H₆O",
-        casNumber: "108-95-2",
-        category: "Organic Compound",
-        price: 780,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "Phenol crystals for organic synthesis.",
-        purity: "99%",
-        molecularWeight: 94.11,
-        hazards: ["Toxic", "Corrosive"],
-        inStock: true,
-        stockLevel: 40,
-        
-    },
-    {
-        _id: "p12",
-        name: "Urea",
-        formula: "CH₄N₂O",
-        casNumber: "57-13-6",
-        category: "Organic Compound",
-        price: 310,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "High purity urea for lab and industrial use.",
-        purity: "99%",
-        molecularWeight: 60.06,
-        hazards: [],
-        inStock: true,
-        stockLevel: 210,
-        
-    },
-    {
-        _id: "p13",
-        name: "Glucose",
-        formula: "C₆H₁₂O₆",
-        casNumber: "50-99-7",
-        category: "Organic Compound",
-        price: 340,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "D-Glucose for biochemical applications.",
-        purity: "99%",
-        molecularWeight: 180.16,
-        hazards: [],
-        inStock: true,
-        stockLevel: 190,
-        
-    },
-    {
-        _id: "p14",
-        name: "Sodium Chloride",
-        formula: "NaCl",
-        casNumber: "7647-14-5",
-        category: "Salt",
-        price: 220,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "Pharmaceutical grade sodium chloride.",
-        purity: "99.5%",
-        molecularWeight: 58.44,
-        hazards: [],
-        inStock: true,
-        stockLevel: 300,
-       
-    },
-    {
-        _id: "p15",
-        name: "Potassium Permanganate",
-        formula: "KMnO₄",
-        casNumber: "7722-64-7",
-        category: "Oxidizer",
-        price: 610,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "Strong oxidizing agent for laboratory use.",
-        purity: "99%",
-        molecularWeight: 158.04,
-        hazards: ["Oxidizer"],
-        inStock: true,
-        stockLevel: 55,
-        
-    },
-    {
-        _id: "p16",
-        name: "Calcium Chloride",
-        formula: "CaCl₂",
-        casNumber: "10043-52-4",
-        category: "Salt",
-        price: 290,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "Anhydrous calcium chloride pellets.",
-        purity: "97%",
-        molecularWeight: 110.98,
-        hazards: ["Irritant"],
-        inStock: true,
-        stockLevel: 140,
-        
-    },
-    {
-        _id: "p17",
-        name: "Ammonium Chloride",
-        formula: "NH₄Cl",
-        casNumber: "12125-02-9",
-        category: "Salt",
-        price: 270,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "Analytical grade ammonium chloride.",
-        purity: "99%",
-        molecularWeight: 53.49,
-        hazards: ["Irritant"],
-        inStock: true,
-        stockLevel: 165,
-
-    },
-    {
-        _id: "p18",
-        name: "Magnesium Sulfate",
-        formula: "MgSO₄",
-        casNumber: "7487-88-9",
-        category: "Salt",
-        price: 300,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "Anhydrous magnesium sulfate for lab drying.",
-        purity: "99%",
-        molecularWeight: 120.37,
-        hazards: [],
-        inStock: true,
-        stockLevel: 155,
-        
-    },
-    {
-        _id: "p19",
-        name: "Copper Sulfate",
-        formula: "CuSO₄",
-        casNumber: "7758-99-8",
-        category: "Salt",
-        price: 340,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "Copper sulfate crystals for analytical use.",
-        purity: "99%",
-        molecularWeight: 159.61,
-        hazards: ["Toxic"],
-        inStock: true,
-        stockLevel: 90,
-       
-    },
-    {
-        _id: "p20",
-        name: "Zinc Oxide",
-        formula: "ZnO",
-        casNumber: "1314-13-2",
-        category: "Inorganic Compound",
-        price: 360,
-        image: "https://thumbs.dreamstime.com/b/chemical-glassware-15530107.jpg",
-        description: "High purity zinc oxide powder.",
-        purity: "99%",
-        molecularWeight: 81.38,
-        hazards: [],
-        inStock: true,
-        stockLevel: 130,
-        
-    },
-];
 
 const ProductCard = ({ product }: { product: Product }) => {
     const [isAdded, setIsAdded] = useState(false);
@@ -434,6 +117,25 @@ const ProductCard = ({ product }: { product: Product }) => {
 };
 
 export default function ProductPage() {
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get("/api/getallproducts");
+                if (response.data.success) {
+                    setProducts(response.data.data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch products", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProducts();
+    }, []);
+
     return (
         <>
             <Navbar />
@@ -452,11 +154,17 @@ export default function ProductPage() {
                     </div>
 
                     {/* GRID */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        {products.map((product) => (
-                            <ProductCard key={product._id} product={product} />
-                        ))}
-                    </div>
+                    {loading ? (
+                        <div className="flex justify-center items-center h-40">
+                            <p className="text-gray-500">Loading products...</p>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                            {products.map((product) => (
+                                <ProductCard key={product._id} product={product} />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </main>
 

@@ -5,6 +5,7 @@ export interface Product {
   casNumber: string;
   category: string;
   price: number;
+  quantity: string;
   image: string;
   description: string;
   purity: string;

@@ -125,14 +125,14 @@ export default function UserPage() {
                 Your Orders
               </Link>
 
-              <button className="flex items-center gap-2 text-gray-600 hover:text-blue-600">
+              <Link href="/changepassword" className="flex items-center gap-2 text-gray-600 hover:text-blue-600">
                 <Lock className="w-4 h-4" />
                 Change Password
-              </button>
+              </Link>
 
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 text-red-600 hover:text-red-700"
+                className="flex items-center gap-2 text-red-600 hover:text-red-700 cursor-pointer"
               >
                 <LogOut className="w-4 h-4" />
                 Logout

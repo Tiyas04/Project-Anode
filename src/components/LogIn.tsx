@@ -41,7 +41,11 @@ export default function Login() {
 
         // small delay so toast is visible
         setTimeout(() => {
-          router.push("/");
+          if (res.data.data.role === "admin") {
+            router.push("/admin/dashboard");
+          } else {
+            router.push("/");
+          }
           router.refresh();
         }, 800);
       }
@@ -84,7 +88,7 @@ export default function Login() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700 transition disabled:opacity-50"
+        className="w-full bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700 transition disabled:opacity-50 cursor-pointer"
       >
         {loading ? "Logging in..." : "Login"}
       </button>

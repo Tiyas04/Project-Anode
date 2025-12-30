@@ -14,7 +14,7 @@ export async function POST(request: Request) {
             return NextResponse.json(
                 {
                     success: false,
-                    error: `Missing required fields: ${[
+                    message: `Missing required fields: ${[
                         !name && "name",
                         !email && "email",
                         !institution && "institution",
