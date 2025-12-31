@@ -9,6 +9,10 @@ export async function GET(request: NextRequest) {
     try {
         await dbConnect()
 
+        // CRITICAL: These unused references are required to ensure Mongoose registers the models 
+        // before they are used in .populate(). DO NOT REMOVE.
+        console.log("Registering models:", !!OrderModel, !!OrderItemsModel, !!ProductModel);
+
         const userid = request.headers.get("userid")
 
         const user = await UserModel.findById(userid)
