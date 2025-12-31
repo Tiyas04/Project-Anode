@@ -12,7 +12,8 @@ export async function POST(request: NextRequest) {
         if (!email || !otp) {
             return NextResponse.json(
                 { 
-                    success: false, error: "Email and OTP are required"
+                    success: false,
+                     error: "Email and OTP are required"
                  },
                 { 
                     status: 400
@@ -24,30 +25,50 @@ export async function POST(request: NextRequest) {
 
         if (!user) {
             return NextResponse.json(
-                { success: false, error: "User not found" },
-                { status: 404 }
+                { 
+                    success: false,
+                     error: "User not found" 
+                 },
+                { 
+                    status: 404 
+                 }
             );
         }
 
         // Verify OTP
         if (!user.otp || !user.otpExpiry) {
             return NextResponse.json(
-                { success: false, error: "No OTP request found. Please login again." },
-                { status: 400 }
+                { 
+                    success: false,
+                     error: "No OTP request found. Please login again." 
+                 },
+                { 
+                    status: 400 
+                 }
             );
         }
 
         if (user.otp !== otp) {
             return NextResponse.json(
-                { success: false, error: "Invalid OTP" },
-                { status: 400 }
+                { 
+                    success: false,
+                     error: "Invalid OTP" 
+                 },
+                { 
+                    status: 400 
+                 }
             );
         }
 
         if (new Date() > user.otpExpiry) {
             return NextResponse.json(
-                { success: false, error: "OTP has expired. Please login again." },
-                { status: 400 }
+                { 
+                    success: false,
+                     error: "OTP has expired. Please login again." 
+                 },
+                { 
+                    status: 400 
+                 }
             );
         }
 
@@ -67,7 +88,9 @@ export async function POST(request: NextRequest) {
                 message: "Verification successful",
                 data: loggedInUser
             },
-            { status: 200 }
+            { 
+                status: 200
+             }
         );
 
         const isProduction = process.env.NODE_ENV === "production";
@@ -91,7 +114,9 @@ export async function POST(request: NextRequest) {
                 success: false,
                 error: "Verification failed"
             },
-            { status: 500 }
+            { 
+                status: 500
+             }
         );
     }
 }

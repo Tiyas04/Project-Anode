@@ -212,7 +212,7 @@ export async function POST(request: NextRequest) {
                 const { sendEmail } = await import("@/lib/sendEmail");
                 await sendEmail({
                     to: adminEmails,
-                    subject: `New Order Received - Order #${order._id}`,
+                    subject: `New Order Received - Order #${order._id} - Sai PSB Laboratory`,
                     html: `
                         <h2>New Order Alert</h2>
                         <p><strong>Order ID:</strong> ${order._id}</p>
@@ -226,6 +226,30 @@ export async function POST(request: NextRequest) {
         } catch (emailError) {
             console.error("Failed to send admin email notification:", emailError);
             // Don't fail the request if email sending fails
+        }
+
+        /* ─────────── 📧 SEND CONFIRMATION EMAIL TO USER ─────────── */
+        try {
+            const { sendEmail } = await import("@/lib/sendEmail");
+            await sendEmail({
+                to: email, // from formData
+                subject: `Order Confirmation - Order #${order._id} - Sai PSB Laboratory`,
+                html: `
+                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                        <h2>Thank you for your order!</h2>
+                        <p>Hello <strong>${fullName}</strong>,</p>
+                        <p>We have received your order and it is currently being processed.</p>
+                        <div style="background: #f9fafb; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                            <p><strong>Order ID:</strong> ${order._id}</p>
+                            <p><strong>Total Amount:</strong> ₹${totalAmount}</p>
+                            <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+                        </div>
+                        <p>You will receive another email when your order status changes.</p>
+                    </div>
+                `,
+            });
+        } catch (emailError) {
+            console.error("Failed to send user confirmation email:", emailError);
         }
 
         return NextResponse.json(
@@ -370,7 +394,7 @@ export async function PATCH(request: NextRequest) {
                     const { sendEmail } = await import("@/lib/sendEmail");
                     await sendEmail({
                         to: adminEmails,
-                        subject: `Order Cancelled - Order #${order._id}`,
+                        subject: `Order Cancelled - Order #${order._id} - Sai PSB Laboratory`,
                         html: `
                         <h2>Order Cancelled Alert</h2>
                         <p><strong>Order ID:</strong> ${order._id}</p>
@@ -392,7 +416,7 @@ export async function PATCH(request: NextRequest) {
                 const { sendEmail } = await import("@/lib/sendEmail");
                 await sendEmail({
                     to: user.email,
-                    subject: `Order Status Update - Order #${order._id}`,
+                    subject: `Order Status Update - Order #${order._id} - Sai PSB Laboratory`,
                     html: `
                         <h2>Order Update</h2>
                         <p>Hello <strong>${user.name}</strong>,</p>
