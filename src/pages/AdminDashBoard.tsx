@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   Package,
   ShoppingBag,
@@ -42,25 +43,49 @@ const mockOrders = [
 
 
 export default function AdminDashboard() {
-  const [orders, setOrders] = useState(mockOrders);
+  const [orders, setOrders] = useState<any[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Fetch Products & Orders
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get("/api/getallproducts");
-        if (response.data.success) {
-          setProducts(response.data.data);
-        }
+        const [prodRes, orderRes] = await Promise.all([
+          axios.get("/api/getallproducts"),
+          axios.get("/api/auth/admin/allorders", {
+            headers: { admin: "admin" } // Pass admin header if needed, though simpler authentication is preferred
+          })
+        ]);
+
+        if (prodRes.data.success) setProducts(prodRes.data.data);
+        if (orderRes.data.success) setOrders(orderRes.data.data);
+
       } catch (error) {
-        console.error("Failed to fetch products", error);
+        console.error("Failed to fetch data", error);
+        toast.error("Failed to load dashboard data");
       } finally {
         setLoading(false);
       }
     };
-    fetchProducts();
+    fetchData();
   }, []);
+
+  // Handle Status Update
+  const handleStatusChange = async (orderId: string, newStatus: string) => {
+    try {
+      const res = await axios.patch(`/api/auth/order?id=${orderId}`, { status: newStatus }, {
+        headers: { admin: "admin" }
+      });
+      if (res.data.success) {
+        toast.success("Order status updated");
+        // Update UI locally
+        setOrders(prev => prev.map(o => o._id === orderId ? { ...o, status: newStatus } : o));
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to update status");
+    }
+  };
 
   return (
     <>
@@ -113,28 +138,105 @@ export default function AdminDashboard() {
                     <th className="py-2 text-left">Order ID</th>
                     <th className="py-2 text-left">Customer</th>
                     <th className="py-2 text-left">Date</th>
+                    <th className="py-2 text-center">Proof</th>
                     <th className="py-2 text-left">Status</th>
                     <th className="py-2 text-right">Total</th>
+                    <th className="py-2 text-center">Actions</th>
                   </tr>
                 </thead>
 
                 <tbody>
                   {orders.map((order) => (
-                    <tr key={order.id} className="border-b last:border-0">
-                      <td className="py-3">{order.id}</td>
-                      <td>{order.customer}</td>
-                      <td className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4 text-gray-400" />
-                        {order.date}
+                    <tr key={order._id} className="border-b last:border-0 hover:bg-gray-50">
+                      <td className="py-3 font-mono text-xs">{order._id.slice(-6)}</td>
+                      <td>
+                        <div className="flex flex-col">
+                          <span className="font-medium">{order.customer?.name || "Unknown"}</span>
+                          <span className="text-xs text-gray-400">{order.customer?.email}</span>
+                        </div>
+                      </td>
+                      <td className="text-xs text-gray-500">
+                        {new Date(order.createdAt).toLocaleDateString()}
+                      </td>
+                      <td className="text-center">
+                        {order.customer?.proof ? (
+                          <Link href={order.customer.proof} target="_blank" className="text-blue-600 underline text-xs">
+                            View
+                          </Link>
+                        ) : (
+                          <span className="text-gray-400 text-xs">No Proof</span>
+                        )}
                       </td>
                       <td>
-                        <StatusBadge status={order.status} />
+                        <select
+                          value={order.status}
+                          onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                          className={`text-xs border rounded px-2 py-1 outline-none cursor-pointer ${order.status === 'delivered' ? 'bg-green-50 text-green-700 border-green-200' :
+                            order.status === 'cancelled' ? 'bg-red-50 text-red-700 border-red-200' : order.status === 'shipped' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' :
+                              'bg-white'
+                            }`}
+                        >
+                          <option value="pending">Pending</option>
+                          <option value="ordered">Ordered</option>
+                          <option value="shipped">Shipped</option>
+                          <option value="delivered">Delivered</option>
+                          <option value="cancelled">Cancelled</option>
+                        </select>
                       </td>
                       <td className="text-right font-medium">
-                        ₹{order.total}
+                        ₹{order.totalamount}
+                      </td>
+                      <td className="text-center">
+                        <button
+                          className="text-red-500 hover:text-red-700 text-xs font-medium underline"
+                          onClick={() => {
+                            const confirmToast = ({ closeToast }: { closeToast: any }) => (
+                              <div className="text-sm">
+                                <p className="mb-2 font-medium">Delete Order #{order._id.slice(-6)}?</p>
+                                <div className="flex gap-2 justify-end">
+                                  <button
+                                    className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-gray-700 text-xs cursor-pointer"
+                                    onClick={closeToast}
+                                  >
+                                    Cancel
+                                  </button>
+                                  <button
+                                    className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs cursor-pointer"
+                                    onClick={async () => {
+                                      closeToast();
+                                      try {
+                                        const res = await axios.delete(`/api/auth/admin/deleteorder?id=${order._id}`, {
+                                          headers: { admin: "admin" },
+                                        });
+                                        if (res.data.success) {
+                                          toast.success("Order deleted successfully");
+                                          setOrders((prev) => prev.filter((o) => o._id !== order._id));
+                                        }
+                                      } catch (error: any) {
+                                        console.error(error);
+                                        toast.error(error.response?.data?.message || "Failed to delete order");
+                                      }
+                                    }}
+                                  >
+                                    Confirm
+                                  </button>
+                                </div>
+                              </div>
+                            );
+
+                            toast(confirmToast, { autoClose: false, closeButton: false });
+                          }}
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))}
+                  {orders.length === 0 && (
+                    <tr>
+                      <td colSpan={7} className="text-center py-4">No orders found.</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -152,7 +254,7 @@ export default function AdminDashboard() {
                   <tr>
                     <th className="py-2 text-left">Name</th>
                     <th className="py-2 text-left">Category</th>
-                    <th className="py-2 text-left">Quantity</th>
+                    <th className="py-2 text-left">Qty</th>
                     <th className="py-2 text-left">CAS</th>
                     <th className="py-2 text-right">Price</th>
                     <th className="py-2 text-center">Stock</th>
@@ -204,7 +306,6 @@ export default function AdminDashboard() {
                                       try {
                                         const res = await axios.delete(`/api/auth/admin/deleteproduct?id=${product._id}`, {
                                           headers: { admin: "admin" },
-                                          // No data body needed for standard DELETE with query params
                                         });
                                         if (res.data.success) {
                                           toast.success("Product deleted successfully");

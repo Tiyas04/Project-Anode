@@ -23,7 +23,9 @@ export async function POST(
                     success: false,
                     message: "Unauthorized access or Invalid User ID",
                 },
-                { status: 401 }
+                { 
+                    status: 401
+                 }
             );
         }
 
@@ -40,7 +42,9 @@ export async function POST(
                     success: false,
                     message: "Invalid product URL/CAS Number",
                 },
-                { status: 400 }
+                { 
+                    status: 400 
+                }
             );
         }
 
@@ -54,7 +58,9 @@ export async function POST(
                     success: false,
                     message: "No product found",
                 },
-                { status: 404 }
+                { 
+                    status: 404 
+                }
             );
         }
 
@@ -65,7 +71,9 @@ export async function POST(
                     success: false,
                     message: "Product is out of stock",
                 },
-                { status: 400 }
+                {
+                     status: 400
+                     }
             );
         }
 
@@ -107,7 +115,9 @@ export async function POST(
                 success: true,
                 message: "Product added to cart",
             },
-            { status: 200 }
+            { 
+                status: 200 
+            }
         );
     } catch (error: any) {
         console.error("[Cart] Add to cart FATAL error:", error);
@@ -116,7 +126,9 @@ export async function POST(
                 success: false,
                 message: "Failed to add to the cart: " + (error.message || "Unknown Error"),
             },
-            { status: 500 }
+            {
+                 status: 500 
+                }
         );
     }
 }
@@ -133,8 +145,13 @@ export async function DELETE(
 
         if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
             return NextResponse.json(
-                { success: false, message: "Unauthorized access" },
-                { status: 401 }
+                {
+                    success: false,
+                    message: "Unauthorized access or Invalid User ID",
+                },
+                { 
+                    status: 401 
+                }
             );
         }
 
@@ -145,24 +162,39 @@ export async function DELETE(
 
         if (!casNumber) {
             return NextResponse.json(
-                { success: false, message: "Invalid product URL/CAS Number" },
-                { status: 400 }
+                {
+                    success: false,
+                    message: "Invalid product URL/CAS Number",
+                },
+                { 
+                    status: 400 
+                }
             );
         }
 
         const Product = await ProductModel.findOne({ casNumber });
         if (!Product) {
             return NextResponse.json(
-                { success: false, message: "No product found" },
-                { status: 404 }
+                {
+                    success: false,
+                    message: "No product found",
+                },
+                { 
+                    status: 404 
+                }
             );
         }
 
         const cart = await CartModel.findOne({ userid: new mongoose.Types.ObjectId(userId) });
         if (!cart) {
             return NextResponse.json(
-                { success: false, message: "Cart not found" },
-                { status: 404 }
+                {
+                    success: false,
+                    message: "Cart not found",
+                },
+                { 
+                    status: 404 
+                }
             );
         }
 
@@ -175,19 +207,31 @@ export async function DELETE(
         if (deletedItem) {
             // Remove reference from Cart array
             await CartModel.findByIdAndUpdate(cart._id, {
-                $pull: { cartitems: deletedItem._id },
+                $pull: { 
+                    cartitems: deletedItem._id
+                 },
             });
         }
 
         return NextResponse.json(
-            { success: true, message: "Item removed from cart" },
-            { status: 200 }
+            { 
+                success: true, 
+                message: "Item removed from cart" 
+            },
+            { 
+                status: 200
+             }
         );
     } catch (error: any) {
         console.error("[Cart] Delete error:", error);
         return NextResponse.json(
-            { success: false, message: "Failed to remove item: " + (error.message || "Unknown") },
-            { status: 500 }
+            { 
+                success: false, 
+                message: "Failed to remove item: " + (error.message || "Unknown") 
+            },
+            { 
+                status: 500 
+            }
         );
     }
 }

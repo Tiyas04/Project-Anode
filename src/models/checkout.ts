@@ -1,35 +1,38 @@
 import mongoose, { Document } from "mongoose";
 
-export interface CheckOut extends Document{
-    order: mongoose.Types.ObjectId;
-  fullName: string;
-  email: string;
-  company?: string;
-  address: string;
-  city: string;
-  state: string;
-  pincode: string;
-  paymentMethod: "COD";
+export interface CheckOut extends Document {
+    orderid: mongoose.Types.ObjectId;
+    fullName: string;
+    email: string;
+    company?: string;
+    address: string;
+    city: string;
+    state: string;
+    pincode: string;
+    permissionproof: string
+    paymentMethod: "COD";
 }
 
 const CheckOutSchema = new mongoose.Schema<CheckOut>(
     {
-        order: {
+        orderid: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Order"
+            ref: "Order",
+            required: true,
+            index: true
         },
         fullName: {
             type: String,
             required: true,
-            index:true,
-            trim:true
+            index: true,
+            trim: true
         },
         email: {
             type: String,
             required: true,
-            index:true,
-            trim:true,
-            toLowerCase:true
+            index: true,
+            trim: true,
+            toLowerCase: true
         },
         company: {
             type: String
@@ -49,6 +52,11 @@ const CheckOutSchema = new mongoose.Schema<CheckOut>(
         pincode: {
             type: String,
             required: true
+        },
+        permissionproof: {
+            type: String,
+            required: true,
+            trim: true
         },
         paymentMethod: {
             type: String,

@@ -1,8 +1,8 @@
 import mongoose, { Document, Schema } from "mongoose"
 
 export interface Order extends Document {
-    userid: mongoose.Schema.Types.ObjectId
-    orderitems: mongoose.Schema.Types.ObjectId[]
+    userid: mongoose.Types.ObjectId
+    orderitems: mongoose.Types.ObjectId[]
     totalamount: number
     status: string
 }
@@ -23,7 +23,7 @@ const OrderSchema: Schema<Order> = new Schema(
         },
         status: {
             type: String,
-            enum: ["pending", "shipped", "delivered", "cancelled"],
+            enum: ["pending", "ordered", "shipped", "delivered", "cancelled"],
             default: "pending"
         }
     },

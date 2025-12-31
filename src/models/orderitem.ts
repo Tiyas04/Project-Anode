@@ -1,8 +1,8 @@
 import mongoose, { Document,Schema } from "mongoose"
 
 export interface OrderItems extends Document {
-    orderid : mongoose.Schema.Types.ObjectId
-    productid : mongoose.Schema.Types.ObjectId
+    orderid : mongoose.Types.ObjectId
+    productid : mongoose.Types.ObjectId
     quantity : number
     price : number
 }

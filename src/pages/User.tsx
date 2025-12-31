@@ -8,17 +8,20 @@ import Navbar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import Loading from "@/components/Loading";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type OrderItem = {
-  name: string;
+  name?: string;
   quantity: number;
+  product?: { name: string };
 };
 
 type Order = {
   _id: string;
   items: OrderItem[];
-  totalAmount: number;
+  totalAmount?: number;
+  totalamount?: number; // Handle lowercase from API
   status: string;
   createdAt: string;
 };
@@ -42,10 +45,23 @@ export default function UserPage() {
 
   /* 🔹 FETCH USER PROFILE */
   useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchProfileData = async () => {
       try {
-        const res = await axios.get("/api/auth/profile");
-        setUser(res.data.data);
+        const response = await axios.get("/api/auth/profile");
+        const userData = response.data.data;
+
+        // Transform populated data to match UI structure
+        if (userData.orders && Array.isArray(userData.orders)) {
+          userData.orders = userData.orders.map((order: any) => ({
+            ...order,
+            items: order.orderitems?.map((item: any) => ({
+              ...item,
+              product: item.productid // Map populated productid to product
+            })) || []
+          }));
+        }
+
+        setUser(userData);
       } catch (error) {
         console.error("Profile fetch failed", error);
         window.location.href = "/auth";
@@ -54,7 +70,7 @@ export default function UserPage() {
       }
     };
 
-    fetchProfile();
+    fetchProfileData();
   }, []);
 
   /* 🔹 LOGOUT */
@@ -155,35 +171,69 @@ export default function UserPage() {
               </p>
             ) : (
               <div className="space-y-4">
+
                 {user.orders.map((order) => (
                   <div
                     key={order._id}
                     className="border rounded-lg p-4"
                   >
-                    <div className="flex justify-between mb-2">
-                      <p className="text-sm font-medium text-gray-800">
-                        Order #{order._id.slice(-6)}
-                      </p>
-                      <span className="text-xs text-green-600 capitalize">
-                        {order.status}
-                      </span>
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <p className="text-sm font-medium text-gray-800">
+                          Order #{order._id.slice(-6)}
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          {new Date(order.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div className="flex flex-col items-end gap-2">
+                        <span className={`text-xs font-medium px-2 py-1 rounded-full ${order.status === "delivered" ? "bg-green-100 text-green-700" :
+                          order.status === "cancelled" ? "bg-red-100 text-red-700" :
+                            order.status === "shipped" ? "bg-blue-100 text-blue-700" :
+                              "bg-yellow-100 text-yellow-700"
+                          }`}>
+                          {order.status.toUpperCase()}
+                        </span>
+
+                        {(order.status === "pending" || order.status === "ordered") && (
+                          <button
+                            className="text-xs text-red-600 hover:text-red-800 font-medium underline"
+                            onClick={async () => {
+                              if (!confirm("Are you sure you want to cancel this order?")) return;
+                              try {
+                                const res = await axios.patch(`/api/auth/order?id=${order._id}`, { status: "cancelled" });
+                                if (res.data.success) {
+                                  toast.success("Order cancelled");
+                                  // Refresh profile/orders
+                                  const updatedUser = { ...user };
+                                  const orderIndex = updatedUser.orders.findIndex(o => o._id === order._id);
+                                  if (orderIndex > -1) {
+                                    updatedUser.orders[orderIndex].status = "cancelled";
+                                    setUser(updatedUser);
+                                  }
+                                }
+                              } catch (err) {
+                                toast.error("Failed to cancel order");
+                              }
+                            }}
+                          >
+                            Cancel Order
+                          </button>
+                        )}
+                      </div>
                     </div>
 
-                    <div className="space-y-1 text-sm text-gray-600">
+                    <div className="space-y-1 text-sm text-gray-600 border-t pt-2 mt-2">
                       {order.items.map((item, idx) => (
-                        <p key={idx}>
-                          {item.name} × {item.quantity}
-                        </p>
+                        <div key={idx} className="flex justify-between">
+                          <span>{item.product?.name || item.name}</span>
+                          <span>x {item.quantity}</span>
+                        </div>
                       ))}
                     </div>
 
-                    <p className="mt-2 font-semibold text-gray-800">
-                      Total: ₹{order.totalAmount}
-                    </p>
-
-                    <p className="text-xs text-gray-400 mt-1">
-                      Ordered on{" "}
-                      {new Date(order.createdAt).toLocaleDateString()}
+                    <p className="mt-2 font-semibold text-gray-800 text-right">
+                      Total: ₹{order.totalamount || order.totalAmount}
                     </p>
                   </div>
                 ))}

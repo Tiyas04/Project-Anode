@@ -102,7 +102,9 @@ export async function POST(request: NextRequest) {
                 success: true,
                 message: "Product added to cart",
             },
-            { status: 200 }
+            {
+                 status: 200 
+                }
         );
 
     } catch (error) {
@@ -128,8 +130,13 @@ export async function GET(request: NextRequest) {
 
         if (!userId) {
             return NextResponse.json(
-                { success: false, message: "Unauthorized access" },
-                { status: 401 }
+                {
+                    success: false,
+                    message: "Unauthorized access or Invalid User ID",
+                },
+                { 
+                    status: 401 
+                }
             );
         }
 
@@ -188,8 +195,14 @@ export async function GET(request: NextRequest) {
 
         if (!cartData.length) {
             return NextResponse.json(
-                { success: true, message: "Cart is empty", data: [] },
-                { status: 200 }
+                {
+                    success: true,
+                    message: "Cart is empty",
+                    data: []
+                },
+                { 
+                    status: 200 
+                }
             );
         }
 
@@ -199,12 +212,17 @@ export async function GET(request: NextRequest) {
                 message: "Cart fetched successfully",
                 data: cartData[0].items,
             },
-            { status: 200 }
+            { 
+                status: 200 
+            }
         );
     } catch (error) {
         console.error(error);
         return NextResponse.json(
-            { success: false, message: "Failed to fetch cart" },
+            { 
+                success: false, 
+                message: "Failed to fetch cart" 
+            },
             { status: 500 }
         );
     }

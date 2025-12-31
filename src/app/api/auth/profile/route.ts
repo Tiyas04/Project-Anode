@@ -1,5 +1,8 @@
 import dbConnect from "@/lib/dbconnect";
 import UserModel from "@/models/user";
+import OrderModel from "@/models/order";
+import OrderItemsModel from "@/models/orderitem";
+import ProductModel from "@/models/product";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -8,7 +11,19 @@ export async function GET(request: NextRequest) {
 
         const userid = request.headers.get("userid")
 
-        const user = await UserModel.findById(userid).select("-password -__v -refreshToken -_id")
+        const user = await UserModel.findById(userid)
+            .select("-password -__v -refreshToken")
+            .populate({
+                path: "orders",
+                options: { sort: { createdAt: -1 } },
+                populate: {
+                    path: "orderitems",
+                    populate: {
+                        path: "productid",
+                        model: "Product"
+                    }
+                }
+            });
 
         return NextResponse.json(
             {

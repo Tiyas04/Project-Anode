@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { PlusCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+import { toast} from "react-toastify";
 import Navbar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 
@@ -164,7 +164,14 @@ export default function AddProductPage() {
             {/* IMAGE */}
             <div className="border rounded-md p-4">
               <label className="block mb-2 text-sm font-medium">Product Image *</label>
-              <input type="file" accept="image/*" onChange={handleImageChange} />
+              <input type="file" accept="image/*" onChange={handleImageChange}
+              className="block w-full text-sm text-gray-500
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-md file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-blue-50 file:text-blue-700
+                    hover:file:bg-blue-100"
+              />
               {imagePreview && (
                 <img src={imagePreview} className="mt-4 w-40 h-40 object-contain border rounded" />
               )}

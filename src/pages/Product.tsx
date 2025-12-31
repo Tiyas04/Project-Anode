@@ -9,6 +9,8 @@ import { Product } from "@/types/product";
 import Navbar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import Loading from "@/components/Loading";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductCard = ({ product }: { product: Product }) => {
     const [isAdded, setIsAdded] = useState(false);
@@ -19,11 +21,13 @@ const ProductCard = ({ product }: { product: Product }) => {
 
             // Notify navbar / cart badge
             window.dispatchEvent(new Event("cart-updated"));
+            toast.success("Added to cart successfully");
 
             setIsAdded(true);
             setTimeout(() => setIsAdded(false), 2000);
         } catch (error: any) {
             console.error("Failed to add to cart", error);
+            toast.error(error.response?.data?.message || "Failed to add to cart");
         }
     };
 
