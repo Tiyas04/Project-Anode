@@ -8,6 +8,7 @@ import axios from "axios";
 import { Product } from "@/types/product";
 import Navbar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import Loading from "@/components/Loading";
 
 const ProductCard = ({ product }: { product: Product }) => {
     const [isAdded, setIsAdded] = useState(false);
@@ -183,11 +184,11 @@ export default function ProductPage() {
                     <div className="bg-white p-4 rounded-lg border shadow-sm mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
                         {/* Search */}
                         <div className="relative w-full md:w-96">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-700 w-4 h-4" />
                             <input
                                 type="text"
                                 placeholder="Search by name or CAS number..."
-                                className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500 text-sm"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
@@ -198,7 +199,7 @@ export default function ProductPage() {
                             <Filter className="text-gray-500 w-4 h-4" />
                             <span className="text-sm font-medium text-gray-700">Category:</span>
                             <select
-                                className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500"
                                 value={selectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
                             >
@@ -213,9 +214,7 @@ export default function ProductPage() {
 
                     {/* 🛒 GRID */}
                     {loading ? (
-                        <div className="flex justify-center items-center h-40">
-                            <p className="text-gray-500">Loading products...</p>
-                        </div>
+                        <Loading />
                     ) : filteredProducts.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-64 text-gray-500">
                             <Search className="w-12 h-12 mb-4 text-gray-300" />

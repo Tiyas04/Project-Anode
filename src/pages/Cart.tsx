@@ -7,6 +7,7 @@ import axios from "axios";
 import { Trash2, ArrowRight } from "lucide-react";
 import Navbar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import Loading from "@/components/Loading";
 
 type CartItem = {
     quantity: number;
@@ -48,9 +49,11 @@ export default function CartPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                Loading...
-            </div>
+            <>
+                <Navbar />
+                <Loading />
+                <Footer />
+            </>
         );
     }
 

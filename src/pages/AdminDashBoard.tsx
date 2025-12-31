@@ -7,8 +7,7 @@ import {
   Package,
   ShoppingBag,
   PlusCircle,
-  Calendar,
-  Pencil
+  Calendar
 } from "lucide-react";
 import Navbar from "@/components/NavBar";
 import Footer from "@/components/Footer";

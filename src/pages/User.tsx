@@ -5,7 +5,8 @@ import axios from "axios";
 import Link from "next/link";
 import { User, Lock, LogOut, Package } from "lucide-react";
 import Navbar from "@/components/NavBar";
-import Footer from "@/components/Footer"
+import Footer from "@/components/Footer";
+import Loading from "@/components/Loading";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
@@ -74,9 +75,11 @@ export default function UserPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
-      </div>
+      <>
+        <Navbar />
+        <Loading />
+        <Footer />
+      </>
     );
   }
 
