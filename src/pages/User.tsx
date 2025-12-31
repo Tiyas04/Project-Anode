@@ -8,7 +8,7 @@ import Navbar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import Loading from "@/components/Loading";
 import { useRouter } from "next/navigation";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 type OrderItem = {
@@ -198,23 +198,55 @@ export default function UserPage() {
                         {(order.status === "pending" || order.status === "ordered") && (
                           <button
                             className="text-xs text-red-600 hover:text-red-800 font-medium underline"
-                            onClick={async () => {
-                              if (!confirm("Are you sure you want to cancel this order?")) return;
-                              try {
-                                const res = await axios.patch(`/api/auth/order?id=${order._id}`, { status: "cancelled" });
-                                if (res.data.success) {
-                                  toast.success("Order cancelled");
-                                  // Refresh profile/orders
-                                  const updatedUser = { ...user };
-                                  const orderIndex = updatedUser.orders.findIndex(o => o._id === order._id);
-                                  if (orderIndex > -1) {
-                                    updatedUser.orders[orderIndex].status = "cancelled";
-                                    setUser(updatedUser);
+                            onClick={() => {
+                              const performCancel = async () => {
+                                try {
+                                  const res = await axios.patch(`/api/auth/order?id=${order._id}`, { status: "cancelled" });
+                                  if (res.data.success) {
+                                    toast.success("Order cancelled");
+                                    // Refresh profile/orders
+                                    const updatedUser = { ...user };
+                                    const orderIndex = updatedUser.orders.findIndex(o => o._id === order._id);
+                                    if (orderIndex > -1) {
+                                      updatedUser.orders[orderIndex].status = "cancelled";
+                                      setUser(updatedUser);
+                                    }
                                   }
+                                } catch (err) {
+                                  toast.error("Failed to cancel order");
                                 }
-                              } catch (err) {
-                                toast.error("Failed to cancel order");
-                              }
+                              };
+
+                              toast(
+                                ({ closeToast }) => (
+                                  <div>
+                                    <p className="font-semibold text-gray-800 mb-3">Cancel this order?</p>
+                                    <div className="flex gap-3 justify-end">
+                                      <button
+                                        onClick={closeToast}
+                                        className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded hover:bg-gray-200"
+                                      >
+                                        No, Keep it
+                                      </button>
+                                      <button
+                                        onClick={() => {
+                                          performCancel();
+                                          closeToast();
+                                        }}
+                                        className="px-3 py-1.5 text-xs font-medium text-white bg-red-600 rounded hover:bg-red-700"
+                                      >
+                                        Yes, Cancel
+                                      </button>
+                                    </div>
+                                  </div>
+                                ),
+                                {
+                                  position: "top-center",
+                                  autoClose: false,
+                                  closeOnClick: false,
+                                  draggable: false,
+                                }
+                              );
                             }}
                           >
                             Cancel Order

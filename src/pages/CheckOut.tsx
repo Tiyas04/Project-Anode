@@ -152,20 +152,28 @@ export default function CheckoutPage() {
           <div className="bg-white border rounded-lg p-6 text-gray-800">
             <h2 className="font-semibold mb-4">Order Summary</h2>
 
-            {cartItems.map((item) => (
-              <div key={item._id} className="flex gap-3 mb-3">
-                <div className="relative w-12 h-12">
-                  <Image src={item.image} alt={item.name} fill className="object-contain" />
+            {cartItems.map((item, index) => {
+              const product = item.product || {};
+              return (
+                <div key={item._id || index} className="flex gap-3 mb-3">
+                  <div className="relative w-12 h-12">
+                    <Image
+                      src={product.image || "/placeholder.png"}
+                      alt={product.name || "Product Image"}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">{product.name || "Unknown Product"}</p>
+                    <p className="text-xs">Qty: {item.quantity}</p>
+                  </div>
+                  <p className="text-sm font-semibold">
+                    ₹{(item.price || 0) * (item.quantity || 1)}
+                  </p>
                 </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium">{item.name}</p>
-                  <p className="text-xs">Qty: {item.quantity}</p>
-                </div>
-                <p className="text-sm font-semibold">
-                  ₹{item.price * item.quantity}
-                </p>
-              </div>
-            ))}
+              );
+            })}
 
             <div className="flex justify-between font-semibold mt-4">
               <span>Total</span>

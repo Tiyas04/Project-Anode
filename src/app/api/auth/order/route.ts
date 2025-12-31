@@ -203,6 +203,31 @@ export async function POST(request: NextRequest) {
             }
         );
 
+        /* ─────────── 7️⃣ SEND EMAIL NOTIFICATION ─────────── */
+        try {
+            const admins = await UserModel.find({ role: "admin" });
+            const adminEmails = admins.map(admin => admin.email);
+
+            if (adminEmails.length > 0) {
+                const { sendEmail } = await import("@/lib/sendEmail");
+                await sendEmail({
+                    to: adminEmails,
+                    subject: `New Order Received - Order #${order._id}`,
+                    html: `
+                        <h2>New Order Alert</h2>
+                        <p><strong>Order ID:</strong> ${order._id}</p>
+                        <p><strong>Customer:</strong> ${fullName}</p>
+                        <p><strong>Total Amount:</strong> ₹${totalAmount}</p>
+                        <p><strong>Company:</strong> ${company || "N/A"}</p>
+                        <p>Please check the admin dashboard for more details.</p>
+                    `,
+                });
+            }
+        } catch (emailError) {
+            console.error("Failed to send admin email notification:", emailError);
+            // Don't fail the request if email sending fails
+        }
+
         return NextResponse.json(
             {
                 success: true,
@@ -307,6 +332,18 @@ export async function PATCH(request: NextRequest) {
         }
 
         // Status validation
+        if (order.status === "cancelled") {
+            return NextResponse.json(
+                {
+                    success: false,
+                    message: "Cannot modify a cancelled order"
+                },
+                {
+                    status: 400
+                }
+            );
+        }
+
         // Users can only cancel orders that are pending or ordered
         if (!isAdmin && ["shipped", "delivered", "cancelled"].includes(order.status)) {
             return NextResponse.json(
@@ -322,6 +359,54 @@ export async function PATCH(request: NextRequest) {
 
         order.status = status;
         await order.save({ validateBeforeSave: false });
+
+        /* ─────────── 📧 SEND CANCELLATION EMAIL ─────────── */
+        if (status === "cancelled") {
+            try {
+                const admins = await UserModel.find({ role: "admin" });
+                const adminEmails = admins.map(admin => admin.email);
+
+                if (adminEmails.length > 0) {
+                    const { sendEmail } = await import("@/lib/sendEmail");
+                    await sendEmail({
+                        to: adminEmails,
+                        subject: `Order Cancelled - Order #${order._id}`,
+                        html: `
+                        <h2>Order Cancelled Alert</h2>
+                        <p><strong>Order ID:</strong> ${order._id}</p>
+                        <p><strong>Status:</strong> Cancelled</p>
+                        <p><strong>Total Amount:</strong> ₹${order.totalamount}</p>
+                        <p>Please check the admin dashboard for details.</p>
+                    `,
+                    });
+                }
+            } catch (emailError) {
+                console.error("Failed to send admin cancellation email:", emailError);
+            }
+        }
+
+        /* ─────────── 📧 SEND STATUS UPDATE EMAIL TO USER ─────────── */
+        try {
+            const user = await UserModel.findById(order.userid);
+            if (user && user.email) {
+                const { sendEmail } = await import("@/lib/sendEmail");
+                await sendEmail({
+                    to: user.email,
+                    subject: `Order Status Update - Order #${order._id}`,
+                    html: `
+                        <h2>Order Update</h2>
+                        <p>Hello <strong>${user.name}</strong>,</p>
+                        <p>Your order <strong>#${order._id}</strong> status has been updated to:</p>
+                        <h3 style="color: #2563eb;">${status.toUpperCase()}</h3>
+                        <p>You can check the details in your dashboard.</p>
+                        <br/>
+                        <p>Thank you for shopping with ChemStore!</p>
+                    `,
+                });
+            }
+        } catch (emailError) {
+            console.error("Failed to send user status email:", emailError);
+        }
 
         return NextResponse.json(
             {

@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { PlusCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { toast} from "react-toastify";
+import { toast } from "react-toastify";
 import Navbar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 
@@ -21,6 +21,7 @@ export default function AddProductPage() {
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -86,6 +87,7 @@ export default function AddProductPage() {
     }
 
     try {
+      setLoading(true);
       const formData = new FormData();
 
       formData.append("name", form.name);
@@ -115,6 +117,7 @@ export default function AddProductPage() {
       }, 1500);
 
     } catch (error: any) {
+      setLoading(false);
       console.error(error);
       toast.error(
         error?.response?.data?.message || "Failed to add product"
@@ -165,7 +168,7 @@ export default function AddProductPage() {
             <div className="border rounded-md p-4">
               <label className="block mb-2 text-sm font-medium">Product Image *</label>
               <input type="file" accept="image/*" onChange={handleImageChange}
-              className="block w-full text-sm text-gray-500
+                className="block w-full text-sm text-gray-500
                     file:mr-4 file:py-2 file:px-4
                     file:rounded-md file:border-0
                     file:text-sm file:font-semibold
@@ -205,8 +208,11 @@ export default function AddProductPage() {
               </div>
             </div>
 
-            <button className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 cursor-pointer">
-              Add Product
+            <button
+              disabled={loading}
+              className={`w-full py-3 rounded-md text-white ${loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 cursor-pointer"}`}
+            >
+              {loading ? "Adding Product..." : "Add Product"}
             </button>
 
           </form>
