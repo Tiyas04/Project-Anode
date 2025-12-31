@@ -4,8 +4,13 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 
-export default function Signup() {
+interface SignupProps {
+  switchToLogin?: () => void;
+}
+
+export default function Signup({ switchToLogin }: SignupProps) {
   const router = useRouter();
 
   const [form, setForm] = useState({
@@ -17,6 +22,7 @@ export default function Signup() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -43,11 +49,15 @@ export default function Signup() {
         withCredentials: true,
       });
 
-      toast.success("Signup successful! 🎉");
+      toast.success("Signup successful! Please login to verify.");
 
-      // redirect to home
-      router.push("/");
-      router.refresh();
+      // switch to login tab
+      if (switchToLogin) {
+        switchToLogin();
+      } else {
+        window.location.reload();
+      }
+
     } catch (error: any) {
       toast.error(
         error?.response?.data?.error || "Signup failed"
@@ -84,13 +94,22 @@ export default function Signup() {
         className="w-full border rounded-md px-3 py-2"
         onChange={handleChange}
       />
-      <input
-        name="password"
-        type="password"
-        placeholder="Password"
-        className="w-full border rounded-md px-3 py-2"
-        onChange={handleChange}
-      />
+      <div className="relative">
+        <input
+          name="password"
+          type={showPassword ? "text" : "password"}
+          placeholder="Password"
+          className="w-full border rounded-md px-3 py-2 pr-10"
+          onChange={handleChange}
+        />
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+        >
+          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+        </button>
+      </div>
 
       <button
         type="submit"

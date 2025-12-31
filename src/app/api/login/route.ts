@@ -51,39 +51,54 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Update last login
-        existingUser.lastLogin = new Date()
-        await existingUser.save({ validateBeforeSave: false })
+        // Generate 4-digit OTP
+        const otp = Math.floor(1000 + Math.random() * 9000).toString();
+        const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-        const user = await UserModel.findById(existingUser._id).select("-__id -password -__v")
+        existingUser.otp = otp;
+        existingUser.otpExpiry = otpExpiry;
+        existingUser.lastLogin = new Date();
+        await existingUser.save({ validateBeforeSave: false });
 
-        const { accessToken, refreshToken } = await GenerateAccessAndRefreshToken(existingUser._id)
+        // Send OTP via Email
+        try {
+            const { sendEmail } = await import("@/lib/sendEmail");
+            await sendEmail({
+                to: existingUser.email,
+                subject: "Your Login Verification Code",
+                html: `
+                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                        <h2>Login Verification</h2>
+                        <p>Hello ${existingUser.name},</p>
+                        <p>Your verification code is:</p>
+                        <h1 style="color: #2563eb; letter-spacing: 5px; font-size: 32px;">${otp}</h1>
+                        <p>This code will expire in 10 minutes.</p>
+                        <p>If you didn't request this, please ignore this email.</p>
+                    </div>
+                `,
+            });
+        } catch (emailError) {
+            console.error("Failed to send OTP email:", emailError);
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "Failed to send verification email"
+                },
+                { status: 500 }
+            );
+        }
 
-        const res = NextResponse.json(
+        return NextResponse.json(
             {
                 success: true,
-                message: "User logged in successfully",
-                data: user
+                message: "OTP sent to your email",
+                requireOtp: true,
+                email: existingUser.email // pass back to frontend to confirm which email was used
             },
             {
                 status: 200
             }
-        )
-
-
-        const isProduction = process.env.NODE_ENV === "production";
-        const cookieOptions = {
-            httpOnly: true,
-            secure: isProduction,
-            sameSite: "lax" as const,
-            path: "/",
-            maxAge: 24 * 60 * 60 // 1 day
-        };
-
-        res.cookies.set("accessToken", accessToken, cookieOptions)
-        res.cookies.set("refreshToken", refreshToken, cookieOptions)
-
-        return res
+        );
     } catch (error) {
         console.log(error)
         return NextResponse.json(

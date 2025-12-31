@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import axios from "axios";
-import { Lock, Save } from "lucide-react";
+import { Lock, Save, Eye, EyeOff } from "lucide-react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/NavBar";
@@ -18,6 +18,9 @@ export default function ChangePasswordPage() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [showOldPass, setShowOldPass] = useState(false);
+  const [showNewPass, setShowNewPass] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -75,32 +78,59 @@ export default function ChangePasswordPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5 text-gray-700">
 
-            <input
-              type="password"
-              name="oldpassword"
-              placeholder="Current Password"
-              value={form.oldpassword}
-              onChange={handleChange}
-              className="w-full border rounded-md px-3 py-2 text-sm"
-            />
+            <div className="relative">
+              <input
+                type={showOldPass ? "text" : "password"}
+                name="oldpassword"
+                placeholder="Current Password"
+                value={form.oldpassword}
+                onChange={handleChange}
+                className="w-full border rounded-md px-3 py-2 text-sm pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowOldPass(!showOldPass)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                {showOldPass ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
 
-            <input
-              type="password"
-              name="newpassword"
-              placeholder="New Password"
-              value={form.newpassword}
-              onChange={handleChange}
-              className="w-full border rounded-md px-3 py-2 text-sm"
-            />
+            <div className="relative">
+              <input
+                type={showNewPass ? "text" : "password"}
+                name="newpassword"
+                placeholder="New Password"
+                value={form.newpassword}
+                onChange={handleChange}
+                className="w-full border rounded-md px-3 py-2 text-sm pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowNewPass(!showNewPass)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                {showNewPass ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
 
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm New Password"
-              value={form.confirmPassword}
-              onChange={handleChange}
-              className="w-full border rounded-md px-3 py-2 text-sm"
-            />
+            <div className="relative">
+              <input
+                type={showConfirmPass ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Confirm New Password"
+                value={form.confirmPassword}
+                onChange={handleChange}
+                className="w-full border rounded-md px-3 py-2 text-sm pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPass(!showConfirmPass)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                {showConfirmPass ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
 
             <button
               type="submit"

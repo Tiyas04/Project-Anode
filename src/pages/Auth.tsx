@@ -42,7 +42,7 @@ export default function AuthPage() {
           </div>
 
           {/* FORM */}
-          {mode === "login" ? <Login /> : <Signup />}
+          {mode === "login" ? <Login /> : <Signup switchToLogin={() => setMode("login")} />}
         </div>
       </main>
 

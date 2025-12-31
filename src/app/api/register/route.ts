@@ -8,9 +8,9 @@ export async function POST(request: Request) {
         await dbConnect()
 
         const body = await request.json()
-        const { name, email, phoneno, password,institution } = body
+        const { name, email, phoneno, password, institution } = body
 
-        if ([name, email, phoneno, password,institution].some(field => !field || String(field).trim() === "")) {
+        if ([name, email, phoneno, password, institution].some(field => !field || String(field).trim() === "")) {
             return NextResponse.json(
                 {
                     success: false,
@@ -54,36 +54,16 @@ export async function POST(request: Request) {
 
         const createdUser = await UserModel.findById(user._id).select("-_id -password -__v")
 
-        const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user?._id)
-
-        const res = NextResponse.json(
+        return NextResponse.json(
             {
                 success: true,
-                message: "User created successfully",
+                message: "User created successfully. Please login to verify.",
                 data: createdUser
             },
             {
                 status: 201
             }
         )
-
-        res.cookies.set("accessToken", accessToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "strict",
-            path: "/",
-            maxAge: 15 * 60
-        })
-
-        res.cookies.set("refreshToken", refreshToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "strict",
-            path: "/",
-            maxAge: 15 * 60
-        })
-
-        return res
     } catch (error) {
         console.log(error)
         return NextResponse.json(
