@@ -24,13 +24,13 @@ export default function ProductDetailsPage({
   const [loading, setLoading] = useState(true);
   const [added, setAdded] = useState(false);
 
+  /* 🔹 FETCH PRODUCT */
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get("/api/getallproducts");
-        if (response.data.success) {
-          const products = response.data.data;
-          const found = products.find((p: any) => {
+        const res = await axios.get("/api/getallproducts");
+        if (res.data.success) {
+          const found = res.data.data.find((p: any) => {
             const pSlug = `${p.name.toLowerCase().replace(/\s+/g, "-")}-${p.casNumber}`;
             return pSlug === slug;
           });
@@ -56,27 +56,19 @@ export default function ProductDetailsPage({
     );
   }
 
-  /* 🛒 ADD TO CART */
-  const addToCart = () => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const existing = cart.find((item: any) => item._id === product._id);
+  /* 🛒 ADD TO CART (BACKEND) */
+  const addToCart = async () => {
+    try {
+      await axios.post(`/api/auth/cart/${slug}`);
 
-    let updatedCart;
-    if (existing) {
-      updatedCart = cart.map((item: any) =>
-        item._id === product._id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      );
-    } else {
-      updatedCart = [...cart, { ...product, quantity: 1 }];
+      // update navbar cart badge
+      window.dispatchEvent(new Event("cart-updated"));
+
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2000);
+    } catch (error) {
+      console.error("Failed to add to cart", error);
     }
-
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-    window.dispatchEvent(new Event("cart-updated"));
-
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
   };
 
   return (
@@ -140,14 +132,18 @@ export default function ProductDetailsPage({
 
             <button
               onClick={addToCart}
-              disabled={added}
+              disabled={added || !product.inStock || product.stockLevel <= 0}
               className={`inline-flex items-center gap-2 px-6 py-3 rounded-md font-medium transition
-                ${added
-                  ? "bg-green-600 text-white cursor-default"
-                  : "bg-blue-600 hover:bg-blue-700 text-white"
+                ${!product.inStock || product.stockLevel <= 0
+                  ? "bg-gray-400 cursor-not-allowed text-white"
+                  : added
+                    ? "bg-green-600 text-white cursor-default"
+                    : "bg-blue-600 hover:bg-blue-700 text-white"
                 }`}
             >
-              {added ? (
+              {!product.inStock || product.stockLevel <= 0 ? (
+                <>Out of Stock</>
+              ) : added ? (
                 <>
                   <Check className="w-5 h-5" />
                   Added to Cart
@@ -160,6 +156,7 @@ export default function ProductDetailsPage({
               )}
             </button>
           </div>
+
         </div>
       </main>
 

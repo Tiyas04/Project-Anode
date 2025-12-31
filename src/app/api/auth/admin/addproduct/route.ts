@@ -144,6 +144,20 @@ export async function POST(request: NextRequest) {
 
     } catch (error: any) {
         console.error("Error adding product:", error);
+
+        // Handle Duplicate Key Error (E11000)
+        if (error.code === 11000) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    message: "Product with this CAS number already exists.",
+                },
+                {
+                    status: 400, // or 409 Conflict
+                }
+            );
+        }
+
         return NextResponse.json(
             {
                 success: false,

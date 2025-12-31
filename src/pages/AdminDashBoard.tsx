@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { toast } from "react-toastify";
 import {
   Package,
   ShoppingBag,
@@ -82,13 +83,6 @@ export default function AdminDashboard() {
                   Add Product
                 </button>
               </Link>
-
-              <Link href="/admin/editproduct">
-                <button className="flex items-center gap-2 px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition cursor-pointer">
-                  <Pencil className="w-5 h-5" />
-                  Edit Product
-                </button>
-              </Link>
             </div>
           </div>
 
@@ -163,6 +157,7 @@ export default function AdminDashboard() {
                     <th className="py-2 text-left">CAS</th>
                     <th className="py-2 text-right">Price</th>
                     <th className="py-2 text-center">Stock</th>
+                    <th className="py-2 text-center">Actions</th>
                   </tr>
                 </thead>
 
@@ -183,6 +178,56 @@ export default function AdminDashboard() {
                       </td>
                       <td className="text-center">
                         {product.inStock ? product.stockLevel : "Out"}
+                      </td>
+                      <td className="py-3 text-center flex items-center justify-center gap-2">
+                        <Link href={`/admin/editproduct?id=${product._id}`}>
+                          <button className="text-blue-600 hover:text-blue-800 text-xs font-medium cursor-pointer">
+                            Edit
+                          </button>
+                        </Link>
+                        <button
+                          className="text-red-600 hover:text-red-800 text-xs font-medium cursor-pointer"
+                          onClick={() => {
+                            const confirmToast = ({ closeToast }: { closeToast: any }) => (
+                              <div className="text-sm cursor-pointer">
+                                <p className="mb-2 font-medium">Delete {product.name}?</p>
+                                <div className="flex gap-2 justify-end">
+                                  <button
+                                    className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-gray-700 text-xs cursor-pointer"
+                                    onClick={closeToast}
+                                  >
+                                    Cancel
+                                  </button>
+                                  <button
+                                    className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs cursor-pointer"
+                                    onClick={async () => {
+                                      closeToast();
+                                      try {
+                                        const res = await axios.delete(`/api/auth/admin/deleteproduct?id=${product._id}`, {
+                                          headers: { admin: "admin" },
+                                          // No data body needed for standard DELETE with query params
+                                        });
+                                        if (res.data.success) {
+                                          toast.success("Product deleted successfully");
+                                          setProducts((prev) => prev.filter((p) => p._id !== product._id));
+                                        }
+                                      } catch (error) {
+                                        console.error(error);
+                                        toast.error("Failed to delete product");
+                                      }
+                                    }}
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              </div>
+                            );
+
+                            toast(confirmToast, { autoClose: false, closeButton: false });
+                          }}
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))}

@@ -1,33 +1,33 @@
 import mongoose, { Document, Schema } from "mongoose"
 
-export interface CartItems extends Document{
-    cartid : mongoose.Schema.Types.ObjectId
-    productid : mongoose.Schema.Types.ObjectId
-    quantity : number
-    price : number
+export interface CartItems extends Document {
+    cartid: mongoose.Types.ObjectId
+    productid: mongoose.Types.ObjectId
+    quantity: number
+    price: number
 }
 
-const CartItemsSchema : Schema<CartItems> = new Schema(
+const CartItemsSchema: Schema<CartItems> = new Schema(
     {
-        cartid : {
-            type : mongoose.Schema.Types.ObjectId,
-            ref : "Cart"
+        cartid: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Cart"
         },
-        productid : {
-            type : mongoose.Schema.Types.ObjectId,
-            ref : "Product"
+        productid: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Product"
         },
-        quantity : {
-            type : Number,
-            required : true
+        quantity: {
+            type: Number,
+            required: true
         },
-        price : {
-            type : Number,
-            required : true
+        price: {
+            type: Number,
+            required: true
         }
     },
     {
-        timestamps : true
+        timestamps: true
     }
 )
 

@@ -2,15 +2,27 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ShoppingCart, LogIn, FlaskConical } from "lucide-react";
 
+import axios from "axios";
+
 export default function Navbar() {
   const [cartCount, setCartCount] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const updateCount = () => {
-      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      const count = cart.reduce((acc: number, item: any) => acc + (item.quantity || 1), 0);
-      setCartCount(count);
+    const updateCount = async () => {
+      try {
+        const res = await axios.get("/api/auth/cart");
+        if (res.data.success && Array.isArray(res.data.data)) {
+          const count = res.data.data.reduce(
+            (acc: number, item: any) => acc + (item.quantity || 1),
+            0
+          );
+          setCartCount(count);
+        }
+      } catch (error) {
+        // If 401 unauth, just set count to 0
+        setCartCount(0);
+      }
     };
 
     const checkAuth = async () => {

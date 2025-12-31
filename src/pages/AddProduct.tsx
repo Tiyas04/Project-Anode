@@ -102,7 +102,7 @@ export default function AddProductPage() {
       formData.append("hazards", JSON.stringify(form.hazards));
       formData.append("image", imageFile);
 
-      await axios.post("/api/auth/addproduct", formData, {
+      await axios.post("/api/auth/admin/addproduct", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -198,7 +198,7 @@ export default function AddProductPage() {
               </div>
             </div>
 
-            <button className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700">
+            <button className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 cursor-pointer">
               Add Product
             </button>
 
