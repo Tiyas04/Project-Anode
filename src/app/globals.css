@@ -1,26 +1,55 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #ffffff;
-}
-
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+:root {
+  --background: #0b0b0b;
+  /* Slate 50 - Clean light gray/white */
+  --foreground: #0f172a;
+  /* Slate 900 - Dark scientific text */
+  --primary: #0369a1;
+  /* Sky 700 - Deeper Scientific Blue */
+  --secondary: #0891b2;
+  /* Cyan 600 - Deeper Chemical Cyan */
+  --accent: #84cc16;
+  /* Lime 500 - "Bio/Eco" accent (optional safety highlight) */
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #ffffff;
-    --foreground: #ededed;
+    --background: #053bba;
+    /* Slate 900 - Deep Lab Dark Mode */
+    --foreground: #233a51;
+    /* Slate 50 */
+    --primary: #1db2f1;
+    /* Sky 400 - Brighter blue for dark mode */
+    --secondary: #159cb0;
+    /* Cyan 400 */
+    --accent: #a3e635;
+    /* Lime 400 */
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  body {
+    @apply text-slate-100 bg-slate-950;
+  }
 }
+
+@utility glass {
+  background-color: rgba(30, 41, 59, 0.7); /* Slate 800 with opacity - Dark Glass */
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  color: #f1f5f9; /* Slate 100 text inside glass */
+}
+
+/* Specific overrides for light content inside glass if needed, but we start with dark glass */

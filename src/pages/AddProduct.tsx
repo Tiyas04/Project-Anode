@@ -129,62 +129,62 @@ export default function AddProductPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-gray-50 px-6 py-12">
-        <div className="max-w-4xl mx-auto bg-white border rounded-lg p-8">
+      <main className="min-h-screen pt-24 px-6 pb-20">
+        <div className="max-w-4xl mx-auto glass rounded-xl p-8 border border-white/20">
 
-          <div className="flex items-center gap-2 mb-6 text-blue-700">
-            <PlusCircle className="w-6 h-6" />
+          <div className="flex items-center gap-2 mb-8 text-white">
+            <PlusCircle className="w-6 h-6 text-primary" />
             <h1 className="text-2xl font-bold">Add New Product</h1>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5 text-gray-700">
+          <form onSubmit={handleSubmit} className="space-y-6 text-slate-300">
 
             {/* BASIC */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input name="name" placeholder="Product Name *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
-              <input name="formula" placeholder="Formula *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <input name="name" placeholder="Product Name *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+              <input name="formula" placeholder="Formula *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input name="casNumber" placeholder="CAS Number *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
-              <input name="category" placeholder="Category *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <input name="casNumber" placeholder="CAS Number *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+              <input name="category" placeholder="Category *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
             </div>
 
             {/* PRICE */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <input type="number" name="price" placeholder="Price *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
-              <input type="number" name="stockLevel" placeholder="Stock Level *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <input type="number" name="price" placeholder="Price *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+              <input type="number" name="stockLevel" placeholder="Stock Level *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
               <select
-                className="border px-3 py-2 rounded-md"
+                className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100"
                 value={form.inStock ? "yes" : "no"}
                 onChange={(e) => setForm({ ...form, inStock: e.target.value === "yes" })}
               >
-                <option value="yes">In Stock</option>
-                <option value="no">Out of Stock</option>
+                <option value="yes" className="bg-slate-800 text-slate-100">In Stock</option>
+                <option value="no" className="bg-slate-800 text-slate-100">Out of Stock</option>
               </select>
             </div>
 
             {/* IMAGE */}
-            <div className="border rounded-md p-4">
-              <label className="block mb-2 text-sm font-medium">Product Image *</label>
+            <div className="border border-white/10 bg-white/5 rounded-lg p-6">
+              <label className="block mb-3 text-sm font-semibold text-slate-300">Product Image *</label>
               <input type="file" accept="image/*" onChange={handleImageChange}
-                className="block w-full text-sm text-gray-500
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-md file:border-0
+                className="block w-full text-sm text-slate-400
+                    file:mr-4 file:py-2.5 file:px-4
+                    file:rounded-lg file:border-0
                     file:text-sm file:font-semibold
-                    file:bg-blue-50 file:text-blue-700
-                    hover:file:bg-blue-100"
+                    file:bg-primary/10 file:text-primary
+                    hover:file:bg-primary/20 transition-colors file:cursor-pointer cursor-pointer"
               />
               {imagePreview && (
-                <img src={imagePreview} className="mt-4 w-40 h-40 object-contain border rounded" />
+                <img src={imagePreview} className="mt-4 w-32 h-32 object-contain border rounded-lg bg-white p-2" />
               )}
             </div>
 
             {/* EXTRA */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <input name="purity" placeholder="Purity *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
-              <input name="quantity" placeholder="Quantity *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
-              <input type="number" name="molecularWeight" placeholder="Molecular Weight *" onChange={handleChange} className="border px-3 py-2 rounded-md" />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <input name="purity" placeholder="Purity *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+              <input name="quantity" placeholder="Quantity *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+              <input type="number" name="molecularWeight" placeholder="Molecular Weight *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
             </div>
 
             <textarea
@@ -192,16 +192,16 @@ export default function AddProductPage() {
               placeholder="Description *"
               rows={4}
               onChange={handleChange}
-              className="border px-3 py-2 rounded-md w-full"
+              className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500 resize-y"
             />
 
             {/* HAZARDS */}
-            <div>
-              <p className="font-medium mb-2">Hazards</p>
+            <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+              <p className="font-semibold text-slate-300 mb-3">Hazards</p>
               <div className="flex gap-4 flex-wrap">
                 {hazardOptions.map((hazard) => (
-                  <label key={hazard} className="flex gap-2 items-center">
-                    <input type="checkbox" onChange={() => toggleHazard(hazard)} />
+                  <label key={hazard} className="flex gap-2 items-center cursor-pointer hover:text-primary transition-colors">
+                    <input type="checkbox" onChange={() => toggleHazard(hazard)} className="accent-primary w-4 h-4 rounded text-primary focus:ring-primary" />
                     {hazard}
                   </label>
                 ))}
@@ -210,7 +210,7 @@ export default function AddProductPage() {
 
             <button
               disabled={loading}
-              className={`w-full py-3 rounded-md text-white ${loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 cursor-pointer"}`}
+              className={`w-full py-3.5 rounded-lg text-white font-bold shadow-lg shadow-primary/25 transition-all active:scale-[0.99] ${loading ? "bg-primary/70 cursor-not-allowed" : "bg-primary hover:bg-sky-700 cursor-pointer hover:shadow-primary/40"}`}
             >
               {loading ? "Adding Product..." : "Add Product"}
             </button>

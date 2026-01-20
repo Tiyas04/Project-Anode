@@ -1,11 +1,11 @@
-export const runtime = "nodejs"
+
 
 import { NextRequest, NextResponse } from "next/server"
 import jwt, { JwtPayload } from "jsonwebtoken"
 import dbConnect from "./lib/dbconnect"
 import UserModel from "./models/user"
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   try {
     await dbConnect()
 

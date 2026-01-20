@@ -67,16 +67,18 @@ export default function ChangePasswordPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-gray-50 px-6 py-12">
-        <div className="max-w-md mx-auto bg-white border rounded-lg p-8">
+      <main className="min-h-screen pt-24 px-6 pb-20">
+        <div className="max-w-md mx-auto glass rounded-xl p-8 border border-white/20">
 
           {/* HEADER */}
-          <div className="flex items-center gap-2 mb-6 text-blue-700">
-            <Lock className="w-6 h-6" />
+          <div className="flex items-center gap-3 mb-8 text-white border-b border-white/20 pb-4">
+            <div className="bg-primary/10 p-2 rounded-lg">
+              <Lock className="w-6 h-6 text-primary" />
+            </div>
             <h1 className="text-2xl font-bold">Change Password</h1>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5 text-gray-700">
+          <form onSubmit={handleSubmit} className="space-y-6 text-slate-300">
 
             <div className="relative">
               <input
@@ -85,12 +87,12 @@ export default function ChangePasswordPage() {
                 placeholder="Current Password"
                 value={form.oldpassword}
                 onChange={handleChange}
-                className="w-full border rounded-md px-3 py-2 text-sm pr-10"
+                className="w-full border border-white/10 rounded-lg px-4 py-2.5 text-sm pr-10 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500"
               />
               <button
                 type="button"
                 onClick={() => setShowOldPass(!showOldPass)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-300 transition"
               >
                 {showOldPass ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -103,12 +105,12 @@ export default function ChangePasswordPage() {
                 placeholder="New Password"
                 value={form.newpassword}
                 onChange={handleChange}
-                className="w-full border rounded-md px-3 py-2 text-sm pr-10"
+                className="w-full border border-white/10 rounded-lg px-4 py-2.5 text-sm pr-10 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500"
               />
               <button
                 type="button"
                 onClick={() => setShowNewPass(!showNewPass)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-300 transition"
               >
                 {showNewPass ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -121,12 +123,12 @@ export default function ChangePasswordPage() {
                 placeholder="Confirm New Password"
                 value={form.confirmPassword}
                 onChange={handleChange}
-                className="w-full border rounded-md px-3 py-2 text-sm pr-10"
+                className="w-full border border-white/10 rounded-lg px-4 py-2.5 text-sm pr-10 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPass(!showConfirmPass)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-300 transition"
               >
                 {showConfirmPass ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -135,7 +137,7 @@ export default function ChangePasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 rounded-md font-medium hover:bg-blue-700 transition flex items-center justify-center gap-2 disabled:opacity-60"
+              className={`w-full py-3 rounded-lg text-white font-bold shadow-lg shadow-primary/25 transition-all flex items-center justify-center gap-2 active:scale-[0.99] ${loading ? "bg-primary/70 cursor-not-allowed" : "bg-primary hover:bg-sky-700 cursor-pointer hover:shadow-primary/40"}`}
             >
               <Save className="w-4 h-4" />
               {loading ? "Updating..." : "Update Password"}

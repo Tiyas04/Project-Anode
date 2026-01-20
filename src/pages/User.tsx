@@ -105,53 +105,59 @@ export default function UserPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-gray-50 px-6 py-12">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      <main className="min-h-screen pt-24 px-6 pb-20">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
 
           {/* LEFT – USER MENU */}
-          <aside className="bg-white border rounded-lg p-6 h-fit">
-            <div className="flex items-center gap-3 mb-6">
-              <User className="w-8 h-8 text-blue-600" />
-              <div>
-                <p className="font-semibold text-gray-800">
+          <aside className="glass rounded-xl p-6 h-fit border border-white/20">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+                <User className="w-6 h-6 text-primary" />
+              </div>
+              <div className="min-w-0">
+                <p className="font-bold text-white truncate">
                   {user.name}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-xs text-slate-500 truncate">
                   {user.email}
                 </p>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-secondary font-medium mt-0.5 truncate">
                   {user.institution}
                 </p>
-                <div className="mt-2 space-y-1">
-                  <p className="text-[10px] text-gray-400">
-                    Joined: {new Date(user.createdAt).toLocaleDateString()}
-                  </p>
-                  {user.lastLogin && (
-                    <p className="text-[10px] text-green-600">
-                      Last login: {new Date(user.lastLogin).toLocaleDateString()} {new Date(user.lastLogin).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </p>
-                  )}
-                </div>
               </div>
             </div>
 
-            <nav className="space-y-3 text-sm">
+            <div className="mb-6 px-4 py-3 bg-white/5 rounded-lg space-y-2 border border-white/10">
+              <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Activity</p>
+              <p className="text-xs text-slate-400 flex justify-between">
+                <span>Joined:</span>
+                <span className="font-mono text-slate-300">{new Date(user.createdAt).toLocaleDateString()}</span>
+              </p>
+              {user.lastLogin && (
+                <p className="text-xs text-slate-400 flex justify-between">
+                  <span>Last login:</span>
+                  <span className="font-mono text-slate-300">{new Date(user.lastLogin).toLocaleDateString()}</span>
+                </p>
+              )}
+            </div>
+
+            <nav className="space-y-2 text-sm font-medium">
               <Link
                 href="/user"
-                className="flex items-center gap-2 text-blue-600 font-medium"
+                className="flex items-center gap-3 px-4 py-3 bg-primary/5 text-primary rounded-lg transition-colors border border-primary/10"
               >
                 <Package className="w-4 h-4" />
                 Your Orders
               </Link>
 
-              <Link href="/changepassword" className="flex items-center gap-2 text-gray-600 hover:text-blue-600">
+              <Link href="/changepassword" className="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-white/10 hover:text-white rounded-lg transition-colors">
                 <Lock className="w-4 h-4" />
                 Change Password
               </Link>
 
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 text-red-600 hover:text-red-700 cursor-pointer"
+                className="w-full flex items-center gap-3 px-4 py-3 text-rose-600 hover:bg-rose-50 hover:text-rose-700 rounded-lg transition-colors text-left"
               >
                 <LogOut className="w-4 h-4" />
                 Logout
@@ -160,44 +166,60 @@ export default function UserPage() {
           </aside>
 
           {/* RIGHT – ORDERS */}
-          <section className="md:col-span-3 bg-white border rounded-lg p-6">
-            <h1 className="text-2xl font-bold text-blue-700 mb-6">
-              Your Orders
+          <section className="lg:col-span-3 glass rounded-xl p-8 border border-white/20">
+            <h1 className="text-2xl font-bold text-white mb-2">
+              Order History
             </h1>
+            <p className="text-slate-400 mb-8 text-sm">
+              Track your past and current orders.
+            </p>
 
             {user.orders.length === 0 ? (
-              <p className="text-gray-600">
-                You haven’t placed any orders yet.
-              </p>
+              <div className="text-center py-12 bg-white/30 rounded-lg border border-dashed border-slate-300">
+                <Package className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                <p className="text-slate-500 font-medium">
+                  You haven’t placed any orders yet.
+                </p>
+                <Link href="/products" className="text-primary text-sm hover:underline mt-2 inline-block">
+                  Start Shopping
+                </Link>
+              </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-6">
 
                 {user.orders.map((order) => (
                   <div
                     key={order._id}
-                    className="border rounded-lg p-4"
+                    className="bg-white/5 border border-white/10 rounded-xl p-6 hover:shadow-sm transition-shadow"
                   >
-                    <div className="flex justify-between items-start mb-2">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                       <div>
-                        <p className="text-sm font-medium text-gray-800">
-                          Order #{order._id.slice(-6)}
-                        </p>
-                        <p className="text-xs text-gray-400">
-                          {new Date(order.createdAt).toLocaleDateString()}
+                        <div className="flex items-center gap-3 mb-1">
+                          <p className="text-lg font-bold text-white font-mono">
+                            #{order._id.slice(-6).toUpperCase()}
+                          </p>
+                          <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${order.status === "delivered" ? "bg-emerald-100 text-emerald-700 border-emerald-200" :
+                            order.status === "cancelled" ? "bg-rose-100 text-rose-700 border-rose-200" :
+                              order.status === "shipped" ? "bg-sky-100 text-sky-700 border-sky-200" :
+                                "bg-amber-100 text-amber-700 border-amber-200"
+                            }`}>
+                            {order.status}
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-500 flex items-center gap-2">
+                          <span>Placed on {new Date(order.createdAt).toLocaleDateString()}</span>
+                          <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
+                          <span>{new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                         </p>
                       </div>
-                      <div className="flex flex-col items-end gap-2">
-                        <span className={`text-xs font-medium px-2 py-1 rounded-full ${order.status === "delivered" ? "bg-green-100 text-green-700" :
-                          order.status === "cancelled" ? "bg-red-100 text-red-700" :
-                            order.status === "shipped" ? "bg-blue-100 text-blue-700" :
-                              "bg-yellow-100 text-yellow-700"
-                          }`}>
-                          {order.status.toUpperCase()}
-                        </span>
 
+                      <div className="flex items-center gap-4">
+                        <p className="font-bold text-white text-xl">
+                          ₹{order.totalamount || order.totalAmount}
+                        </p>
                         {(order.status === "pending" || order.status === "ordered") && (
                           <button
-                            className="text-xs text-red-600 hover:text-red-800 font-medium underline"
+                            className="text-xs font-semibold text-rose-600 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-lg transition-colors border border-rose-100"
                             onClick={() => {
                               const performCancel = async () => {
                                 try {
@@ -220,22 +242,22 @@ export default function UserPage() {
                               toast(
                                 ({ closeToast }) => (
                                   <div>
-                                    <p className="font-semibold text-gray-800 mb-3">Cancel this order?</p>
-                                    <div className="flex gap-3 justify-end">
+                                    <p className="font-semibold text-slate-800 mb-3 text-sm">Cancel this order?</p>
+                                    <div className="flex gap-2 justify-end">
                                       <button
                                         onClick={closeToast}
-                                        className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded hover:bg-gray-200"
+                                        className="px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded hover:bg-slate-200 transition-colors"
                                       >
-                                        No, Keep it
+                                        Back
                                       </button>
                                       <button
                                         onClick={() => {
                                           performCancel();
                                           closeToast();
                                         }}
-                                        className="px-3 py-1.5 text-xs font-medium text-white bg-red-600 rounded hover:bg-red-700"
+                                        className="px-3 py-1.5 text-xs font-medium text-white bg-rose-600 rounded hover:bg-rose-700 transition-colors shadow-sm"
                                       >
-                                        Yes, Cancel
+                                        Confirm
                                       </button>
                                     </div>
                                   </div>
@@ -245,28 +267,25 @@ export default function UserPage() {
                                   autoClose: false,
                                   closeOnClick: false,
                                   draggable: false,
+                                  className: "!bg-white !rounded-xl !shadow-xl !border !border-slate-100"
                                 }
                               );
                             }}
                           >
-                            Cancel Order
+                            Cancel
                           </button>
                         )}
                       </div>
                     </div>
 
-                    <div className="space-y-1 text-sm text-gray-600 border-t pt-2 mt-2">
+                    <div className="bg-white/5 rounded-lg border border-white/10 divide-y divide-white/10">
                       {order.items.map((item, idx) => (
-                        <div key={idx} className="flex justify-between">
-                          <span>{item.product?.name || item.name}</span>
-                          <span>x {item.quantity}</span>
+                        <div key={idx} className="flex justify-between items-center p-3 text-sm">
+                          <span className="text-slate-300 font-medium">{item.product?.name || item.name}</span>
+                          <span className="text-slate-400 font-mono">x{item.quantity}</span>
                         </div>
                       ))}
                     </div>
-
-                    <p className="mt-2 font-semibold text-gray-800 text-right">
-                      Total: ₹{order.totalamount || order.totalAmount}
-                    </p>
                   </div>
                 ))}
               </div>

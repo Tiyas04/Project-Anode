@@ -184,13 +184,13 @@ export default function Login() {
   }
 
   return (
-    <form onSubmit={handleLoginSubmit} className="space-y-4 text-gray-700">
+    <form onSubmit={handleLoginSubmit} className="space-y-4 text-slate-700">
       <input
         name="email"
         placeholder="Email (optional)"
         value={form.email}
         onChange={handleChange}
-        className="border rounded-md px-3 py-2 w-full"
+        className="border border-white/10 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
       />
 
       <input
@@ -198,7 +198,7 @@ export default function Login() {
         placeholder="Phone number (optional)"
         value={form.phoneno}
         onChange={handleChange}
-        className="border rounded-md px-3 py-2 w-full"
+        className="border border-white/10 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
       />
 
       <div className="relative">
@@ -208,12 +208,12 @@ export default function Login() {
           placeholder="Password"
           value={form.password}
           onChange={handleChange}
-          className="border rounded-md px-3 py-2 w-full pr-10"
+          className="border border-white/10 rounded-lg px-4 py-2 w-full pr-10 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
         />
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
         >
           {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
         </button>
@@ -222,7 +222,7 @@ export default function Login() {
         <button
           type="button"
           onClick={() => setStep("forgot")}
-          className="text-xs text-blue-600 hover:text-blue-800 hover:underline"
+          className="text-xs text-primary hover:text-sky-700 hover:underline font-medium"
         >
           Forgot Password?
         </button>
@@ -231,7 +231,7 @@ export default function Login() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700 transition disabled:opacity-50 cursor-pointer"
+        className="w-full bg-primary text-white py-2.5 rounded-lg font-semibold hover:bg-sky-700 transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-[0.98]"
       >
         {loading ? "Sending Code..." : "Continue"}
       </button>

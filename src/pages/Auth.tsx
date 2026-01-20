@@ -15,16 +15,16 @@ export default function AuthPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-        <div className="w-full max-w-md bg-white border rounded-lg shadow-md p-8">
+      <main className="min-h-screen pt-24 pb-20 flex items-center justify-center px-4">
+        <div className="w-full max-w-md glass rounded-xl p-8 border border-white/20 relative z-10">
 
           {/* TOGGLE */}
-          <div className="flex mb-6 rounded-lg overflow-hidden border">
+          <div className="flex mb-6 rounded-lg overflow-hidden bg-white/5 p-1 border border-white/10 backdrop-blur-sm">
             <button
               onClick={() => setMode("login")}
-              className={`w-1/2 py-2 text-sm font-medium ${mode === "login"
-                ? "bg-blue-600 text-white cursor-pointer"
-                : "bg-white text-gray-600 cursor-pointer"
+              className={`w-1/2 py-2 text-sm font-semibold rounded-md transition-all duration-300 ${mode === "login"
+                ? "bg-primary text-white shadow-sm"
+                : "text-slate-400 hover:text-white"
                 }`}
             >
               Login
@@ -32,9 +32,9 @@ export default function AuthPage() {
 
             <button
               onClick={() => setMode("signup")}
-              className={`w-1/2 py-2 text-sm font-medium ${mode === "signup"
-                ? "bg-blue-600 text-white cursor-pointer"
-                : "bg-white text-gray-600 cursor-pointer"
+              className={`w-1/2 py-2 text-sm font-semibold rounded-md transition-all duration-300 ${mode === "signup"
+                ? "bg-primary text-white shadow-sm"
+                : "text-slate-400 hover:text-white"
                 }`}
             >
               Sign Up

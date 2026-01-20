@@ -75,11 +75,11 @@ export default function ProductDetailsPage({
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-gray-50 px-6 py-12">
-        <div className="max-w-4xl mx-auto bg-white border rounded-lg p-8">
+      <main className="min-h-screen pt-24 px-6 pb-20">
+        <div className="max-w-4xl mx-auto glass border border-white/20 rounded-2xl p-8 sm:p-10 shadow-sm">
 
           {/* IMAGE */}
-          <div className="relative w-full h-64 mb-6">
+          <div className="relative w-full h-80 mb-10 bg-white/50 rounded-xl p-4 flex items-center justify-center">
             <Image
               src={product.image}
               alt={product.name}
@@ -88,69 +88,100 @@ export default function ProductDetailsPage({
             />
           </div>
 
-          {/* TITLE */}
-          <div className="flex items-center gap-2 text-blue-600 mb-2">
-            <FlaskConical className="w-6 h-6" />
-            <h1 className="text-3xl font-bold">{product.name}</h1>
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div>
+              {/* TITLE */}
+              <div className="flex items-start gap-3 text-primary mb-3">
+                <div className="p-2 bg-primary/10 rounded-lg shrink-0">
+                  <FlaskConical className="w-6 h-6" />
+                </div>
+                <h1 className="text-3xl font-bold text-slate-800 leading-tight">{product.name}</h1>
+              </div>
 
-          <p className="text-gray-600 mb-4">
-            CAS Number: {product.casNumber}
-          </p>
+              <p className="text-slate-500 mb-6 flex items-center gap-2">
+                <span className="font-semibold text-xs uppercase tracking-wide bg-slate-100 text-slate-600 px-2 py-1 rounded">CAS Number</span>
+                {product.casNumber}
+              </p>
 
-          {/* DESCRIPTION */}
-          <p className="text-gray-700 mb-6">{product.description}</p>
-
-          {/* DETAILS */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 text-gray-600">
-            <p><strong>Formula:</strong> {product.formula}</p>
-            <p><strong>Purity:</strong> {product.purity}</p>
-            <p><strong>Molecular Weight:</strong> {product.molecularWeight}</p>
-            <p><strong>Category:</strong> {product.category}</p>
-          </div>
-
-          {/* HAZARDS */}
-          {product.hazards.length > 0 && (
-            <div className="mb-6">
-              <h3 className="font-semibold mb-2 flex items-center gap-2 text-red-600">
-                <AlertTriangle className="w-5 h-5" />
-                Hazards
-              </h3>
-              <ul className="list-disc list-inside text-sm text-gray-700">
-                {product.hazards.map((hazard: string) => (
-                  <li key={hazard}>{hazard}</li>
-                ))}
-              </ul>
+              {/* DESCRIPTION */}
+              <p className="text-slate-600 mb-8 leading-relaxed text-lg">{product.description}</p>
             </div>
-          )}
 
-          {/* PRICE + CART BUTTON */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-8">
-            <span className="text-2xl font-bold text-gray-800">
-              ₹{product.price}
-            </span>
+            <div className="space-y-6">
+              {/* DETAILS */}
+              <div className="bg-white/50 rounded-xl p-6 border border-slate-100">
+                <h3 className="font-semibold text-slate-900 mb-4 border-b border-slate-100 pb-2">Specifications</h3>
+                <div className="space-y-3 text-slate-600 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Formula</span>
+                    <span className="font-mono text-slate-700">{product.formula}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Purity</span>
+                    <span className="font-medium text-secondary">{product.purity}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Molecular Weight</span>
+                    <span>{product.molecularWeight}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Category</span>
+                    <span>{product.category}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* HAZARDS */}
+              {product.hazards.length > 0 && (
+                <div className="bg-rose-50/50 rounded-xl p-6 border border-rose-100">
+                  <h3 className="font-semibold mb-3 flex items-center gap-2 text-rose-600">
+                    <AlertTriangle className="w-5 h-5" />
+                    Hazards / Safety
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {product.hazards.map((hazard: string) => (
+                      <span key={hazard} className="text-xs font-medium text-rose-600 bg-white px-3 py-1 rounded-full border border-rose-100">
+                        {hazard}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* ACTION BAR */}
+          <div className="mt-10 pt-8 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+            <div className="flex flex-col">
+              <span className="text-3xl font-bold text-slate-900 tracking-tight">
+                ₹{product.price}
+              </span>
+              <p className="text-sm text-slate-500 mt-1">
+                {product.inStock ? `In Stock (${product.stockLevel} units)` : "Currently Out of Stock"}
+              </p>
+            </div>
 
             <button
               onClick={addToCart}
               disabled={added || !product.inStock || product.stockLevel <= 0}
-              className={`inline-flex items-center gap-2 px-6 py-3 rounded-md font-medium transition
+              className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg transition-all shadow-lg active:scale-95 sm:min-w-[200px]
                 ${!product.inStock || product.stockLevel <= 0
-                  ? "bg-gray-400 cursor-not-allowed text-white"
+                  ? "bg-slate-200 cursor-not-allowed text-slate-400 shadow-none border border-slate-300"
                   : added
-                    ? "bg-green-600 text-white cursor-default"
-                    : "bg-blue-600 hover:bg-blue-700 text-white"
+                    ? "bg-emerald-500 text-white cursor-default shadow-emerald-500/30 ring-2 ring-emerald-500 ring-offset-2"
+                    : "bg-primary hover:bg-sky-700 text-white shadow-primary/30 hover:shadow-primary/50"
                 }`}
             >
               {!product.inStock || product.stockLevel <= 0 ? (
                 <>Out of Stock</>
               ) : added ? (
                 <>
-                  <Check className="w-5 h-5" />
-                  Added to Cart
+                  <Check className="w-6 h-6" />
+                  Added
                 </>
               ) : (
                 <>
-                  <ShoppingCart className="w-5 h-5" />
+                  <ShoppingCart className="w-6 h-6" />
                   Add to Cart
                 </>
               )}

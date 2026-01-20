@@ -103,56 +103,68 @@ function EditProductContent() {
         <>
             <Navbar />
 
-            <main className="min-h-screen bg-gray-50 px-6 py-12">
-                <div className="max-w-xl mx-auto bg-white border rounded-lg p-8">
+            <main className="min-h-screen pt-24 px-6 pb-20">
+                <div className="max-w-xl mx-auto glass rounded-xl p-8 border border-white/20">
 
-                    <h1 className="text-2xl font-bold text-blue-700 mb-6">
+                    <h1 className="text-2xl font-bold text-white mb-8 border-b border-white/20 pb-4">
                         Edit Product
                     </h1>
 
-                    <form onSubmit={handleSubmit} className="space-y-4 text-gray-700">
+                    <form onSubmit={handleSubmit} className="space-y-6 text-slate-300">
 
-                        <input
-                            name="price"
-                            type="number"
-                            value={form.price}
-                            onChange={handleChange}
-                            placeholder="Price (₹) *"
-                            className="border rounded-md px-3 py-2 w-full"
-                        />
+                        <div>
+                            <label className="block text-sm font-medium text-slate-400 mb-1">Price (₹)</label>
+                            <input
+                                name="price"
+                                type="number"
+                                value={form.price}
+                                onChange={handleChange}
+                                placeholder="Price"
+                                className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500"
+                            />
+                        </div>
 
-                        <input
-                            name="quantity"
-                            value={form.quantity}
-                            onChange={handleChange}
-                            placeholder="Quantity (e.g. 250ml / 1kg) *"
-                            className="border rounded-md px-3 py-2 w-full"
-                        />
+                        <div>
+                            <label className="block text-sm font-medium text-slate-400 mb-1">Quantity</label>
+                            <input
+                                name="quantity"
+                                value={form.quantity}
+                                onChange={handleChange}
+                                placeholder="Quantity (e.g. 250ml / 1kg)"
+                                className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500"
+                            />
+                        </div>
 
-                        <input
-                            name="stockLevel"
-                            type="number"
-                            value={form.stockLevel}
-                            onChange={handleChange}
-                            placeholder="Stock Level *"
-                            className="border rounded-md px-3 py-2 w-full"
-                        />
+                        <div>
+                            <label className="block text-sm font-medium text-slate-400 mb-1">Stock Level</label>
+                            <input
+                                name="stockLevel"
+                                type="number"
+                                value={form.stockLevel}
+                                onChange={handleChange}
+                                placeholder="Stock Level"
+                                className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500"
+                            />
+                        </div>
 
-                        <select
-                            value={form.inStock ? "yes" : "no"}
-                            onChange={(e) =>
-                                setForm({ ...form, inStock: e.target.value === "yes" })
-                            }
-                            className="border rounded-md px-3 py-2 w-full"
-                        >
-                            <option value="yes">In Stock</option>
-                            <option value="no">Out of Stock</option>
-                        </select>
+                        <div>
+                            <label className="block text-sm font-medium text-slate-400 mb-1">Availability</label>
+                            <select
+                                value={form.inStock ? "yes" : "no"}
+                                onChange={(e) =>
+                                    setForm({ ...form, inStock: e.target.value === "yes" })
+                                }
+                                className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100"
+                            >
+                                <option value="yes" className="bg-slate-800">In Stock</option>
+                                <option value="no" className="bg-slate-800">Out of Stock</option>
+                            </select>
+                        </div>
 
                         <button
                             type="submit"
                             disabled={loading}
-                            className={`w-full bg-blue-600 text-white py-3 rounded-md font-medium hover:bg-blue-700 transition cursor-pointer ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
+                            className={`w-full py-3.5 rounded-lg text-white font-bold shadow-lg shadow-primary/25 transition-all mt-4 active:scale-[0.99] ${loading ? "bg-primary/70 cursor-not-allowed" : "bg-primary hover:bg-sky-700 cursor-pointer hover:shadow-primary/40"}`}
                         >
                             {loading ? "Updating..." : "Update Product"}
                         </button>

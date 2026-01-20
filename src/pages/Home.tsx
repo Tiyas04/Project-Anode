@@ -42,32 +42,38 @@ export default function Home() {
     <>
       <Navbar />
 
-      <main className="bg-white text-gray-800">
+      <main className="text-slate-200 pt-20">
 
         {/* HERO */}
-        <section className="bg-blue-50 border-b">
-          <div className="max-w-7xl mx-auto px-6 py-20 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-blue-900">
-              Premium Laboratory Chemicals & Supplies
+        <section className="relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6 py-24 text-center">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/20 rounded-full blur-3xl -z-10 opacity-30 animate-pulse"></div>
+
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6">
+              <span className="bg-clip-text text-transparent bg-linear-to-r from-primary to-secondary">
+                Premium Laboratory
+              </span>
+              <br />
+              Chemicals & Supplies
             </h1>
-            <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="mt-6 text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
               High-purity chemicals with verified sourcing, compliance,
-              and complete safety documentation.
+              and complete safety documentation for research and industry.
             </p>
 
-            <div className="mt-8 flex justify-center gap-4">
+            <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
               <Link
                 href="/products"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white rounded-xl font-semibold hover:bg-sky-700 transition-all duration-300 shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5"
               >
                 Browse Chemicals
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-5 h-5" />
               </Link>
 
               {!isLoggedIn && (
                 <Link
                   href="/auth"
-                  className="inline-flex items-center gap-2 px-6 py-3 border border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-slate-200 rounded-xl font-semibold hover:bg-white/10 hover:border-sidebar-primary/50 transition-all duration-300 shadow-sm hover:shadow-md"
                 >
                   Create Account
                 </Link>
@@ -77,13 +83,13 @@ export default function Home() {
         </section>
 
         {/* CATEGORIES */}
-        <section className="py-16">
+        <section className="py-20">
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-2xl font-semibold text-blue-900 mb-8 text-center">
+            <h2 className="text-3xl font-bold text-white mb-12 text-center">
               Chemical Categories
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 "Laboratory Chemicals",
                 "Industrial Chemicals",
@@ -92,10 +98,13 @@ export default function Home() {
               ].map((category) => (
                 <div
                   key={category}
-                  className="border rounded-lg p-6 text-center hover:shadow-md transition"
+                  className="glass p-8 rounded-2xl text-center hover:scale-[1.02] transition-transform duration-300 border border-white/20 shadow-sm"
                 >
-                  <h3 className="font-medium text-gray-800">{category}</h3>
-                  <p className="text-sm text-gray-500 mt-2">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <FileText className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold text-lg text-slate-200">{category}</h3>
+                  <p className="text-sm text-slate-400 mt-2">
                     Verified quality & traceability
                   </p>
                 </div>
@@ -105,27 +114,27 @@ export default function Home() {
         </section>
 
         {/* WHY US */}
-        <section className="bg-gray-50 py-16">
+        <section className="py-20 bg-slate-900/30 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-2xl font-semibold text-blue-900 mb-10 text-center">
+            <h2 className="text-3xl font-bold text-white mb-12 text-center">
               Why Choose Us
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <Feature
-                icon={<ShieldCheck className="w-6 h-6 text-blue-600" />}
+                icon={<ShieldCheck className="w-8 h-8 text-secondary" />}
                 title="Certified Quality"
-                description="Sourced from approved manufacturers with batch traceability."
+                description="Sourced from approved manufacturers with batch traceability for every product."
               />
               <Feature
-                icon={<FileText className="w-6 h-6 text-blue-600" />}
+                icon={<FileText className="w-8 h-8 text-primary" />}
                 title="Full Documentation"
-                description="Safety Data Sheets (SDS) and compliance files included."
+                description="Safety Data Sheets (SDS) and compliance files included with every order."
               />
               <Feature
-                icon={<Truck className="w-6 h-6 text-blue-600" />}
+                icon={<Truck className="w-8 h-8 text-accent" />}
                 title="Secure Delivery"
-                description="Handled and delivered following safety regulations."
+                description="Specialized handling and delivery following strict safety regulations."
               />
             </div>
           </div>
@@ -148,10 +157,12 @@ function Feature({
   description: string;
 }) {
   return (
-    <div className="bg-white rounded-lg p-6 shadow-sm text-center">
-      <div className="flex justify-center mb-4">{icon}</div>
-      <h3 className="font-semibold text-gray-800">{title}</h3>
-      <p className="mt-2 text-gray-600 text-sm">{description}</p>
+    <div className="glass p-8 rounded-2xl text-center hover:shadow-md transition-shadow duration-300 border border-white/10">
+      <div className="flex justify-center mb-6 p-4 bg-white/5 rounded-full w-20 h-20 mx-auto items-center shadow-inner ring-1 ring-white/10">
+        {icon}
+      </div>
+      <h3 className="text-xl font-bold text-slate-200 mb-3">{title}</h3>
+      <p className="text-slate-400 leading-relaxed">{description}</p>
     </div>
   );
 }

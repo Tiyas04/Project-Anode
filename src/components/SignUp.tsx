@@ -68,30 +68,30 @@ export default function Signup({ switchToLogin }: SignupProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 text-gray-700">
+    <form onSubmit={handleSubmit} className="space-y-4 text-slate-700">
       <input
         name="name"
         placeholder="Full Name"
-        className="w-full border rounded-md px-3 py-2"
+        className="w-full border border-white/10 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
         onChange={handleChange}
       />
       <input
         name="email"
         type="email"
         placeholder="Email"
-        className="w-full border rounded-md px-3 py-2"
+        className="w-full border border-white/10 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
         onChange={handleChange}
       />
       <input
         name="phoneno"
         placeholder="Phone Number"
-        className="w-full border rounded-md px-3 py-2"
+        className="w-full border border-white/10 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
         onChange={handleChange}
       />
       <input
         name="institution"
         placeholder="Institution / Company"
-        className="w-full border rounded-md px-3 py-2"
+        className="w-full border border-white/10 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
         onChange={handleChange}
       />
       <div className="relative">
@@ -99,13 +99,13 @@ export default function Signup({ switchToLogin }: SignupProps) {
           name="password"
           type={showPassword ? "text" : "password"}
           placeholder="Password"
-          className="w-full border rounded-md px-3 py-2 pr-10"
+          className="w-full border border-white/10 rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
           onChange={handleChange}
         />
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
         >
           {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
         </button>
@@ -114,7 +114,7 @@ export default function Signup({ switchToLogin }: SignupProps) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 cursor-pointer"
+        className="w-full bg-primary text-white py-2.5 rounded-lg font-semibold hover:bg-sky-700 transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-[0.98]"
       >
         {loading ? "Creating account..." : "Sign Up"}
       </button>
