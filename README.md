@@ -52,7 +52,7 @@ CLOUDINARY_API_SECRET=your_api_secret
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/project-anode.git
+    git clone https://github.com/Tiyas04/project-anode.git
     cd project-anode
     ```
 
@@ -78,7 +78,6 @@ CLOUDINARY_API_SECRET=your_api_secret
 - `src/pages`: Next.js Pages Router pages (Legacy/Hybrid usage).
 - `src/models`: Mongoose schemas (User, Product, Order, etc.).
 - `src/lib`: Utility functions (DB connect, Cloudinary, etc.).
-- `active_public`: Public assets.
 
 ## 📜 Scripts
 
