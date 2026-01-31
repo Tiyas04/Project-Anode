@@ -2,7 +2,7 @@
 
 import { use, useState, useEffect } from "react";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import axios from "axios";
 import {
   AlertTriangle,
@@ -19,6 +19,7 @@ export default function ProductDetailsPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
+  const router = useRouter();
 
   const [product, setProduct] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
@@ -66,7 +67,12 @@ export default function ProductDetailsPage({
 
       setAdded(true);
       setTimeout(() => setAdded(false), 2000);
-    } catch (error) {
+    } catch (error: any) {
+      console.log("Add to cart error:", error);
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        router.push("/auth");
+        return;
+      }
       console.error("Failed to add to cart", error);
     }
   };
@@ -95,7 +101,7 @@ export default function ProductDetailsPage({
                 <div className="p-2 bg-primary/10 rounded-lg shrink-0">
                   <FlaskConical className="w-6 h-6" />
                 </div>
-                <h1 className="text-3xl font-bold text-slate-800 leading-tight">{product.name}</h1>
+                <h1 className="text-3xl font-bold text-slate-300 leading-tight">{product.name}</h1>
               </div>
 
               <p className="text-slate-500 mb-6 flex items-center gap-2">
@@ -114,19 +120,19 @@ export default function ProductDetailsPage({
                 <div className="space-y-3 text-slate-600 text-sm">
                   <div className="flex justify-between">
                     <span className="text-slate-500">Formula</span>
-                    <span className="font-mono text-slate-700">{product.formula}</span>
+                    <span className="font-mono text-slate-600">{product.formula}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-500">Purity</span>
-                    <span className="font-medium text-secondary">{product.purity}</span>
+                    <span className="font-medium text-slate-600">{product.purity}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-500">Molecular Weight</span>
-                    <span>{product.molecularWeight}</span>
+                    <span className="text-slate-600">{product.molecularWeight}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-500">Category</span>
-                    <span>{product.category}</span>
+                    <span className="text-slate-600">{product.category}</span>
                   </div>
                 </div>
               </div>
@@ -153,7 +159,7 @@ export default function ProductDetailsPage({
           {/* ACTION BAR */}
           <div className="mt-10 pt-8 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
             <div className="flex flex-col">
-              <span className="text-3xl font-bold text-slate-900 tracking-tight">
+              <span className="text-3xl font-bold text-slate-300 tracking-tight">
                 ₹{product.price}
               </span>
               <p className="text-sm text-slate-500 mt-1">

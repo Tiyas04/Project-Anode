@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import ProductModel from "@/models/product";
 import CartItemsModel from "@/models/cartitem";
 import CartModel from "@/models/cart";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbconnect";
 
@@ -13,19 +14,37 @@ export async function POST(
         const params = await props.params;
         await dbConnect();
 
-        const userId = request.headers.get("userId");
+        const refreshToken = request.cookies.get("refreshToken")?.value;
+        console.log("[Cart Debug] Refresh Token:", refreshToken ? "Found" : "Missing");
+
+        let userId: string | null = null;
+
+        if (refreshToken) {
+            try {
+                const decoded = jwt.verify(
+                    refreshToken,
+                    process.env.REFRESH_TOKEN_SECRET!
+                ) as JwtPayload;
+                userId = decoded.id;
+                console.log("[Cart Debug] Decoded User ID:", userId);
+            } catch (error) {
+                console.error("[Cart Debug] Invalid token:", error);
+            }
+        } else {
+            console.log("[Cart Debug] No refresh token found");
+        }
 
         // 1. Validate userId
         if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
-            console.error("[Cart] Invalid or missing userId:", userId);
+            console.error("[Cart] Unauthorized access - No valid userId from token");
             return NextResponse.json(
                 {
                     success: false,
                     message: "Unauthorized access or Invalid User ID",
                 },
-                { 
+                {
                     status: 401
-                 }
+                }
             );
         }
 
@@ -42,8 +61,8 @@ export async function POST(
                     success: false,
                     message: "Invalid product URL/CAS Number",
                 },
-                { 
-                    status: 400 
+                {
+                    status: 400
                 }
             );
         }
@@ -58,8 +77,8 @@ export async function POST(
                     success: false,
                     message: "No product found",
                 },
-                { 
-                    status: 404 
+                {
+                    status: 404
                 }
             );
         }
@@ -72,8 +91,8 @@ export async function POST(
                     message: "Product is out of stock",
                 },
                 {
-                     status: 400
-                     }
+                    status: 400
+                }
             );
         }
 
@@ -115,8 +134,8 @@ export async function POST(
                 success: true,
                 message: "Product added to cart",
             },
-            { 
-                status: 200 
+            {
+                status: 200
             }
         );
     } catch (error: any) {
@@ -127,8 +146,8 @@ export async function POST(
                 message: "Failed to add to the cart: " + (error.message || "Unknown Error"),
             },
             {
-                 status: 500 
-                }
+                status: 500
+            }
         );
     }
 }
@@ -149,8 +168,8 @@ export async function DELETE(
                     success: false,
                     message: "Unauthorized access or Invalid User ID",
                 },
-                { 
-                    status: 401 
+                {
+                    status: 401
                 }
             );
         }
@@ -166,8 +185,8 @@ export async function DELETE(
                     success: false,
                     message: "Invalid product URL/CAS Number",
                 },
-                { 
-                    status: 400 
+                {
+                    status: 400
                 }
             );
         }
@@ -179,8 +198,8 @@ export async function DELETE(
                     success: false,
                     message: "No product found",
                 },
-                { 
-                    status: 404 
+                {
+                    status: 404
                 }
             );
         }
@@ -192,8 +211,8 @@ export async function DELETE(
                     success: false,
                     message: "Cart not found",
                 },
-                { 
-                    status: 404 
+                {
+                    status: 404
                 }
             );
         }
@@ -207,30 +226,30 @@ export async function DELETE(
         if (deletedItem) {
             // Remove reference from Cart array
             await CartModel.findByIdAndUpdate(cart._id, {
-                $pull: { 
+                $pull: {
                     cartitems: deletedItem._id
-                 },
+                },
             });
         }
 
         return NextResponse.json(
-            { 
-                success: true, 
-                message: "Item removed from cart" 
+            {
+                success: true,
+                message: "Item removed from cart"
             },
-            { 
+            {
                 status: 200
-             }
+            }
         );
     } catch (error: any) {
         console.error("[Cart] Delete error:", error);
         return NextResponse.json(
-            { 
-                success: false, 
-                message: "Failed to remove item: " + (error.message || "Unknown") 
+            {
+                success: false,
+                message: "Failed to remove item: " + (error.message || "Unknown")
             },
-            { 
-                status: 500 
+            {
+                status: 500
             }
         );
     }

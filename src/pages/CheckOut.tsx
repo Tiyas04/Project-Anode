@@ -23,7 +23,7 @@ export default function CheckoutPage() {
     city: "",
     state: "",
     pincode: "",
-    phonenumber: ""
+    phoneno: ""
   });
 
   useEffect(() => {
@@ -67,6 +67,7 @@ export default function CheckoutPage() {
       const formData = new FormData();
       formData.append("fullName", form.name);
       formData.append("email", form.email);
+      formData.append("phoneno", form.phoneno);
       formData.append("company", form.company);
       formData.append("address", form.address);
       formData.append("city", form.city);
@@ -111,7 +112,7 @@ export default function CheckoutPage() {
             <div className="space-y-4 text-slate-300">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input name="name" placeholder="Full Name" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
-                <input name="phonenumber" placeholder="Phone Number" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+                <input name="phoneno" placeholder="Phone Number" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
               </div>
 
               <input name="company" placeholder="Company / Laboratory Name" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />

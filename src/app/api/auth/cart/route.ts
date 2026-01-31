@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
             {
                 success: false,
-                message: "Failed to add to the cart"
+                message: "Failed to add to the cart, please login first"
             },
             {
                 status: 500

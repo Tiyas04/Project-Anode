@@ -67,6 +67,7 @@ export async function GET(request: NextRequest) {
                     customer: {
                         name: "$checkout.fullName",
                         email: "$checkout.email",
+                        phoneno: "$checkout.phoneno",
                         proof: "$checkout.permissionproof", // This is the image URL
                         address: "$checkout.address",
                         city: "$checkout.city",

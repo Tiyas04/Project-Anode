@@ -155,6 +155,10 @@ export default function AdminDashboard() {
                         <div className="flex flex-col">
                           <span className="font-semibold text-slate-200">{order.customer?.name || "Unknown"}</span>
                           <span className="text-xs text-slate-400">{order.customer?.email}</span>
+                          <span className="text-xs text-slate-400">{order.customer?.phoneno}</span>
+                          <span className="text-xs text-slate-500 mt-1">
+                            {order.customer?.address}, {order.customer?.city}, {order.customer?.state} - {order.customer?.pincode}
+                          </span>
                         </div>
                       </td>
                       <td className="text-xs text-slate-400 py-4">

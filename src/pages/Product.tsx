@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FlaskConical, AlertTriangle, Star, ShoppingCart } from "lucide-react";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -14,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const ProductCard = ({ product }: { product: Product }) => {
     const [isAdded, setIsAdded] = useState(false);
+    const router = useRouter();
 
     const addToCart = async () => {
         try {
@@ -26,6 +28,14 @@ const ProductCard = ({ product }: { product: Product }) => {
             setIsAdded(true);
             setTimeout(() => setIsAdded(false), 2000);
         } catch (error: any) {
+            if (error.response?.status === 403) {
+                router.push("/auth");
+                return;
+            }
+            if (error.response?.status === 401 || error.response?.status === 403) {
+                router.push("/auth");
+                return;
+            }
             console.error("Failed to add to cart", error);
             toast.error(error.response?.data?.message || "Failed to add to cart");
         }

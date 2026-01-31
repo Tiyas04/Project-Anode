@@ -26,6 +26,7 @@ export async function POST(request: NextRequest) {
         const formData = await request.formData();
         const fullName = formData.get("fullName") as string;
         const email = formData.get("email") as string;
+        const phoneno = formData.get("phoneno") as string;
         const company = formData.get("company") as string;
         const address = formData.get("address") as string;
         const city = formData.get("city") as string;
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
         const pincode = formData.get("pincode") as string;
         const permissionproof = formData.get("permissionproof") as File;
 
-        const requiredFields = { fullName, email, address, city, state, pincode, permissionproof };
+        const requiredFields = { fullName, email, phoneno, address, city, state, pincode, permissionproof };
         const missingFields = Object.entries(requiredFields)
             .filter(([_, value]) => !value)
             .map(([key]) => key);
@@ -181,6 +182,7 @@ export async function POST(request: NextRequest) {
             orderid: order._id,
             fullName,
             email,
+            phoneno: Number(phoneno),
             company,
             address,
             city,

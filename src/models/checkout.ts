@@ -4,6 +4,7 @@ export interface CheckOut extends Document {
     orderid: mongoose.Types.ObjectId;
     fullName: string;
     email: string;
+    phoneno: Number;
     company?: string;
     address: string;
     city: string;
@@ -33,6 +34,11 @@ const CheckOutSchema = new mongoose.Schema<CheckOut>(
             index: true,
             trim: true,
             toLowerCase: true
+        },
+        phoneno: {
+            type: Number,
+            required: true,
+            trim: true
         },
         company: {
             type: String
