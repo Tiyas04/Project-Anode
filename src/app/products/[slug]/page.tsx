@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import { toast } from "react-toastify";
 
 export default function ProductDetailsPage({
   params,
@@ -24,6 +25,7 @@ export default function ProductDetailsPage({
   const [product, setProduct] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [added, setAdded] = useState(false);
+  const [amount, setAmount] = useState<string>("");
 
   /* 🔹 FETCH PRODUCT */
   useEffect(() => {
@@ -59,8 +61,13 @@ export default function ProductDetailsPage({
 
   /* 🛒 ADD TO CART (BACKEND) */
   const addToCart = async () => {
+    if (!amount || Number(amount) <= 0) {
+      toast.error(`Please enter a valid amount in ${product.unit || 'mg'}`);
+      return;
+    }
+
     try {
-      await axios.post(`/api/auth/cart/${slug}`);
+      await axios.post(`/api/auth/cart/${slug}`, { quantity: Number(amount) });
 
       // update navbar cart badge
       window.dispatchEvent(new Event("cart-updated"));
@@ -160,11 +167,31 @@ export default function ProductDetailsPage({
           <div className="mt-10 pt-8 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
             <div className="flex flex-col">
               <span className="text-3xl font-bold text-slate-300 tracking-tight">
-                ₹{product.price}
+                ₹{product.price} <span className="text-lg font-normal text-slate-500">/ {product.unit || 'mg'}</span>
               </span>
               <p className="text-sm text-slate-500 mt-1">
                 {product.inStock ? `In Stock (${product.stockLevel} units)` : "Currently Out of Stock"}
               </p>
+
+              <div className="mt-4">
+                <div className="relative">
+                  <input
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder={`Amount in ${product.unit || 'mg'}`}
+                    className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-primary transition-colors"
+                  />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-slate-400 font-medium">
+                    {product.unit || 'mg'}
+                  </span>
+                </div>
+                {amount && !isNaN(Number(amount)) && (
+                  <div className="mt-2 text-sm text-emerald-400 font-medium">
+                    Total: ₹{(Number(amount) * product.price).toFixed(2)}
+                  </div>
+                )}
+              </div>
             </div>
 
             <button

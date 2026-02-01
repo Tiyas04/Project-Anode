@@ -122,8 +122,39 @@ export default function CartPage() {
                                                 <p>CAS: <span className="text-slate-300">{item.product.casNumber}</span></p>
                                                 <p>Purity: <span className="text-slate-300">{item.product.purity}</span></p>
                                             </div>
-                                            <div className="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/10 text-slate-200">
-                                                Qty: {item.quantity} {item.product.unit || 'mg'}
+                                            <div className="mt-2 flex items-center gap-2">
+                                                <div className="flex items-center bg-white/10 rounded-lg px-2 py-1">
+                                                    <span className="text-xs text-slate-400 mr-2">Qty:</span>
+                                                    <input
+                                                        type="number"
+                                                        value={item.quantity}
+                                                        onChange={(e) => {
+                                                            const val = e.target.value;
+                                                            // Optimistic update locally
+                                                            const newQty = Number(val);
+                                                            setCartItems(prev => prev.map(p =>
+                                                                p.product._id === item.product._id ? { ...p, quantity: newQty } : p
+                                                            ));
+                                                        }}
+                                                        onBlur={async (e) => {
+                                                            const val = Number(e.target.value);
+                                                            if (!val || val <= 0) {
+                                                                toast.error("Invalid quantity");
+                                                                return; // Should probably revert to valid state
+                                                            }
+                                                            try {
+                                                                const slug = `${item.product.name.toLowerCase().replace(/\s+/g, "-")}-${item.product.casNumber}`;
+                                                                await axios.patch(`/api/auth/cart/${slug}`, { quantity: val });
+                                                                toast.success("Cart updated");
+                                                            } catch (err) {
+                                                                console.error("Failed to update cart", err);
+                                                                toast.error("Failed to update cart");
+                                                            }
+                                                        }}
+                                                        className="w-20 bg-transparent text-slate-200 text-sm focus:outline-none"
+                                                    />
+                                                    <span className="text-xs text-slate-400 ml-1">{item.product.unit || 'mg'}</span>
+                                                </div>
                                             </div>
                                         </div>
 

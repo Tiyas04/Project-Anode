@@ -265,3 +265,88 @@ export async function DELETE(
         );
     }
 }
+
+export async function PATCH(request: NextRequest) {
+    try {
+        await dbConnect();
+
+        const userId = request.headers.get("userId");
+        if (!userId) {
+            return NextResponse.json(
+                { success: false, message: "Unauthorized access" },
+                { status: 401 }
+            );
+        }
+
+        const url = request.nextUrl.pathname;
+        const match = url.match(/(\d+-\d+-\d+)$/);
+        const casNumber = match?.[1];
+
+        if (!casNumber) {
+            return NextResponse.json(
+                { success: false, message: "Invalid product URL/CAS Number" },
+                { status: 400 }
+            );
+        }
+
+        const body = await request.json();
+        const { quantity } = body;
+
+        if (!quantity || quantity <= 0) {
+            return NextResponse.json(
+                { success: false, message: "Invalid quantity" },
+                { status: 400 }
+            );
+        }
+
+        const Product = await ProductModel.findOne({ casNumber });
+        if (!Product) {
+            return NextResponse.json(
+                { success: false, message: "Product not found" },
+                { status: 404 }
+            );
+        }
+
+        const cart = await CartModel.findOne({ userid: new mongoose.Types.ObjectId(userId) });
+        if (!cart) {
+            return NextResponse.json(
+                { success: false, message: "Cart not found" },
+                { status: 404 }
+            );
+        }
+
+        const updatedItem = await CartItemsModel.findOneAndUpdate(
+            {
+                cartid: cart._id,
+                productid: Product._id
+            },
+            {
+                $set: { quantity: quantity }
+            },
+            { new: true }
+        );
+
+        if (!updatedItem) {
+            return NextResponse.json(
+                { success: false, message: "Item not in cart" },
+                { status: 404 }
+            );
+        }
+
+        return NextResponse.json(
+            {
+                success: true,
+                message: "Cart updated successfully",
+                data: updatedItem,
+            },
+            { status: 200 }
+        );
+
+    } catch (error) {
+        console.error("Cart Update Error:", error);
+        return NextResponse.json(
+            { success: false, message: "Failed to update cart" },
+            { status: 500 }
+        );
+    }
+}
