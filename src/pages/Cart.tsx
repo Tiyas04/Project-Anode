@@ -20,6 +20,7 @@ type CartItem = {
         purity: string;
         image: string;
         price: number;
+        unit?: string;
     };
 };
 
@@ -122,7 +123,7 @@ export default function CartPage() {
                                                 <p>Purity: <span className="text-slate-300">{item.product.purity}</span></p>
                                             </div>
                                             <div className="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/10 text-slate-200">
-                                                Qty: {item.quantity}
+                                                Qty: {item.quantity} {item.product.unit || 'mg'}
                                             </div>
                                         </div>
 
@@ -167,7 +168,7 @@ export default function CartPage() {
 
                                 <div className="space-y-3 mb-6">
                                     <div className="flex justify-between text-slate-400">
-                                        <span>Subtotal ({cartItems.reduce((acc, item) => acc + item.quantity, 0)} items)</span>
+                                        <span>Subtotal ({cartItems.length} items)</span>
                                         <span className="font-medium text-white">₹{subTotal}</span>
                                     </div>
                                     <div className="flex justify-between text-slate-400">

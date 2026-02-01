@@ -67,6 +67,17 @@ export async function POST(
             );
         }
 
+        // Try to parse quantity from body (optional, default 1)
+        let quantity = 1;
+        try {
+            const body = await request.json();
+            if (body.quantity && Number(body.quantity) > 0) {
+                quantity = Number(body.quantity);
+            }
+        } catch (e) {
+            // Ignore if body is empty or invalid JSON, default to 1
+        }
+
         // 3. Find Product
         const Product = await ProductModel.findOne({ casNumber });
 
@@ -115,13 +126,13 @@ export async function POST(
 
         if (existingItem) {
             await CartItemsModel.findByIdAndUpdate(existingItem._id, {
-                $inc: { quantity: 1 },
+                $inc: { quantity: quantity },
             });
         } else {
             const cartItem = await CartItemsModel.create({
                 cartid: cart._id,
                 productid: Product._id,
-                quantity: 1,
+                quantity: quantity,
                 price: Product.price,
             });
 

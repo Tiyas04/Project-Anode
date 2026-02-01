@@ -176,7 +176,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-slate-200 truncate">{product.name || "Unknown Product"}</p>
-                      <p className="text-xs text-slate-400 mt-0.5">Qty: {item.quantity}</p>
+                      <p className="text-xs text-slate-400 mt-0.5">Qty: {item.quantity} {product.unit || 'mg'}</p>
                     </div>
                     <p className="text-sm font-bold text-white">
                       ₹{(item.price || 0) * (item.quantity || 1)}

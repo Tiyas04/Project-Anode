@@ -36,6 +36,7 @@ export default function AddProductPage() {
     hazards: [] as string[],
     inStock: true,
     stockLevel: "",
+    unit: "mg",
   });
 
   /* 🔹 IMAGE */
@@ -80,6 +81,7 @@ export default function AddProductPage() {
       !form.quantity ||
       !form.molecularWeight ||
       !form.stockLevel ||
+      !form.unit ||
       !imageFile
     ) {
       toast.error("All required fields must be filled");
@@ -101,6 +103,7 @@ export default function AddProductPage() {
       formData.append("molecularWeight", form.molecularWeight);
       formData.append("inStock", String(form.inStock));
       formData.append("stockLevel", form.stockLevel);
+      formData.append("unit", form.unit);
       formData.append("hazards", JSON.stringify(form.hazards));
       formData.append("image", imageFile);
 
@@ -151,9 +154,27 @@ export default function AddProductPage() {
             </div>
 
             {/* PRICE */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <input type="number" name="price" placeholder="Price *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
-              <input type="number" name="stockLevel" placeholder="Stock Level *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+            {/* PRICE & STOCK */}
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
+              <input type="number" name="price" placeholder="Price per Unit *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+
+              <div className="flex gap-2">
+                <input type="number" name="stockLevel" placeholder="Total Stock *" onChange={handleChange} className="w-full border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+              </div>
+
+              <select
+                name="unit"
+                className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100"
+                value={form.unit}
+                onChange={(e) => setForm({ ...form, unit: e.target.value })}
+              >
+                <option value="mg" className="bg-slate-800 text-slate-100">mg</option>
+                <option value="ml" className="bg-slate-800 text-slate-100">ml</option>
+                <option value="g" className="bg-slate-800 text-slate-100">g</option>
+                <option value="l" className="bg-slate-800 text-slate-100">L</option>
+                <option value="kg" className="bg-slate-800 text-slate-100">kg</option>
+              </select>
+
               <select
                 className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100"
                 value={form.inStock ? "yes" : "no"}

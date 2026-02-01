@@ -10,7 +10,9 @@ export interface Product extends Document {
     image: string;
     description: string;
     purity: string;
+    unit: string;
     molecularWeight: number;
+
     hazards: string[];
     inStock: boolean;
     stockLevel: number;
@@ -65,6 +67,12 @@ const ProductSchema: Schema<Product> = new Schema(
             type: String,
             required: true,
             trim: true
+        },
+        unit: {
+            type: String,
+            required: true,
+            enum: ["mg", "ml", "g", "kg", "l"],
+            default: "mg"
         },
         molecularWeight: {
             type: Number,

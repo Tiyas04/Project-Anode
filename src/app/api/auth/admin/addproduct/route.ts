@@ -37,6 +37,7 @@ export async function POST(request: NextRequest) {
         const hazardsRaw = formData.get("hazards");
         const inStock = formData.get("inStock") as string;
         const stockLevel = formData.get("stockLevel") as string;
+        const unit = formData.get("unit") as string;
         const imageFile = formData.get("image") as File;
 
         if (
@@ -52,6 +53,7 @@ export async function POST(request: NextRequest) {
             !hazardsRaw ||
             !inStock ||
             !stockLevel ||
+            !unit ||
             !imageFile
         ) {
             return NextResponse.json(
@@ -70,6 +72,7 @@ export async function POST(request: NextRequest) {
                         !hazardsRaw && "hazards",
                         !inStock && "inStock",
                         !stockLevel && "stockLevel",
+                        !unit && "unit",
                         !imageFile && "image"
                     ]
                         .filter(Boolean)
@@ -125,6 +128,7 @@ export async function POST(request: NextRequest) {
             hazards,
             inStock: inStock === 'true',
             stockLevel: Number(stockLevel),
+            unit,
             image: imageUrl,
             seller: new mongoose.Types.ObjectId(userId)
         });

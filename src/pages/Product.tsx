@@ -15,11 +15,17 @@ import "react-toastify/dist/ReactToastify.css";
 
 const ProductCard = ({ product }: { product: Product }) => {
     const [isAdded, setIsAdded] = useState(false);
+    const [amount, setAmount] = useState<string>("");
     const router = useRouter();
 
     const addToCart = async () => {
+        if (!amount || Number(amount) <= 0) {
+            toast.error(`Please enter a valid amount in ${product.unit || 'mg'}`);
+            return;
+        }
+
         try {
-            await axios.post(`/api/auth/cart/${slug}`);
+            await axios.post(`/api/auth/cart/${slug}`, { quantity: Number(amount) });
 
             // Notify navbar / cart badge
             window.dispatchEvent(new Event("cart-updated"));
@@ -84,11 +90,38 @@ const ProductCard = ({ product }: { product: Product }) => {
                 </div>
             )}
 
-            {/* PRICE */}
-            <div className="mt-auto mb-4 border-t border-white/20 pt-4">
-                <span className="font-bold text-white text-xl tracking-tight">
-                    ₹{product.price}
-                </span>
+            {/* PRICE & INPUT */}
+            <div className="mt-auto mb-4 border-t border-white/20 pt-4 space-y-3">
+                <div className="flex justify-between items-baseline">
+                    <span className="text-sm text-slate-400">Price per {product.unit || 'mg'}</span>
+                    <span className="font-bold text-white text-xl tracking-tight">
+                        ₹{product.price}
+                    </span>
+                </div>
+
+                <div>
+                    <div className="relative">
+                        <input
+                            type="number"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                            placeholder={`Amount in ${product.unit || 'mg'}`}
+                            className="w-full bg-white/5 border border-white/20 rounded-lg px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-primary transition-colors"
+                        />
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-medium">
+                            {product.unit || 'mg'}
+                        </span>
+                    </div>
+
+                    {amount && !isNaN(Number(amount)) && (
+                        <div className="mt-2 flex justify-between items-center text-sm">
+                            <span className="text-slate-400">Total:</span>
+                            <span className="font-bold text-emerald-400">
+                                ₹{(Number(amount) * product.price).toFixed(2)}
+                            </span>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* ACTIONS */}

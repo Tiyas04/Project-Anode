@@ -9,6 +9,7 @@ export interface Product {
   image: string;
   description: string;
   purity: string;
+  unit?: string;
   molecularWeight: number;
   hazards: string[];
   inStock: boolean;

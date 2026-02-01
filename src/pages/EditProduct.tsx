@@ -18,6 +18,7 @@ function EditProductContent() {
         quantity: "",
         inStock: true,
         stockLevel: "",
+        unit: "mg", // Default, will update from DB
     });
     const [loading, setLoading] = useState(false);
 
@@ -41,6 +42,7 @@ function EditProductContent() {
                             quantity: product.quantity,
                             inStock: product.inStock,
                             stockLevel: product.stockLevel,
+                            unit: product.unit || "mg",
                         });
                     } else {
                         toast.error("Product not found");
@@ -83,6 +85,7 @@ function EditProductContent() {
                 quantity: form.quantity,
                 inStock: form.inStock,
                 stockLevel: Number(form.stockLevel),
+                unit: form.unit,
             });
 
             toast.success("Product updated successfully");
@@ -145,6 +148,22 @@ function EditProductContent() {
                                 placeholder="Stock Level"
                                 className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500"
                             />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-slate-400 mb-1">Unit</label>
+                            <select
+                                name="unit"
+                                value={form.unit}
+                                onChange={handleChange}
+                                className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100"
+                            >
+                                <option value="mg" className="bg-slate-800">mg</option>
+                                <option value="ml" className="bg-slate-800">ml</option>
+                                <option value="g" className="bg-slate-800">g</option>
+                                <option value="l" className="bg-slate-800">L</option>
+                                <option value="kg" className="bg-slate-800">kg</option>
+                            </select>
                         </div>
 
                         <div>

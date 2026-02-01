@@ -15,6 +15,7 @@ interface ReceiptData {
         name: string;
         quantity: number;
         price: number;
+        unit?: string;
     }>;
     totalAmount: number;
     subtotal?: number;
@@ -87,7 +88,7 @@ export const generateReceipt = async (data: ReceiptData): Promise<string> => {
                         style: { display: 'flex', borderBottom: '2px solid black', paddingBottom: '10px', marginBottom: '10px', fontWeight: 'bold', fontSize: '18px' },
                         children: [
                             { type: 'div', props: { style: { flex: 4 }, children: 'Item' } },
-                            { type: 'div', props: { style: { flex: 1, textAlign: 'center' }, children: 'Qty' } },
+                            { type: 'div', props: { style: { flex: 1, textAlign: 'center' }, children: 'Qty / Amt' } },
                             { type: 'div', props: { style: { flex: 2, textAlign: 'right' }, children: 'Price' } },
                             { type: 'div', props: { style: { flex: 2, textAlign: 'right' }, children: 'Total' } },
                         ]
@@ -101,7 +102,7 @@ export const generateReceipt = async (data: ReceiptData): Promise<string> => {
                         style: { display: 'flex', borderBottom: '1px solid #eee', padding: '10px 0', fontSize: '16px' },
                         children: [
                             { type: 'div', props: { style: { flex: 4 }, children: item.name } },
-                            { type: 'div', props: { style: { flex: 1, textAlign: 'center' }, children: item.quantity.toString() } },
+                            { type: 'div', props: { style: { flex: 1, textAlign: 'center' }, children: `${item.quantity} ${item.unit || "mg"}` } },
                             { type: 'div', props: { style: { flex: 2, textAlign: 'right' }, children: `Rs. ${item.price}` } },
                             { type: 'div', props: { style: { flex: 2, textAlign: 'right' }, children: `Rs. ${item.price * item.quantity}` } },
                         ]

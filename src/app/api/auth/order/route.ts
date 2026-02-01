@@ -220,7 +220,8 @@ export async function POST(request: NextRequest) {
                 items: validItems.map((item: any) => ({
                     name: item.product.name,
                     quantity: item.quantity,
-                    price: item.price
+                    price: item.price,
+                    unit: item.product.unit
                 })),
                 subtotal: subtotal,
                 tax: tax,
@@ -453,7 +454,8 @@ export async function PATCH(request: NextRequest) {
                     items: orderItems.map((item: any) => ({
                         name: item.productid ? item.productid.name : "Unknown Product",
                         quantity: item.quantity,
-                        price: item.price
+                        price: item.price,
+                        unit: item.productid ? item.productid.unit : "mg"
                     })),
                     // Use stored subtotal/tax if available, otherwise calculate backwards or assume 0 for old orders
                     subtotal: order.subtotal || orderItems.reduce((acc: number, item: any) => acc + (item.price * item.quantity), 0),

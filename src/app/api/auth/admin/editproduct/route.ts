@@ -28,7 +28,7 @@ export async function PATCH(request: NextRequest) {
         }
 
         const body = await request.json();
-        const { price, quantity, inStock, stockLevel } = body;
+        const { price, quantity, inStock, stockLevel, unit } = body;
 
         // Validate required fields (allow partial updates? User code checked all. Keeping checked.)
         if (!price || !quantity || !stockLevel) {
@@ -51,6 +51,7 @@ export async function PATCH(request: NextRequest) {
         product.quantity = quantity;
         product.inStock = inStock;
         product.stockLevel = stockLevel;
+        if (unit) product.unit = unit;
 
         await product.save();
 
