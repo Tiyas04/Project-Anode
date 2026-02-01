@@ -17,6 +17,10 @@ A modern, full-stack e-commerce platform aimed at providing premium laboratory c
   - Checkout process.
   - Order tracking.
 - **Responsive Design**: Styled with Tailwind CSS for mobile and desktop.
+- **Order Processing**:
+  - **Tax Integration**: Automated 18% GST calculation on all orders.
+  - **Receipt Generation**: Auto-generated digital receipts with Lab/Company details.
+  - **Email Notifications**: Automated email alerts for order confirmation, status updates, and admin notifications via SMTP.
 
 ## 🛠️ Tech Stack
 
@@ -27,6 +31,8 @@ A modern, full-stack e-commerce platform aimed at providing premium laboratory c
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Notifications**: [React Toastify](https://fkhadra.github.io/react-toastify/)
 - **Image Storage**: [Cloudinary](https://cloudinary.com/)
+- **PDF/Image Generation**: [Satori](https://github.com/vercel/satori) & [Resvg](https://github.com/yisibl/resvg-js)
+- **Email**: [Nodemailer](https://nodemailer.com/)
 
 ## ⚙️ Environment Variables
 
@@ -46,6 +52,12 @@ REFRESH_TOKEN_EXPIRY=10d
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
+
+# SMTP (Email)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_app_password
 ```
 
 ## 📦 Getting Started
