@@ -24,6 +24,8 @@ type Order = {
   totalamount?: number; // Handle lowercase from API
   status: string;
   createdAt: string;
+  subtotal?: number;
+  tax?: number;
 };
 
 type UserProfile = {
@@ -294,6 +296,18 @@ export default function UserPage() {
                           <span className="text-slate-400 font-mono">x{item.quantity}</span>
                         </div>
                       ))}
+                      {order.subtotal && order.tax ? (
+                        <div className="p-3 text-sm bg-white/5 border-t border-white/10 space-y-1">
+                          <div className="flex justify-between text-slate-400">
+                            <span>Subtotal</span>
+                            <span>₹{order.subtotal}</span>
+                          </div>
+                          <div className="flex justify-between text-slate-400">
+                            <span>Tax (18% GST)</span>
+                            <span>₹{order.tax}</span>
+                          </div>
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                 ))}

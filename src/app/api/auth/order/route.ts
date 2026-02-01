@@ -144,10 +144,12 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const totalAmount = validItems.reduce(
+        const subtotal = validItems.reduce(
             (sum: number, item: any) => sum + item.price * item.quantity,
             0
         );
+        const tax = Math.round(subtotal * 0.18);
+        const totalAmount = subtotal + tax;
 
         /* ─────────── 5️⃣ CREATE DB RECORDS ─────────── */
         // Create Order
@@ -155,6 +157,8 @@ export async function POST(request: NextRequest) {
             userid: new mongoose.Types.ObjectId(userId),
             orderitems: [],
             totalamount: totalAmount,
+            subtotal,
+            tax,
             status: "ordered",
         });
 
@@ -209,6 +213,7 @@ export async function POST(request: NextRequest) {
                 orderId: order._id.toString(),
                 date: new Date(),
                 fullName,
+                company: company || "",
                 email,
                 phoneno: Number(phoneno) || "",
                 address: address || "",
@@ -217,6 +222,8 @@ export async function POST(request: NextRequest) {
                     quantity: item.quantity,
                     price: item.price
                 })),
+                subtotal: subtotal,
+                tax: tax,
                 totalAmount: totalAmount,
                 status: order.status
             };
@@ -438,17 +445,40 @@ export async function PATCH(request: NextRequest) {
                     orderId: order._id.toString(),
                     date: new Date(), // updated date
                     fullName: checkout.fullName,
+                    company: checkout.company || "",
                     email: checkout.email,
                     phoneno: Number(checkout.phoneno) || "",
                     address: checkout.address || "",
+                    prices: orderItems.map((item: any) => item.price), // Debug helper
                     items: orderItems.map((item: any) => ({
                         name: item.productid ? item.productid.name : "Unknown Product",
                         quantity: item.quantity,
                         price: item.price
                     })),
+                    // Use stored subtotal/tax if available, otherwise calculate backwards or assume 0 for old orders
+                    subtotal: order.subtotal || orderItems.reduce((acc: number, item: any) => acc + (item.price * item.quantity), 0),
+                    tax: order.tax || (order.subtotal ? order.tax : Math.round(order.totalamount - (orderItems.reduce((acc: number, item: any) => acc + (item.price * item.quantity), 0)))),
+                    // Fallback logic for tax: if stored, use it. If not, try to calc diff. 
+                    // Actually simpler: if subtotal/tax missing, maybe just recalc based on current logic? 
+                    // Let's stick to: use stored, else recalc 18% logic? No, old orders might not have tax.
+                    // safest: order.subtotal ?? calc, order.tax ?? calc
                     totalAmount: order.totalamount,
                     status: status // Use new status
                 };
+
+                // Recalculate cleanly if fields are missing to ensure receipt looks good
+                if (receiptData.subtotal === undefined || receiptData.subtotal === 0) {
+                    receiptData.subtotal = receiptData.items.reduce((acc: number, item: any) => acc + item.price * item.quantity, 0);
+                }
+                if (receiptData.tax === undefined) {
+                    // checks if totalAmount roughly equals subtotal * 1.18
+                    // if not, maybe it was inclusive? 
+                    // For now, let's just make it consistent with the new way for the receipt's sake if we are regenerating it.
+                    // But wait, totalAmount is fixed in DB. 
+                    // If we assume tax is 18%, we might change the numbers. 
+                    // Let's rely on the DB totalAmount and derived subtotal/tax.
+                    receiptData.tax = Math.max(0, receiptData.totalAmount - receiptData.subtotal);
+                }
 
                 const receiptUrl = await generateReceipt(receiptData);
                 order.receiptUrl = receiptUrl;

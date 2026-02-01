@@ -17,6 +17,8 @@ interface ReceiptData {
         price: number;
     }>;
     totalAmount: number;
+    subtotal?: number;
+    tax?: number;
     company?: string;
 }
 
@@ -69,7 +71,7 @@ export const generateReceipt = async (data: ReceiptData): Promise<string> => {
                         children: [
                             { type: 'div', props: { children: `Order ID: ${data.orderId}` } },
                             { type: 'div', props: { children: `Date: ${data.date.toLocaleDateString()}` } },
-                            data.company ? { type: 'div', props: { children: `Company: ${data.company}` } } : null,
+                            data.company ? { type: 'div', props: { children: `Lab Name / Company: ${data.company}` } } : null,
                             { type: 'div', props: { children: `Customer: ${data.fullName}` } },
                             { type: 'div', props: { children: `Email: ${data.email}` } },
                             { type: 'div', props: { children: `Phone: ${data.phoneno}` } },
@@ -106,13 +108,24 @@ export const generateReceipt = async (data: ReceiptData): Promise<string> => {
                     }
                 })),
 
-                // TOTAL
+                // TOTAL SECTION
                 {
                     type: 'div',
                     props: {
-                        style: { display: 'flex', justifyContent: 'flex-end', marginTop: '20px', borderTop: '2px solid black', paddingTop: '10px' },
+                        style: { display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginTop: '20px', borderTop: '2px solid black', paddingTop: '10px' },
                         children: [
-                            { type: 'div', props: { style: { fontSize: '24px', fontWeight: 'bold' }, children: `Total Amount: Rs. ${data.totalAmount}` } }
+                            data.subtotal ? {
+                                type: 'div',
+                                props: { style: { fontSize: '16px', marginBottom: '5px' }, children: `Subtotal: Rs. ${data.subtotal}` }
+                            } : null,
+                            data.tax ? {
+                                type: 'div',
+                                props: { style: { fontSize: '16px', marginBottom: '10px' }, children: `Tax (18% GST): Rs. ${data.tax}` }
+                            } : null,
+                            {
+                                type: 'div',
+                                props: { style: { fontSize: '24px', fontWeight: 'bold' }, children: `Total Amount: Rs. ${data.totalAmount}` }
+                            }
                         ]
                     }
                 },

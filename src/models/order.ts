@@ -6,6 +6,8 @@ export interface Order extends Document {
     totalamount: number
     status: string
     receiptUrl?: string
+    subtotal?: number
+    tax?: number
 }
 
 const OrderSchema: Schema<Order> = new Schema(
@@ -29,6 +31,12 @@ const OrderSchema: Schema<Order> = new Schema(
         },
         receiptUrl: {
             type: String
+        },
+        subtotal: {
+            type: Number
+        },
+        tax: {
+            type: Number
         }
     },
     {

@@ -40,10 +40,12 @@ export default function CheckoutPage() {
     fetchCart();
   }, []);
 
-  const totalPrice = cartItems.reduce(
+  const subTotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+  const tax = Math.round(subTotal * 0.18);
+  const totalAmount = subTotal + tax;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -184,9 +186,19 @@ export default function CheckoutPage() {
               })}
             </div>
 
-            <div className="flex justify-between font-bold text-lg border-t border-white/20 pt-4 text-white">
-              <span>Total</span>
-              <span>₹{totalPrice}</span>
+            <div className="border-t border-white/20 pt-4 text-white space-y-2">
+              <div className="flex justify-between text-slate-300">
+                <span>Subtotal</span>
+                <span>₹{subTotal}</span>
+              </div>
+              <div className="flex justify-between text-slate-300">
+                <span>Tax (18% GST)</span>
+                <span>₹{tax}</span>
+              </div>
+              <div className="flex justify-between font-bold text-lg pt-2 border-t border-white/10">
+                <span>Total</span>
+                <span>₹{totalAmount}</span>
+              </div>
             </div>
 
             <div className="flex items-center justify-center gap-2 text-xs text-emerald-400 mt-6 bg-emerald-500/10 py-2 rounded-lg border border-emerald-500/20 font-medium">

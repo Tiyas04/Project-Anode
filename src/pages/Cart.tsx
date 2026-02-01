@@ -43,10 +43,12 @@ export default function CartPage() {
         fetchCart();
     }, []);
 
-    const totalPrice = cartItems.reduce(
+    const subTotal = cartItems.reduce(
         (sum, item) => sum + item.price * item.quantity,
         0
     );
+    const tax = Math.round(subTotal * 0.18);
+    const totalAmount = subTotal + tax;
 
     if (loading) {
         return (
@@ -166,21 +168,21 @@ export default function CartPage() {
                                 <div className="space-y-3 mb-6">
                                     <div className="flex justify-between text-slate-400">
                                         <span>Subtotal ({cartItems.reduce((acc, item) => acc + item.quantity, 0)} items)</span>
-                                        <span className="font-medium text-white">₹{totalPrice}</span>
+                                        <span className="font-medium text-white">₹{subTotal}</span>
                                     </div>
                                     <div className="flex justify-between text-slate-400">
                                         <span>Shipping</span>
                                         <span className="text-emerald-400 font-medium">Free</span>
                                     </div>
                                     <div className="flex justify-between text-slate-400">
-                                        <span>Tax</span>
-                                        <span className="text-slate-500 italic">Calculated at checkout</span>
+                                        <span>Tax (18% GST)</span>
+                                        <span className="text-slate-200">₹{tax}</span>
                                     </div>
                                 </div>
 
                                 <div className="flex justify-between items-end border-t border-white/20 pt-4 mb-6">
                                     <span className="font-semibold text-white">Total</span>
-                                    <span className="text-2xl font-bold text-white">₹{totalPrice}</span>
+                                    <span className="text-2xl font-bold text-white">₹{totalAmount}</span>
                                 </div>
 
                                 <Link
