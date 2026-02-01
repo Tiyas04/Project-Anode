@@ -275,6 +275,15 @@ export default function UserPage() {
                             Cancel
                           </button>
                         )}
+                        {order.status === "delivered" && (order as any).receiptUrl && (
+                          <Link
+                            href={(order as any).receiptUrl}
+                            target="_blank"
+                            className="text-xs font-semibold text-emerald-600 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-colors border border-emerald-100 flex items-center gap-1"
+                          >
+                            <span className="hidden sm:inline">Download</span> Receipt
+                          </Link>
+                        )}
                       </div>
                     </div>
 

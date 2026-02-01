@@ -5,9 +5,11 @@ import CartItemsModel from "@/models/cartitem";
 import OrderModel from "@/models/order";
 import OrderItemsModel from "@/models/orderitem";
 import CheckOutModel from "@/models/checkout";
+import ProductModel from "@/models/product"; // Added import
 import mongoose from "mongoose";
 import streamUpload from "@/lib/uploadoncloudinary";
 import UserModel from "@/models/user";
+import { generateReceipt } from "@/lib/generateReceipt";
 
 export async function POST(request: NextRequest) {
     try {
@@ -172,6 +174,15 @@ export async function POST(request: NextRequest) {
         order.orderitems = orderItemIds;
         await order.save();
 
+        // 📉 DECREMENT STOCK
+        for (const item of validItems) {
+            await ProductModel.findByIdAndUpdate(item.product._id, {
+                $inc: { stockLevel: -item.quantity },
+                // Optional: set inStock to false if stock reaches 0?
+                // For now, let's keep it simple as requested.
+            });
+        }
+
         // 🆕 UPDATE USER with Order ID
         await UserModel.findByIdAndUpdate(userId, {
             $push: { orders: order._id }
@@ -191,6 +202,35 @@ export async function POST(request: NextRequest) {
             permissionproof: proofUrl,
             paymentMethod: "COD",
         });
+
+        /* ─────────── 🧾 GENERATE & UPLOAD RECEIPT ─────────── */
+        try {
+            const receiptData = {
+                orderId: order._id.toString(),
+                date: new Date(),
+                fullName,
+                email,
+                phoneno: Number(phoneno) || "",
+                address: address || "",
+                items: validItems.map((item: any) => ({
+                    name: item.product.name,
+                    quantity: item.quantity,
+                    price: item.price
+                })),
+                totalAmount: totalAmount,
+                status: order.status
+            };
+
+            const receiptUrl = await generateReceipt(receiptData);
+
+            // Update Order with Receipt URL
+            order.receiptUrl = receiptUrl;
+            await order.save();
+
+        } catch (pdfError) {
+            console.error("Failed to generate/upload receipt:", pdfError);
+            // Non-critical, continue
+        }
 
         /* ─────────── 6️⃣ CLEAR CART ─────────── */
         await CartItemsModel.deleteMany({ cartid: cartData[0]._id });
@@ -384,10 +424,54 @@ export async function PATCH(request: NextRequest) {
         }
 
         order.status = status;
+
+        /* ─────────── 🧾 CHECKOUT & ITEM DATA FOR RECEIPT ─────────── */
+        // Fetch checkout details
+        const checkout = await CheckOutModel.findOne({ orderid: order._id });
+
+        // Fetch order items and populate product info
+        const orderItems = await OrderItemsModel.find({ orderid: order._id }).populate("productid");
+
+        if (checkout && orderItems.length > 0) {
+            try {
+                const receiptData = {
+                    orderId: order._id.toString(),
+                    date: new Date(), // updated date
+                    fullName: checkout.fullName,
+                    email: checkout.email,
+                    phoneno: Number(checkout.phoneno) || "",
+                    address: checkout.address || "",
+                    items: orderItems.map((item: any) => ({
+                        name: item.productid ? item.productid.name : "Unknown Product",
+                        quantity: item.quantity,
+                        price: item.price
+                    })),
+                    totalAmount: order.totalamount,
+                    status: status // Use new status
+                };
+
+                const receiptUrl = await generateReceipt(receiptData);
+                order.receiptUrl = receiptUrl;
+            } catch (receiptError) {
+                console.error("Failed to regenerate receipt on status change:", receiptError);
+            }
+        }
+
         await order.save({ validateBeforeSave: false });
 
         /* ─────────── 📧 SEND CANCELLATION EMAIL ─────────── */
         if (status === "cancelled") {
+            // 📈 RESTOCK PRODUCTS
+            if (orderItems && orderItems.length > 0) {
+                for (const item of orderItems) {
+                    if (item.productid) {
+                        await ProductModel.findByIdAndUpdate(item.productid._id, {
+                            $inc: { stockLevel: item.quantity }
+                        });
+                    }
+                }
+            }
+
             try {
                 const admins = await UserModel.find({ role: "admin" });
                 const adminEmails = admins.map(admin => admin.email);

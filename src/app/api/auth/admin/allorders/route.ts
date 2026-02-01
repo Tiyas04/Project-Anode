@@ -64,6 +64,7 @@ export async function GET(request: NextRequest) {
                     status: 1,
                     totalamount: 1,
                     createdAt: 1,
+                    receiptUrl: 1,
                     customer: {
                         name: "$checkout.fullName",
                         email: "$checkout.email",

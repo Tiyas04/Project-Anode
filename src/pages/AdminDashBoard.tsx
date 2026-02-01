@@ -141,6 +141,7 @@ export default function AdminDashboard() {
                     <th className="py-3 text-left font-medium">Customer</th>
                     <th className="py-3 text-left font-medium">Date</th>
                     <th className="py-3 text-center font-medium">Proof</th>
+                    <th className="py-3 text-center font-medium">Receipt</th>
                     <th className="py-3 text-left font-medium">Status</th>
                     <th className="py-3 text-right font-medium">Total</th>
                     <th className="py-3 text-center font-medium pr-4">Actions</th>
@@ -171,6 +172,15 @@ export default function AdminDashboard() {
                           </Link>
                         ) : (
                           <span className="text-slate-400 text-xs italic">No Proof</span>
+                        )}
+                      </td>
+                      <td className="text-center py-4">
+                        {order.receiptUrl ? (
+                          <Link href={order.receiptUrl} target="_blank" className="text-emerald-400 hover:text-emerald-300 text-xs font-medium flex items-center justify-center gap-1">
+                            Download
+                          </Link>
+                        ) : (
+                          <span className="text-slate-400 text-xs italic">-</span>
                         )}
                       </td>
                       <td className="py-4">
@@ -241,7 +251,7 @@ export default function AdminDashboard() {
                   ))}
                   {orders.length === 0 && (
                     <tr>
-                      <td colSpan={7} className="text-center py-8 text-slate-500 italic">No orders found.</td>
+                      <td colSpan={8} className="text-center py-8 text-slate-500 italic">No orders found.</td>
                     </tr>
                   )}
                 </tbody>

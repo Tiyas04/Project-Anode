@@ -5,6 +5,7 @@ export interface Order extends Document {
     orderitems: mongoose.Types.ObjectId[]
     totalamount: number
     status: string
+    receiptUrl?: string
 }
 
 const OrderSchema: Schema<Order> = new Schema(
@@ -25,6 +26,9 @@ const OrderSchema: Schema<Order> = new Schema(
             type: String,
             enum: ["pending", "ordered", "shipped", "delivered", "cancelled"],
             default: "pending"
+        },
+        receiptUrl: {
+            type: String
         }
     },
     {
