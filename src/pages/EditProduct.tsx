@@ -171,7 +171,11 @@ function EditProductContent() {
                             <select
                                 value={form.inStock ? "yes" : "no"}
                                 onChange={(e) =>
-                                    setForm({ ...form, inStock: e.target.value === "yes" })
+                                    setForm({
+                                        ...form,
+                                        inStock: e.target.value === "yes",
+                                        stockLevel: e.target.value === "no" ? "0" : form.stockLevel
+                                    })
                                 }
                                 className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100"
                             >

@@ -178,7 +178,11 @@ export default function AddProductPage() {
               <select
                 className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100"
                 value={form.inStock ? "yes" : "no"}
-                onChange={(e) => setForm({ ...form, inStock: e.target.value === "yes" })}
+                onChange={(e) => setForm({
+                  ...form,
+                  inStock: e.target.value === "yes",
+                  stockLevel: e.target.value === "no" ? "0" : form.stockLevel
+                })}
               >
                 <option value="yes" className="bg-slate-800 text-slate-100">In Stock</option>
                 <option value="no" className="bg-slate-800 text-slate-100">Out of Stock</option>
