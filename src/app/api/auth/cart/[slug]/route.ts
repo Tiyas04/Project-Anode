@@ -125,10 +125,28 @@ export async function POST(
         });
 
         if (existingItem) {
+            if (existingItem.quantity + quantity > Product.stockLevel) {
+                return NextResponse.json(
+                    {
+                        success: false,
+                        message: `Cannot add more. Only ${Product.stockLevel} items in stock.`
+                    },
+                    { status: 400 }
+                );
+            }
             await CartItemsModel.findByIdAndUpdate(existingItem._id, {
                 $inc: { quantity: quantity },
             });
         } else {
+            if (quantity > Product.stockLevel) {
+                return NextResponse.json(
+                    {
+                        success: false,
+                        message: `Cannot add more. Only ${Product.stockLevel} items in stock.`
+                    },
+                    { status: 400 }
+                );
+            }
             const cartItem = await CartItemsModel.create({
                 cartid: cart._id,
                 productid: Product._id,
@@ -304,6 +322,13 @@ export async function PATCH(request: NextRequest) {
             return NextResponse.json(
                 { success: false, message: "Product not found" },
                 { status: 404 }
+            );
+        }
+
+        if (quantity > Product.stockLevel) {
+            return NextResponse.json(
+                { success: false, message: `Only ${Product.stockLevel} items in stock.` },
+                { status: 400 }
             );
         }
 

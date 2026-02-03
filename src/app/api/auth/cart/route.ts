@@ -77,6 +77,16 @@ export async function POST(request: NextRequest) {
         )
 
         if (existingItem.length > 0) {
+            if (existingItem[0].quantity + 1 > Product.stockLevel) {
+                return NextResponse.json(
+                    {
+                        success: false,
+                        message: `Cannot add more. Only ${Product.stockLevel} items in stock.`
+                    },
+                    { status: 400 }
+                );
+            }
+
             await CartItemsModel.findByIdAndUpdate(
                 existingItem[0]._id,
                 {
@@ -86,6 +96,16 @@ export async function POST(request: NextRequest) {
                 }
             )
         } else {
+            if (Product.stockLevel < 1) {
+                return NextResponse.json(
+                    {
+                        success: false,
+                        message: "Product is out of stock"
+                    },
+                    { status: 400 }
+                );
+            }
+
             const cartItem = await CartItemsModel.create({
                 cartid: cart._id,
                 productid: Product._id,
@@ -103,8 +123,8 @@ export async function POST(request: NextRequest) {
                 message: "Product added to cart",
             },
             {
-                 status: 200 
-                }
+                status: 200
+            }
         );
 
     } catch (error) {
@@ -134,8 +154,8 @@ export async function GET(request: NextRequest) {
                     success: false,
                     message: "Unauthorized access or Invalid User ID",
                 },
-                { 
-                    status: 401 
+                {
+                    status: 401
                 }
             );
         }
@@ -200,8 +220,8 @@ export async function GET(request: NextRequest) {
                     message: "Cart is empty",
                     data: []
                 },
-                { 
-                    status: 200 
+                {
+                    status: 200
                 }
             );
         }
@@ -212,16 +232,16 @@ export async function GET(request: NextRequest) {
                 message: "Cart fetched successfully",
                 data: cartData[0].items,
             },
-            { 
-                status: 200 
+            {
+                status: 200
             }
         );
     } catch (error) {
         console.error(error);
         return NextResponse.json(
-            { 
-                success: false, 
-                message: "Failed to fetch cart" 
+            {
+                success: false,
+                message: "Failed to fetch cart"
             },
             { status: 500 }
         );

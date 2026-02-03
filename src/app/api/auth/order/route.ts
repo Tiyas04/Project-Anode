@@ -144,6 +144,19 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        // Validate stock availability
+        for (const item of validItems) {
+            if (item.quantity > item.product.stockLevel) {
+                return NextResponse.json(
+                    {
+                        success: false,
+                        message: `Insufficient stock for ${item.product.name}. Available: ${item.product.stockLevel}, Requested: ${item.quantity}`
+                    },
+                    { status: 400 }
+                )
+            }
+        }
+
         const subtotal = validItems.reduce(
             (sum: number, item: any) => sum + item.price * item.quantity,
             0
