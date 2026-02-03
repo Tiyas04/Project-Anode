@@ -50,7 +50,14 @@ export async function PATCH(request: NextRequest) {
         product.price = price;
         product.quantity = quantity;
         product.inStock = inStock;
-        product.stockLevel = stockLevel;
+
+        // Auto-zero stock if out of stock
+        if (inStock === false || inStock === "false") {
+            product.stockLevel = 0;
+        } else {
+            product.stockLevel = stockLevel;
+        }
+
         if (unit) product.unit = unit;
 
         await product.save();

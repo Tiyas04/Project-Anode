@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
             molecularWeight: Number(molecularWeight),
             hazards,
             inStock: inStock === 'true',
-            stockLevel: Number(stockLevel),
+            stockLevel: inStock === 'true' ? Number(stockLevel) : 0,
             unit,
             image: imageUrl,
             seller: new mongoose.Types.ObjectId(userId)
