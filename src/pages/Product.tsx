@@ -239,7 +239,7 @@ export default function ProductPage() {
                             <input
                                 type="text"
                                 placeholder="Search by name or CAS number..."
-                                className="w-full pl-10 pr-4 py-2.5 bg-white/50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-slate-700 text-sm placeholder:text-slate-400 transition-all"
+                                className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/20 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-primary transition-colors"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />

@@ -151,8 +151,8 @@ export default function Login() {
     return (
       <form onSubmit={handleOtpSubmit} className="space-y-4 text-gray-700">
         <div className="text-center mb-4">
-          <h3 className="text-lg font-semibold">Verification Required</h3>
-          <p className="text-sm text-gray-500">Enter the 4-digit code sent to {emailForVerify}</p>
+          <h3 className="text-lg text-slate-200 font-semibold">Verification Required</h3>
+          <p className="text-sm text-slate-400">Enter the 4-digit code sent to {emailForVerify}</p>
         </div>
 
         <input
@@ -161,7 +161,7 @@ export default function Login() {
           value={otp}
           onChange={(e) => setOtp(e.target.value)}
           maxLength={4}
-          className="border rounded-md px-3 py-2 w-full text-center text-lg tracking-widest"
+          className="border rounded-md px-3 py-2 w-full text-center text-lg tracking-widest text-slate-300 placeholder:text-slate-400"
         />
 
         <button
