@@ -148,12 +148,7 @@ export const generateReceipt = async (data: ReceiptData): Promise<string> => {
         element as any,
         {
             width: 800,
-            // Height is optional or can be estimated. Satori can auto-calculate if we don't set it fixed, or set purely based on content?
-            // Satori requires height or auto.
-            // For receipts, dynamic height is tricky. Let's set a reasonable min-height or fixed height for now,
-            // or just use a tall canvas.
-            height: undefined, // Let satori compute height? Satori usually needs dimensions.
-            // Actually satori needs width. Height is optional.
+            height: undefined,
             fonts: [
                 {
                     name: 'Arial',
@@ -176,27 +171,11 @@ export const generateReceipt = async (data: ReceiptData): Promise<string> => {
     const pngData = resvg.render();
     const pngBuffer = pngData.asPng();
 
-    // Debug: Save locally
-    const uploadDir = path.join(process.cwd(), 'uploads');
-    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
-    const filename = `receipt_${data.orderId}.png`;
-    const filePath = path.join(uploadDir, filename);
-    fs.writeFileSync(filePath, pngBuffer);
-    console.log(`[Receipt Generation] Saved locally to: ${filePath}`);
-
     // Upload to Cloudinary
     console.log("[Receipt Generation] Uploading to Cloudinary...");
     const publicId = `receipt_${data.orderId}`;
     const uploadResult = await streamUpload(pngBuffer, 'receipts', 'image', publicId);
     console.log("[Receipt Generation] Upload success:", uploadResult.secure_url);
-
-    // Delete local file after upload
-    try {
-        fs.unlinkSync(filePath);
-        console.log(`[Receipt Generation] Deleted local file: ${filePath}`);
-    } catch (err) {
-        console.error(`[Receipt Generation] Failed to delete local file: ${filePath}`, err);
-    }
 
     return uploadResult.secure_url;
 };
