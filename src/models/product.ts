@@ -6,13 +6,12 @@ export interface Product extends Document {
     casNumber: string;
     category: string;
     price: number;
-    quantity: string;
+    mfcdNo: string;
     image: string;
     description: string;
     purity: string;
     unit: string;
     molecularWeight: number;
-
     hazards: string[];
     inStock: boolean;
     stockLevel: number;
@@ -50,7 +49,7 @@ const ProductSchema: Schema<Product> = new Schema(
             type: Number,
             required: true
         },
-        quantity: {
+        mfcdNo: {
             type: String,
             required: true
         },

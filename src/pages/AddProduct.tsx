@@ -31,7 +31,7 @@ export default function AddProductPage() {
     price: "",
     description: "",
     purity: "",
-    quantity: "",
+    mfcdNo: "",
     molecularWeight: "",
     hazards: [] as string[],
     inStock: true,
@@ -78,7 +78,7 @@ export default function AddProductPage() {
       !form.price ||
       !form.description ||
       !form.purity ||
-      !form.quantity ||
+      !form.mfcdNo ||
       !form.molecularWeight ||
       !form.stockLevel ||
       !form.unit ||
@@ -97,7 +97,7 @@ export default function AddProductPage() {
       formData.append("casNumber", form.casNumber);
       formData.append("category", form.category);
       formData.append("price", form.price);
-      formData.append("quantity", form.quantity);
+      formData.append("mfcdNo", form.mfcdNo);
       formData.append("description", form.description);
       formData.append("purity", form.purity);
       formData.append("molecularWeight", form.molecularWeight);
@@ -216,7 +216,7 @@ export default function AddProductPage() {
             {/* EXTRA */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <input name="purity" placeholder="Purity *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
-              <input name="quantity" placeholder="Quantity *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+              <input name="mfcdNo" placeholder="MFCD No *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
               <input type="number" name="molecularWeight" placeholder="Molecular Weight *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
             </div>
 

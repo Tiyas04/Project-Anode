@@ -28,10 +28,10 @@ export async function PATCH(request: NextRequest) {
         }
 
         const body = await request.json();
-        const { price, quantity, inStock, stockLevel, unit } = body;
+        const { price, inStock, stockLevel, unit } = body;
 
         // Validate required fields (allow partial updates? User code checked all. Keeping checked.)
-        if (!price || !quantity || !stockLevel) {
+        if (!price || !stockLevel) {
             return NextResponse.json(
                 { success: false, message: "Missing required fields" },
                 { status: 400 }
@@ -48,7 +48,6 @@ export async function PATCH(request: NextRequest) {
         }
 
         product.price = price;
-        product.quantity = quantity;
         product.inStock = inStock;
 
         // Auto-zero stock if out of stock

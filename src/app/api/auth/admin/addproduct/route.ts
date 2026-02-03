@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
         const casNumber = formData.get("casNumber") as string;
         const category = formData.get("category") as string;
         const price = formData.get("price") as string;
-        const quantity = formData.get("quantity") as string;
+        const mfcdNo = formData.get("mfcdNo") as string;
         const description = formData.get("description") as string;
         const purity = formData.get("purity") as string;
         const molecularWeight = formData.get("molecularWeight") as string;
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
             !casNumber ||
             !category ||
             !price ||
-            !quantity ||
+            !mfcdNo ||
             !description ||
             !purity ||
             !molecularWeight ||
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
                         !casNumber && "casNumber",
                         !category && "category",
                         !price && "price",
-                        !quantity && "quantity",
+                        !mfcdNo && "quantity",
                         !description && "description",
                         !purity && "purity",
                         !molecularWeight && "molecularWeight",
@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
             casNumber,
             category,
             price: Number(price),
-            quantity,
+            mfcdNo,
             description,
             purity,
             molecularWeight: Number(molecularWeight),

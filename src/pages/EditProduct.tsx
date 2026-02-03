@@ -14,16 +14,16 @@ function EditProductContent() {
     const id = searchParams?.get("id");
 
     const [form, setForm] = useState({
-        price: "",
-        quantity: "",
-        inStock: true,
-        stockLevel: "",
-        unit: "mg", // Default, will update from DB
-    });
-    const [loading, setLoading] = useState(false);
+        const [form, setForm] = useState({
+            price: "",
+            inStock: true,
+            stockLevel: "",
+            unit: "mg", // Default, will update from DB
+        });
+        const [loading, setLoading] = useState(false);
 
-    // Fetch product details on mount
-    useEffect(() => {
+        // Fetch product details on mount
+        useEffect(() => {
         if (!id) {
             toast.error("No product ID provided");
             router.push("/admin/dashboard");
@@ -39,7 +39,6 @@ function EditProductContent() {
                     if (product) {
                         setForm({
                             price: product.price,
-                            quantity: product.quantity,
                             inStock: product.inStock,
                             stockLevel: product.stockLevel,
                             unit: product.unit || "mg",
@@ -70,7 +69,6 @@ function EditProductContent() {
 
         if (
             !form.price ||
-            !form.quantity ||
             !form.stockLevel
         ) {
             toast.error("All fields are required");
@@ -82,7 +80,6 @@ function EditProductContent() {
             // Append ID to the URL query params
             await axios.patch(`/api/auth/admin/editproduct?id=${id}`, {
                 price: Number(form.price),
-                quantity: form.quantity,
                 inStock: form.inStock,
                 stockLevel: Number(form.stockLevel),
                 unit: form.unit,
@@ -116,24 +113,13 @@ function EditProductContent() {
                     <form onSubmit={handleSubmit} className="space-y-6 text-slate-300">
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-400 mb-1">Price (₹)</label>
+                            <label className="block text-sm font-medium text-slate-400 mb-1">Price per Unit (₹)</label>
                             <input
                                 name="price"
                                 type="number"
                                 value={form.price}
                                 onChange={handleChange}
                                 placeholder="Price"
-                                className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-slate-400 mb-1">Quantity</label>
-                            <input
-                                name="quantity"
-                                value={form.quantity}
-                                onChange={handleChange}
-                                placeholder="Quantity (e.g. 250ml / 1kg)"
                                 className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500"
                             />
                         </div>
