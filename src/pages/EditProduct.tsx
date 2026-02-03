@@ -14,16 +14,15 @@ function EditProductContent() {
     const id = searchParams?.get("id");
 
     const [form, setForm] = useState({
-        const [form, setForm] = useState({
-            price: "",
-            inStock: true,
-            stockLevel: "",
-            unit: "mg", // Default, will update from DB
-        });
-        const [loading, setLoading] = useState(false);
+        price: "",
+        inStock: true,
+        stockLevel: "",
+        unit: "mg", // Default, will update from DB
+    });
+    const [loading, setLoading] = useState(false);
 
-        // Fetch product details on mount
-        useEffect(() => {
+    // Fetch product details on mount
+    useEffect(() => {
         if (!id) {
             toast.error("No product ID provided");
             router.push("/admin/dashboard");
