@@ -159,7 +159,15 @@ export default function AddProductPage() {
               <input type="number" name="price" placeholder="Price per Unit *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
 
               <div className="flex gap-2">
-                <input type="number" name="stockLevel" placeholder="Total Stock *" onChange={handleChange} className="w-full border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+                <input
+                  type="number"
+                  name="stockLevel"
+                  placeholder="Total Stock *"
+                  onChange={handleChange}
+                  disabled={!form.inStock}
+                  value={form.stockLevel}
+                  className={`w-full border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500 ${!form.inStock ? "opacity-50 cursor-not-allowed" : ""}`}
+                />
               </div>
 
               <select

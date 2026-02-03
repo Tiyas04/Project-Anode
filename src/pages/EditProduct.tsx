@@ -146,7 +146,8 @@ function EditProductContent() {
                                 value={form.stockLevel}
                                 onChange={handleChange}
                                 placeholder="Stock Level"
-                                className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500"
+                                disabled={!form.inStock}
+                                className={`border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500 ${!form.inStock ? "opacity-50 cursor-not-allowed" : ""}`}
                             />
                         </div>
 
