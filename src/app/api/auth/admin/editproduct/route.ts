@@ -70,7 +70,7 @@ export async function PATCH(request: NextRequest) {
     } catch (error: any) {
         console.error("Edit Product Error Detailed:", error);
         return NextResponse.json(
-            { success: false, message: "Internal server error: " + (error.message || error) },
+            { success: false, message: "Internal server error" },
             { status: 500 }
         );
     }
