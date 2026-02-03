@@ -31,7 +31,8 @@ export async function PATCH(request: NextRequest) {
         const { price, inStock, stockLevel, unit } = body;
 
         // Validate required fields (allow partial updates? User code checked all. Keeping checked.)
-        if (!price || !stockLevel) {
+        if (price === undefined || price === null || stockLevel === undefined || stockLevel === null) {
+            console.log("Missing fields:", { price, stockLevel });
             return NextResponse.json(
                 { success: false, message: "Missing required fields" },
                 { status: 400 }
@@ -67,9 +68,9 @@ export async function PATCH(request: NextRequest) {
         );
 
     } catch (error: any) {
-        console.error("Edit Product Error:", error);
+        console.error("Edit Product Error Detailed:", error);
         return NextResponse.json(
-            { success: false, message: "Internal server error" },
+            { success: false, message: "Internal server error: " + (error.message || error) },
             { status: 500 }
         );
     }
