@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ShoppingCart, LogIn, FlaskConical, Menu, X, Package, Home } from "lucide-react";
+import { ShoppingCart, LogIn, FlaskConical, Menu, X, Package, Home, LayoutDashboard } from "lucide-react";
 
 import axios from "axios";
 
@@ -8,6 +8,7 @@ export default function Navbar() {
   /* MODIFIED: Added state for mobile menu */
   const [cartCount, setCartCount] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false); // Added isAdmin state
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   useEffect(() => {
@@ -31,12 +32,21 @@ export default function Navbar() {
       try {
         const res = await fetch("/api/auth/profile");
         if (res.ok) {
+          const data = await res.json();
           setIsLoggedIn(true);
+          // Check for admin role from response (header or user data)
+          if (data.role === 'admin' || data.data?.role === 'admin') {
+            setIsAdmin(true);
+          } else {
+            setIsAdmin(false);
+          }
         } else {
           setIsLoggedIn(false);
+          setIsAdmin(false);
         }
       } catch (error) {
         setIsLoggedIn(false);
+        setIsAdmin(false);
       }
     }
 
@@ -105,6 +115,16 @@ export default function Navbar() {
             </div>
             Cart
           </Link>
+
+          {isAdmin && (
+            <Link
+              href="/admin/dashboard"
+              className="flex items-center gap-1 text-slate-300 hover:text-primary transition-colors duration-200"
+            >
+              <LayoutDashboard className="w-4 h-4" />
+              Dashboard
+            </Link>
+          )}
 
           {isLoggedIn ? (
             <Link
@@ -180,6 +200,17 @@ export default function Navbar() {
             </div>
             Cart
           </Link>
+
+          {isAdmin && (
+            <Link
+              href="/admin/dashboard"
+              className="flex items-center gap-2 text-slate-300 hover:text-primary font-medium p-2 hover:bg-white/5 rounded-md transition-colors"
+              onClick={() => setIsMobileOpen(false)}
+            >
+              <LayoutDashboard className="w-5 h-5" />
+              Dashboard
+            </Link>
+          )}
 
           {isLoggedIn ? (
             <Link

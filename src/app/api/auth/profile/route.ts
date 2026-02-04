@@ -14,6 +14,8 @@ export async function GET(request: NextRequest) {
         console.log("Registering models:", !!OrderModel, !!OrderItemsModel, !!ProductModel);
 
         const userid = request.headers.get("userid")
+        // Get role from headers as requested
+        const role = request.headers.get("role")
 
         const user = await UserModel.findById(userid)
             .select("-password -__v -refreshToken")
@@ -33,7 +35,8 @@ export async function GET(request: NextRequest) {
             {
                 success: true,
                 message: "User found",
-                data: user
+                data: user,
+                role: role // Include role from header in response
             },
             {
                 status: 200
