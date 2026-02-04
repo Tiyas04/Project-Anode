@@ -8,10 +8,10 @@ A modern, full-stack e-commerce platform aimed at providing premium laboratory c
 - **User Authentication**: Secure Sign Up & Login/Logout with JWT (Access & Refresh tokens).
 - **Role-Based Access Control**:
   - **User**: Browse products, manage cart, place orders, view order history.
-  - **Admin**: Dashboard for managing products (Add/Edit/Delete) and viewing all customer orders.
+  - **Admin**: Dedicated Dashboard for managing products (Add/Edit/Delete) and viewing all customer orders, with direct access via the Navbar.
 - **Product Management**:
   - Image uploads via Cloudinary.
-  - Detailed product attributes (CAS Number, Pack Size, Price, etc.).
+  - Detailed product attributes (CAS Number, Pack Size, Unit-based Pricing, etc.).
 - **Shopping Experience**:
   - Add to cart functionality.
   - Checkout process.
@@ -84,12 +84,32 @@ SMTP_PASS=your_app_password
 5.  **Open the app:**
     Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
-## 📂 Project Structure
+## 📂 Folder Structure
 
-- `src/app`: Next.js App Router pages and API routes.
-- `src/pages`: Next.js Pages Router pages (Legacy/Hybrid usage).
-- `src/models`: Mongoose schemas (User, Product, Order, etc.).
-- `src/lib`: Utility functions (DB connect, Cloudinary, etc.).
+```bash
+.
+├── src
+│   ├── app                 # Next.js App Router
+│   │   ├── admin           # Admin dashboard & management routes
+│   │   ├── api             # Backend API endpoints (Auth, Products, Orders)
+│   │   ├── auth            # User authentication pages
+│   │   ├── cart            # Shopping cart page
+│   │   ├── products        # Product listing and details
+│   │   ├── user            # User profile and order history
+│   │   ├── layout.tsx      # Root layout
+│   │   └── page.tsx        # Homepage
+│   ├── components          # Reusable UI components (NavBar, Footer, etc.)
+│   ├── lib                 # Utility functions (database, cloud storage)
+│   ├── models              # Mongoose database models (User, Product, Order)
+│   ├── pages               # Next.js Pages Router (Legacy/Auth API)
+│   └── types               # TypeScript type definitions
+├── public                  # Static assets (images, icons)
+├── uploads                 # Temporary upload storage
+├── .env                    # Environment variables
+├── next.config.ts          # Next.js configuration
+├── tailwind.config.ts      # Tailwind CSS configuration
+└── tsconfig.json           # TypeScript configuration
+```
 
 ## 📜 Scripts
 
