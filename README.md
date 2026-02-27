@@ -1,4 +1,3 @@
-
 # Sai PSB Laboratory - Chemical E-commerce
 
 A modern, full-stack e-commerce platform aimed at providing premium laboratory chemicals and supplies. Built with Next.js, TypeScript, and MongoDB.
@@ -17,10 +16,12 @@ A modern, full-stack e-commerce platform aimed at providing premium laboratory c
   - Checkout process.
   - Order tracking.
 - **Responsive Design**: Styled with Tailwind CSS for mobile and desktop.
-- **Order Processing**:
+- **Support & Inquiries**:
+  - **Contact Form**: Users can submit inquiries and support requests directly.
+- **Order & Communication Processing**:
   - **Tax Integration**: Automated 18% GST calculation on all orders.
   - **Receipt Generation**: Auto-generated digital receipts with Lab/Company details.
-  - **Email Notifications**: Automated email alerts for order confirmation, status updates, and admin notifications via SMTP.
+  - **Email Notifications**: Automated email alerts for order confirmation, status updates, and new contact inquiries sent to admins via SMTP.
 
 ## 🛠️ Tech Stack
 
@@ -63,12 +64,14 @@ SMTP_PASS=your_app_password
 ## 📦 Getting Started
 
 1.  **Clone the repository:**
+
     ```bash
     git clone https://github.com/Tiyas04/project-anode.git
     cd project-anode
     ```
 
 2.  **Install dependencies:**
+
     ```bash
     npm install
     ```
@@ -77,6 +80,7 @@ SMTP_PASS=your_app_password
     Copy the example above into a new `.env` file.
 
 4.  **Run the development server:**
+
     ```bash
     npm run dev
     ```
@@ -94,6 +98,7 @@ SMTP_PASS=your_app_password
 │   │   ├── api             # Backend API endpoints (Auth, Products, Orders)
 │   │   ├── auth            # User authentication pages
 │   │   ├── cart            # Shopping cart page
+│   │   ├── contact         # Contact Us page
 │   │   ├── products        # Product listing and details
 │   │   ├── user            # User profile and order history
 │   │   ├── layout.tsx      # Root layout
