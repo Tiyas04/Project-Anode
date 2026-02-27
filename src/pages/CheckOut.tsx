@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { CheckCircle } from "lucide-react";
 import Navbar from "@/components/NavBar";
-import Footer from "@/components/Footer";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -94,63 +93,62 @@ export default function CheckoutPage() {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-[#F4F8FA] font-sans">
       <Navbar />
 
-      <main className="min-h-screen pt-24 px-6 pb-20">
+      <main className="pt-24 px-4 pb-20">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 
           {/* SHIPPING */}
-          <div className="md:col-span-2 glass rounded-xl p-6 border border-white/20">
+          <div className="md:col-span-2 bg-white rounded-xl p-8 border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)]">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                <CheckCircle className="w-5 h-5 text-primary" />
+              <div className="w-10 h-10 bg-[#14B8A6]/10 rounded-lg flex items-center justify-center">
+                <CheckCircle className="w-5 h-5 text-[#14B8A6]" />
               </div>
-              <h1 className="text-2xl font-bold text-white">
+              <h1 className="text-2xl font-bold text-slate-800">
                 Checkout
               </h1>
             </div>
 
-            <div className="space-y-4 text-slate-300">
+            <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input name="name" placeholder="Full Name" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
-                <input name="phoneno" placeholder="Phone Number" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+                <input name="name" placeholder="Full Name" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
+                <input name="phoneno" placeholder="Phone Number" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
               </div>
 
-              <input name="company" placeholder="Company / Laboratory Name" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
-              <input name="email" placeholder="Email" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
-              <input name="address" placeholder="Shipping Address" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+              <input name="company" placeholder="Company / Laboratory Name" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
+              <input name="email" placeholder="Email" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
+              <input name="address" placeholder="Shipping Address" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <input name="city" placeholder="City" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
-                <input name="state" placeholder="State" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
-                <input name="pincode" placeholder="Pincode" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+                <input name="city" placeholder="City" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
+                <input name="state" placeholder="State" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
+                <input name="pincode" placeholder="Pincode" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
               </div>
 
-              <div className="border border-white/10 p-4 rounded-lg bg-white/5">
-                <label className="block text-sm font-semibold text-slate-300 mb-2">Permission Proof (ID/License)</label>
+              <div className="border border-slate-200 p-5 rounded-lg bg-[#FAFAFA]">
+                <label className="block text-sm font-bold text-slate-700 mb-3">Permission Proof (ID/License)</label>
                 <input
                   type="file"
-                  accept="image/*"
                   onChange={(e) => setPermissionProof(e.target.files ? e.target.files[0] : null)}
                   className="block w-full text-sm text-slate-500
                     file:mr-4 file:py-2.5 file:px-4
-                    file:rounded-lg file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-primary/10 file:text-primary
-                    hover:file:bg-primary/20 transition-colors file:cursor-pointer cursor-pointer"
+                    file:rounded-md file:border-0
+                    file:text-sm file:font-bold
+                    file:bg-[#14B8A6]/10 file:text-[#0D9486]
+                    hover:file:bg-[#14B8A6]/20 transition-colors file:cursor-pointer cursor-pointer shadow-sm"
                 />
               </div>
 
-              <div className="bg-sky-500/10 text-sky-300 text-sm p-4 rounded-lg border border-sky-500/20 flex items-center gap-2 font-medium">
-                <CheckCircle className="w-4 h-4 text-primary" />
+              <div className="bg-sky-50 text-sky-700 text-sm p-4 rounded-lg border border-sky-100 flex items-center gap-2 font-bold shadow-sm">
+                <CheckCircle className="w-4 h-4 text-sky-600" />
                 Payment Method: Cash on Delivery
               </div>
 
               <button
                 onClick={placeOrder}
                 disabled={loading}
-                className="w-full bg-primary text-white py-3.5 rounded-xl font-bold hover:bg-sky-700 transition-all shadow-lg shadow-primary/25 cursor-pointer disabled:opacity-50 active:scale-[0.98]"
+                className="w-full bg-[#14B8A6] text-white py-4 rounded-xl font-bold hover:bg-[#0D9486] transition-all shadow-md active:scale-[0.98] disabled:opacity-50 text-lg mt-4"
               >
                 {loading ? "Placing Order..." : "Place Order"}
               </button>
@@ -158,15 +156,15 @@ export default function CheckoutPage() {
           </div>
 
           {/* SUMMARY */}
-          <div className="glass rounded-xl p-6 h-fit border border-white/20 sticky top-24">
-            <h2 className="font-bold text-lg text-white mb-6 border-b border-white/20 pb-4">Order Summary</h2>
+          <div className="bg-white rounded-xl p-6 h-fit border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] sticky top-24">
+            <h2 className="font-bold text-lg text-slate-800 mb-6 border-b border-slate-100 pb-4">Order Summary</h2>
 
             <div className="space-y-4 mb-6">
               {cartItems.map((item, index) => {
                 const product = item.product || {};
                 return (
-                  <div key={item._id || index} className="flex gap-3 relative">
-                    <div className="relative w-14 h-14 bg-white/50 rounded-lg shrink-0 p-1">
+                  <div key={item._id || index} className="flex gap-3 relative bg-[#FAFAFA] p-2 rounded-lg border border-slate-50">
+                    <div className="relative w-14 h-14 bg-white border border-slate-100 rounded-md shrink-0 p-1">
                       <Image
                         src={product.image || "/placeholder.png"}
                         alt={product.name || "Product Image"}
@@ -174,42 +172,40 @@ export default function CheckoutPage() {
                         className="object-contain"
                       />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-slate-200 truncate">{product.name || "Unknown Product"}</p>
-                      <p className="text-xs text-slate-400 mt-0.5">Qty: {item.quantity} {product.unit || 'mg'}</p>
+                    <div className="flex-1 min-w-0 flex flex-col justify-center">
+                      <p className="text-sm font-bold text-slate-800 truncate">{product.name || "Unknown Product"}</p>
+                      <p className="text-xs font-semibold text-slate-500 mt-0.5">Qty: {item.quantity} {product.unit || 'mg'}</p>
                     </div>
-                    <p className="text-sm font-bold text-white">
+                    <div className="flex items-center text-sm font-bold text-[#14B8A6] pr-2">
                       ₹{(item.price || 0) * (item.quantity || 1)}
-                    </p>
+                    </div>
                   </div>
                 );
               })}
             </div>
 
-            <div className="border-t border-white/20 pt-4 text-white space-y-2">
-              <div className="flex justify-between text-slate-300">
+            <div className="border-t border-slate-100 pt-4 space-y-3">
+              <div className="flex justify-between text-slate-600 font-semibold text-sm">
                 <span>Subtotal</span>
                 <span>₹{subTotal}</span>
               </div>
-              <div className="flex justify-between text-slate-300">
+              <div className="flex justify-between text-slate-600 font-semibold text-sm">
                 <span>Tax (18% GST)</span>
                 <span>₹{tax}</span>
               </div>
-              <div className="flex justify-between font-bold text-lg pt-2 border-t border-white/10">
+              <div className="flex justify-between font-bold text-lg pt-3 border-t border-slate-100 text-slate-800">
                 <span>Total</span>
                 <span>₹{totalAmount}</span>
               </div>
             </div>
 
-            <div className="flex items-center justify-center gap-2 text-xs text-emerald-400 mt-6 bg-emerald-500/10 py-2 rounded-lg border border-emerald-500/20 font-medium">
-              <CheckCircle className="w-3 h-3" />
+            <div className="flex items-center justify-center gap-2 text-xs text-emerald-700 mt-6 bg-emerald-50 py-3 rounded-lg border border-emerald-100 font-bold shadow-sm">
+              <CheckCircle className="w-4 h-4 text-emerald-600" />
               Secure & compliant chemical delivery
             </div>
           </div>
         </div>
       </main>
-
-      <Footer />
-    </>
+    </div>
   );
 }

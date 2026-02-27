@@ -6,7 +6,6 @@ import { PlusCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import Navbar from "@/components/NavBar";
-import Footer from "@/components/Footer";
 
 const hazardOptions = [
   "Flammable",
@@ -129,34 +128,33 @@ export default function AddProductPage() {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-[#F4F8FA] font-sans">
       <Navbar />
 
-      <main className="min-h-screen pt-24 px-6 pb-20">
-        <div className="max-w-4xl mx-auto glass rounded-xl p-8 border border-white/20">
+      <main className="pt-24 px-4 pb-20">
+        <div className="max-w-4xl mx-auto bg-white rounded-xl p-8 border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)]">
 
-          <div className="flex items-center gap-2 mb-8 text-white">
-            <PlusCircle className="w-6 h-6 text-primary" />
+          <div className="flex items-center gap-2 mb-8 text-slate-800">
+            <PlusCircle className="w-6 h-6 text-[#14B8A6]" />
             <h1 className="text-2xl font-bold">Add New Product</h1>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6 text-slate-300">
+          <form onSubmit={handleSubmit} className="space-y-6 text-slate-700">
 
             {/* BASIC */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <input name="name" placeholder="Product Name *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
-              <input name="formula" placeholder="Formula *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+              <input name="name" placeholder="Product Name *" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
+              <input name="formula" placeholder="Formula *" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <input name="casNumber" placeholder="CAS Number *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
-              <input name="category" placeholder="Category *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+              <input name="casNumber" placeholder="CAS Number *" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
+              <input name="category" placeholder="Category *" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
             </div>
 
-            {/* PRICE */}
             {/* PRICE & STOCK */}
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
-              <input type="number" name="price" placeholder="Price per Unit *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+              <input type="number" name="price" placeholder="Price per Unit *" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
 
               <div className="flex gap-2">
                 <input
@@ -166,25 +164,25 @@ export default function AddProductPage() {
                   onChange={handleChange}
                   disabled={!form.inStock}
                   value={form.stockLevel}
-                  className={`w-full border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500 ${!form.inStock ? "opacity-50 cursor-not-allowed" : ""}`}
+                  className={`w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium ${!form.inStock ? "opacity-50 cursor-not-allowed bg-slate-100" : ""}`}
                 />
               </div>
 
               <select
                 name="unit"
-                className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100"
+                className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium"
                 value={form.unit}
                 onChange={(e) => setForm({ ...form, unit: e.target.value })}
               >
-                <option value="mg" className="bg-slate-800 text-slate-100">mg</option>
-                <option value="ml" className="bg-slate-800 text-slate-100">ml</option>
-                <option value="g" className="bg-slate-800 text-slate-100">g</option>
-                <option value="l" className="bg-slate-800 text-slate-100">L</option>
-                <option value="kg" className="bg-slate-800 text-slate-100">kg</option>
+                <option value="mg">mg</option>
+                <option value="ml">ml</option>
+                <option value="g">g</option>
+                <option value="l">L</option>
+                <option value="kg">kg</option>
               </select>
 
               <select
-                className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100"
+                className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium"
                 value={form.inStock ? "yes" : "no"}
                 onChange={(e) => setForm({
                   ...form,
@@ -192,32 +190,32 @@ export default function AddProductPage() {
                   stockLevel: e.target.value === "no" ? "0" : form.stockLevel
                 })}
               >
-                <option value="yes" className="bg-slate-800 text-slate-100">In Stock</option>
-                <option value="no" className="bg-slate-800 text-slate-100">Out of Stock</option>
+                <option value="yes">In Stock</option>
+                <option value="no">Out of Stock</option>
               </select>
             </div>
 
             {/* IMAGE */}
-            <div className="border border-white/10 bg-white/5 rounded-lg p-6">
-              <label className="block mb-3 text-sm font-semibold text-slate-300">Product Image *</label>
+            <div className="border border-slate-200 bg-[#FAFAFA] rounded-lg p-6">
+              <label className="block mb-3 text-sm font-bold text-slate-700">Product Image *</label>
               <input type="file" accept="image/*" onChange={handleImageChange}
-                className="block w-full text-sm text-slate-400
+                className="block w-full text-sm text-slate-500
                     file:mr-4 file:py-2.5 file:px-4
-                    file:rounded-lg file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-primary/10 file:text-primary
-                    hover:file:bg-primary/20 transition-colors file:cursor-pointer cursor-pointer"
+                    file:rounded-md file:border-0
+                    file:text-sm file:font-bold
+                    file:bg-[#14B8A6]/10 file:text-[#0D9486]
+                    hover:file:bg-[#14B8A6]/20 transition-colors file:cursor-pointer cursor-pointer shadow-sm"
               />
               {imagePreview && (
-                <img src={imagePreview} className="mt-4 w-32 h-32 object-contain border rounded-lg bg-white p-2" />
+                <img src={imagePreview} className="mt-4 w-32 h-32 object-contain border border-slate-200 rounded-lg bg-white p-2 shadow-sm" />
               )}
             </div>
 
             {/* EXTRA */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <input name="purity" placeholder="Purity *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
-              <input name="mfcdNo" placeholder="MFCD No *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
-              <input type="number" name="molecularWeight" placeholder="Molecular Weight *" onChange={handleChange} className="border border-white/10 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500" />
+              <input name="purity" placeholder="Purity *" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
+              <input name="mfcdNo" placeholder="MFCD No *" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
+              <input type="number" name="molecularWeight" placeholder="Molecular Weight *" onChange={handleChange} className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium" />
             </div>
 
             <textarea
@@ -225,16 +223,16 @@ export default function AddProductPage() {
               placeholder="Description *"
               rows={4}
               onChange={handleChange}
-              className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500 resize-y"
+              className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium resize-y"
             />
 
             {/* HAZARDS */}
-            <div className="bg-white/5 p-4 rounded-lg border border-white/10">
-              <p className="font-semibold text-slate-300 mb-3">Hazards</p>
-              <div className="flex gap-4 flex-wrap">
+            <div className="bg-[#FAFAFA] p-5 rounded-lg border border-slate-200">
+              <p className="font-bold text-slate-700 mb-4">Hazards</p>
+              <div className="flex gap-6 flex-wrap">
                 {hazardOptions.map((hazard) => (
-                  <label key={hazard} className="flex gap-2 items-center cursor-pointer hover:text-primary transition-colors">
-                    <input type="checkbox" onChange={() => toggleHazard(hazard)} className="accent-primary w-4 h-4 rounded text-primary focus:ring-primary" />
+                  <label key={hazard} className="flex gap-2 items-center cursor-pointer text-slate-600 font-semibold hover:text-[#14B8A6] transition-colors">
+                    <input type="checkbox" onChange={() => toggleHazard(hazard)} className="accent-[#14B8A6] w-4 h-4 rounded text-[#14B8A6] focus:ring-[#14B8A6]" />
                     {hazard}
                   </label>
                 ))}
@@ -243,7 +241,7 @@ export default function AddProductPage() {
 
             <button
               disabled={loading}
-              className={`w-full py-3.5 rounded-lg text-white font-bold shadow-lg shadow-primary/25 transition-all active:scale-[0.99] ${loading ? "bg-primary/70 cursor-not-allowed" : "bg-primary hover:bg-sky-700 cursor-pointer hover:shadow-primary/40"}`}
+              className={`w-full py-4 rounded-xl text-white font-bold shadow-md transition-all active:scale-[0.98] mt-4 text-lg ${loading ? "bg-[#14B8A6]/70 cursor-not-allowed" : "bg-[#14B8A6] hover:bg-[#0D9486] cursor-pointer"}`}
             >
               {loading ? "Adding Product..." : "Add Product"}
             </button>
@@ -251,8 +249,6 @@ export default function AddProductPage() {
           </form>
         </div>
       </main>
-
-      <Footer />
-    </>
+    </div>
   );
 }

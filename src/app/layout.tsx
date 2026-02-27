@@ -19,9 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} antialiased bg-black relative`}
+        className={`${inter.className} antialiased bg-white relative`}
       >
-        <div className="absolute inset-0 -z-10 h-full w-full bg-slate-950 [background:radial-gradient(circle_at_50%_10%,#1e293b_10%,#020617_100%)]"></div>
+        <div className="absolute inset-0 -z-10 h-full w-full bg-white"></div>
         {children}
         <ToastProvider />
       </body>

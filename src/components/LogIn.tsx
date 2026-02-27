@@ -11,13 +11,11 @@ export default function Login() {
 
   const [form, setForm] = useState({
     email: "",
-    phoneno: "",
     password: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
   const [step, setStep] = useState<"credentials" | "otp" | "forgot">("credentials");
   const [otp, setOtp] = useState("");
   const [emailForVerify, setEmailForVerify] = useState("");
@@ -51,7 +49,7 @@ export default function Login() {
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!form.password || (!form.email && !form.phoneno)) {
+    if (!form.password || !form.email) {
       toast.error("All fields are required");
       return;
     }
@@ -66,7 +64,6 @@ export default function Login() {
           setEmailForVerify(res.data.email);
           setStep("otp");
         } else {
-          // Fallback for old behavior if needed, though API is changed
           toast.success("Login successful");
           completeLogin(res.data.data.role);
         }
@@ -114,24 +111,26 @@ export default function Login() {
 
   if (step === "forgot") {
     return (
-      <form onSubmit={handleForgotPassword} className="space-y-4 text-gray-700">
+      <form onSubmit={handleForgotPassword} className="space-y-4">
         <div className="text-center mb-4">
-          <h3 className="text-lg font-semibold">Reset Password</h3>
-          <p className="text-sm text-gray-500">Enter your email to receive a new password</p>
+          <h3 className="text-lg text-slate-800 font-semibold">Reset Password</h3>
+          <p className="text-sm text-slate-500">Enter your email to receive a new password</p>
         </div>
 
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={forgotEmail}
-          onChange={(e) => setForgotEmail(e.target.value)}
-          className="border rounded-md px-3 py-2 w-full"
-        />
+        <div>
+           <input
+            type="email"
+             placeholder="Enter your email"
+            value={forgotEmail}
+            onChange={(e) => setForgotEmail(e.target.value)}
+            className="w-full bg-[#FAFAFA] border border-slate-100 rounded-lg px-4 py-2.5 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all"
+           />
+        </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700 transition disabled:opacity-50 cursor-pointer"
+          className="w-full bg-[#20B9CE] text-white py-2.5 rounded-lg mt-2 font-medium hover:bg-[#1AA3B5] transition-all duration-200 shadow-sm disabled:opacity-50"
         >
           {loading ? "Sending..." : "Send New Password"}
         </button>
@@ -139,7 +138,7 @@ export default function Login() {
         <button
           type="button"
           onClick={() => setStep("credentials")}
-          className="w-full text-sm text-gray-500 hover:text-gray-700 underline"
+          className="w-full text-sm text-slate-500 hover:text-slate-700 mt-2"
         >
           Back to Login
         </button>
@@ -149,25 +148,27 @@ export default function Login() {
 
   if (step === "otp") {
     return (
-      <form onSubmit={handleOtpSubmit} className="space-y-4 text-gray-700">
+      <form onSubmit={handleOtpSubmit} className="space-y-4">
         <div className="text-center mb-4">
-          <h3 className="text-lg text-slate-200 font-semibold">Verification Required</h3>
-          <p className="text-sm text-slate-400">Enter the 4-digit code sent to {emailForVerify}</p>
+          <h3 className="text-lg text-slate-800 font-semibold">Verification Required</h3>
+          <p className="text-sm text-slate-500">Enter the 4-digit code sent to {emailForVerify}</p>
         </div>
 
-        <input
-          name="otp"
-          placeholder="Enter 4-digit Code"
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-          maxLength={4}
-          className="border rounded-md px-3 py-2 w-full text-center text-lg tracking-widest text-slate-300 placeholder:text-slate-400"
-        />
+        <div>
+          <input
+            name="otp"
+            placeholder="Enter 4-digit Code"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+            maxLength={4}
+            className="w-full border border-slate-200 rounded-lg px-4 py-2 text-center text-lg tracking-widest text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6] focus:border-transparent transition-all"
+          />
+        </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700 transition disabled:opacity-50 cursor-pointer"
+          className="w-full bg-[#1EBAD6] text-white py-2.5 rounded-lg font-semibold hover:bg-[#1A9FB7] transition-all duration-200 shadow-sm disabled:opacity-50 mt-4"
         >
           {loading ? "Verifying..." : "Verify & Login"}
         </button>
@@ -175,7 +176,7 @@ export default function Login() {
         <button
           type="button"
           onClick={() => setStep("credentials")}
-          className="w-full text-sm text-gray-500 hover:text-gray-700 underline"
+          className="w-full text-sm text-slate-500 hover:text-slate-700 mt-2"
         >
           Back to Login
         </button>
@@ -184,45 +185,45 @@ export default function Login() {
   }
 
   return (
-    <form onSubmit={handleLoginSubmit} className="space-y-4 text-slate-700">
-      <input
-        name="email"
-        placeholder="Email (optional)"
-        value={form.email}
-        onChange={handleChange}
-        className="border border-white/10 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
-      />
-
-      <input
-        name="phoneno"
-        placeholder="Phone number (optional)"
-        value={form.phoneno}
-        onChange={handleChange}
-        className="border border-white/10 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
-      />
-
-      <div className="relative">
+    <form onSubmit={handleLoginSubmit} className="space-y-5">
+      <div>
+        <label className="block text-sm font-bold text-slate-700 mb-1.5">Email</label>
         <input
-          type={showPassword ? "text" : "password"}
-          name="password"
-          placeholder="Password"
-          value={form.password}
+          name="email"
+          type="email"
+          placeholder="your@email.com"
+          value={form.email}
           onChange={handleChange}
-          className="border border-white/10 rounded-lg px-4 py-2 w-full pr-10 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
+          className="w-full bg-[#FAFAFA] border border-slate-100 rounded-lg px-4 py-2.5 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all"
         />
-        <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
-        >
-          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-        </button>
       </div>
+
+      <div>
+        <label className="block text-sm font-bold text-slate-700 mb-1.5">Password</label>
+        <div className="relative">
+            <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="........"
+            value={form.password}
+            onChange={handleChange}
+            className="w-full bg-[#FAFAFA] border border-slate-100 rounded-lg px-4 py-2.5 pr-10 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all"
+            />
+            <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+            >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+        </div>
+      </div>
+      
       <div className="flex justify-end mt-1">
         <button
           type="button"
           onClick={() => setStep("forgot")}
-          className="text-xs text-primary hover:text-sky-700 hover:underline font-medium"
+          className="text-xs text-[#14B8A6] hover:text-[#0F766E] hover:underline font-medium"
         >
           Forgot Password?
         </button>
@@ -231,10 +232,10 @@ export default function Login() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-primary text-white py-2.5 rounded-lg font-semibold hover:bg-sky-700 transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-[0.98]"
+        className="w-full bg-[#20B9CE] text-white py-2.5 rounded-lg mt-2 font-medium hover:bg-[#1AA3B5] transition-all duration-200 shadow-sm disabled:opacity-50"
       >
-        {loading ? "Sending Code..." : "Continue"}
+        {loading ? "Logging in..." : "Login"}
       </button>
-    </form >
+    </form>
   );
 }

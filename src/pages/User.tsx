@@ -5,7 +5,6 @@ import axios from "axios";
 import Link from "next/link";
 import { User, Lock, LogOut, Package } from "lucide-react";
 import Navbar from "@/components/NavBar";
-import Footer from "@/components/Footer";
 import Loading from "@/components/Loading";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -96,7 +95,6 @@ export default function UserPage() {
       <>
         <Navbar />
         <Loading />
-        <Footer />
       </>
     );
   }
@@ -104,62 +102,62 @@ export default function UserPage() {
   if (!user) return null;
 
   return (
-    <>
+    <div className="min-h-screen bg-[#F4F8FA] font-sans">
       <Navbar />
 
-      <main className="min-h-screen pt-24 px-6 pb-20">
+      <main className="pt-24 px-4 pb-20">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
 
           {/* LEFT – USER MENU */}
-          <aside className="glass rounded-xl p-6 h-fit border border-white/20">
+          <aside className="bg-white rounded-xl p-6 h-fit border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)]">
             <div className="flex items-center gap-4 mb-8">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
-                <User className="w-6 h-6 text-primary" />
+              <div className="w-12 h-12 bg-[#14B8A6]/10 rounded-full flex items-center justify-center shrink-0">
+                <User className="w-6 h-6 text-[#14B8A6]" />
               </div>
               <div className="min-w-0">
-                <p className="font-bold text-white truncate">
+                <p className="font-bold text-slate-800 truncate">
                   {user.name}
                 </p>
-                <p className="text-xs text-slate-500 truncate">
+                <p className="text-xs text-slate-500 font-semibold truncate">
                   {user.email}
                 </p>
-                <p className="text-xs text-secondary font-medium mt-0.5 truncate">
+                <p className="text-xs text-[#20B9CE] font-bold mt-0.5 truncate">
                   {user.institution}
                 </p>
               </div>
             </div>
 
-            <div className="mb-6 px-4 py-3 bg-white/5 rounded-lg space-y-2 border border-white/10">
-              <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Activity</p>
-              <p className="text-xs text-slate-400 flex justify-between">
+            <div className="mb-6 px-4 py-3 bg-[#FAFAFA] rounded-lg space-y-2 border border-slate-100">
+              <p className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Activity</p>
+              <p className="text-xs text-slate-500 font-semibold flex justify-between">
                 <span>Joined:</span>
-                <span className="font-mono text-slate-300">{new Date(user.createdAt).toLocaleDateString()}</span>
+                <span className="font-mono text-slate-700 font-bold">{new Date(user.createdAt).toLocaleDateString()}</span>
               </p>
               {user.lastLogin && (
-                <p className="text-xs text-slate-400 flex justify-between">
+                <p className="text-xs text-slate-500 font-semibold flex justify-between">
                   <span>Last login:</span>
-                  <span className="font-mono text-slate-300">{new Date(user.lastLogin).toLocaleDateString()}</span>
+                  <span className="font-mono text-slate-700 font-bold">{new Date(user.lastLogin).toLocaleDateString()}</span>
                 </p>
               )}
             </div>
 
-            <nav className="space-y-2 text-sm font-medium">
+            <nav className="space-y-2 text-sm font-bold">
               <Link
                 href="/user"
-                className="flex items-center gap-3 px-4 py-3 bg-primary/5 text-primary rounded-lg transition-colors border border-primary/10"
+                className="flex items-center gap-3 px-4 py-3 bg-[#14B8A6]/10 text-[#0D9486] rounded-lg transition-colors border border-[#14B8A6]/20"
               >
                 <Package className="w-4 h-4" />
                 Your Orders
               </Link>
 
-              <Link href="/changepassword" className="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-white/10 hover:text-white rounded-lg transition-colors">
+              <Link href="/changepassword" className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-slate-800 rounded-lg transition-colors border border-transparent">
                 <Lock className="w-4 h-4" />
                 Change Password
               </Link>
 
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center gap-3 px-4 py-3 text-rose-600 hover:bg-rose-50 hover:text-rose-700 rounded-lg transition-colors text-left"
+                className="w-full flex items-center gap-3 px-4 py-3 text-rose-500 hover:bg-rose-50 hover:text-rose-600 rounded-lg transition-colors text-left font-bold"
               >
                 <LogOut className="w-4 h-4" />
                 Logout
@@ -168,21 +166,21 @@ export default function UserPage() {
           </aside>
 
           {/* RIGHT – ORDERS */}
-          <section className="lg:col-span-3 glass rounded-xl p-8 border border-white/20">
-            <h1 className="text-2xl font-bold text-white mb-2">
+          <section className="lg:col-span-3 bg-white rounded-xl p-8 border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)]">
+            <h1 className="text-2xl font-bold text-slate-800 mb-2">
               Order History
             </h1>
-            <p className="text-slate-400 mb-8 text-sm">
+            <p className="text-slate-500 mb-8 font-semibold text-sm">
               Track your past and current orders.
             </p>
 
             {user.orders.length === 0 ? (
-              <div className="text-center py-12 bg-white/30 rounded-lg border border-dashed border-slate-300">
+              <div className="text-center py-12 bg-[#FAFAFA] rounded-lg border border-dashed border-slate-200">
                 <Package className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                <p className="text-slate-500 font-medium">
-                  You haven’t placed any orders yet.
+                <p className="text-slate-600 font-bold">
+                  You haven't placed any orders yet.
                 </p>
-                <Link href="/products" className="text-primary text-sm hover:underline mt-2 inline-block">
+                <Link href="/products" className="text-[#14B8A6] font-bold text-sm hover:underline mt-2 inline-block">
                   Start Shopping
                 </Link>
               </div>
@@ -192,23 +190,23 @@ export default function UserPage() {
                 {user.orders.map((order) => (
                   <div
                     key={order._id}
-                    className="bg-white/5 border border-white/10 rounded-xl p-6 hover:shadow-sm transition-shadow"
+                    className="bg-white border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow shadow-sm"
                   >
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                       <div>
                         <div className="flex items-center gap-3 mb-1">
-                          <p className="text-lg font-bold text-white font-mono">
+                          <p className="text-lg font-bold text-slate-800 font-mono">
                             #{order._id.slice(-6).toUpperCase()}
                           </p>
-                          <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${order.status === "delivered" ? "bg-emerald-100 text-emerald-700 border-emerald-200" :
-                            order.status === "cancelled" ? "bg-rose-100 text-rose-700 border-rose-200" :
-                              order.status === "shipped" ? "bg-sky-100 text-sky-700 border-sky-200" :
-                                "bg-amber-100 text-amber-700 border-amber-200"
+                          <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border ${order.status === "delivered" ? "bg-emerald-50 text-emerald-600 border-emerald-100" :
+                            order.status === "cancelled" ? "bg-rose-50 text-rose-600 border-rose-100" :
+                              order.status === "shipped" ? "bg-cyan-50 text-cyan-600 border-cyan-100" :
+                                "bg-amber-50 text-amber-600 border-amber-100"
                             }`}>
                             {order.status}
                           </span>
                         </div>
-                        <p className="text-xs text-slate-500 flex items-center gap-2">
+                        <p className="text-xs text-slate-500 font-semibold flex items-center gap-2">
                           <span>Placed on {new Date(order.createdAt).toLocaleDateString()}</span>
                           <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
                           <span>{new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
@@ -216,12 +214,12 @@ export default function UserPage() {
                       </div>
 
                       <div className="flex items-center gap-4">
-                        <p className="font-bold text-white text-xl">
+                        <p className="font-bold text-slate-800 text-xl tracking-tight">
                           ₹{order.totalamount || order.totalAmount}
                         </p>
                         {(order.status === "pending" || order.status === "ordered") && (
                           <button
-                            className="text-xs font-semibold text-rose-600 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-lg transition-colors border border-rose-100"
+                            className="text-xs font-bold text-rose-500 hover:text-white bg-white hover:bg-rose-500 px-3 py-1.5 rounded-md transition-colors border border-rose-200 shadow-sm"
                             onClick={() => {
                               const performCancel = async () => {
                                 try {
@@ -244,11 +242,11 @@ export default function UserPage() {
                               toast(
                                 ({ closeToast }) => (
                                   <div>
-                                    <p className="font-semibold text-slate-800 mb-3 text-sm">Cancel this order?</p>
+                                    <p className="font-bold text-slate-800 mb-3 text-sm">Cancel this order?</p>
                                     <div className="flex gap-2 justify-end">
                                       <button
                                         onClick={closeToast}
-                                        className="px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded hover:bg-slate-200 transition-colors"
+                                        className="px-3 py-1.5 text-xs font-bold text-slate-600 bg-slate-100 rounded-md hover:bg-slate-200 transition-colors"
                                       >
                                         Back
                                       </button>
@@ -257,7 +255,7 @@ export default function UserPage() {
                                           performCancel();
                                           closeToast();
                                         }}
-                                        className="px-3 py-1.5 text-xs font-medium text-white bg-rose-600 rounded hover:bg-rose-700 transition-colors shadow-sm"
+                                        className="px-3 py-1.5 text-xs font-bold text-white bg-rose-500 rounded-md hover:bg-rose-600 transition-colors shadow-sm"
                                       >
                                         Confirm
                                       </button>
@@ -281,7 +279,7 @@ export default function UserPage() {
                           <Link
                             href={(order as any).receiptUrl}
                             target="_blank"
-                            className="text-xs font-semibold text-emerald-600 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-colors border border-emerald-100 flex items-center gap-1"
+                            className="text-xs font-bold text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-md transition-colors border border-emerald-100 flex items-center gap-1 shadow-sm"
                           >
                             <span className="hidden sm:inline">Download</span> Receipt
                           </Link>
@@ -289,20 +287,20 @@ export default function UserPage() {
                       </div>
                     </div>
 
-                    <div className="bg-white/5 rounded-lg border border-white/10 divide-y divide-white/10">
+                    <div className="bg-[#FAFAFA] rounded-lg border border-slate-100 divide-y divide-slate-100">
                       {order.items.map((item, idx) => (
                         <div key={idx} className="flex justify-between items-center p-3 text-sm">
-                          <span className="text-slate-300 font-medium">{item.product?.name || item.name}</span>
-                          <span className="text-slate-400 font-mono">x{item.quantity}</span>
+                          <span className="text-slate-700 font-bold">{item.product?.name || item.name}</span>
+                          <span className="text-slate-500 font-mono font-semibold">x{item.quantity}</span>
                         </div>
                       ))}
                       {order.subtotal && order.tax ? (
-                        <div className="p-3 text-sm bg-white/5 border-t border-white/10 space-y-1">
-                          <div className="flex justify-between text-slate-400">
+                        <div className="p-3 text-sm bg-slate-50 border-t border-slate-200 space-y-1 rounded-b-lg">
+                          <div className="flex justify-between text-slate-500 font-semibold">
                             <span>Subtotal</span>
                             <span>₹{order.subtotal}</span>
                           </div>
-                          <div className="flex justify-between text-slate-400">
+                          <div className="flex justify-between text-slate-500 font-semibold">
                             <span>Tax (18% GST)</span>
                             <span>₹{order.tax}</span>
                           </div>
@@ -317,8 +315,6 @@ export default function UserPage() {
 
         </div>
       </main>
-
-      <Footer />
-    </>
+    </div>
   );
 }

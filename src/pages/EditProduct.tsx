@@ -6,7 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "@/components/NavBar";
-import Footer from "@/components/Footer";
 
 function EditProductContent() {
     const router = useRouter();
@@ -99,32 +98,32 @@ function EditProductContent() {
     };
 
     return (
-        <>
+        <div className="min-h-screen bg-[#F4F8FA] font-sans">
             <Navbar />
 
-            <main className="min-h-screen pt-24 px-6 pb-20">
-                <div className="max-w-xl mx-auto glass rounded-xl p-8 border border-white/20">
+            <main className="pt-24 px-4 pb-20">
+                <div className="max-w-xl mx-auto bg-white rounded-xl p-8 border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)]">
 
-                    <h1 className="text-2xl font-bold text-white mb-8 border-b border-white/20 pb-4">
+                    <h1 className="text-2xl font-bold text-slate-800 mb-8 border-b border-slate-100 pb-4">
                         Edit Product
                     </h1>
 
-                    <form onSubmit={handleSubmit} className="space-y-6 text-slate-300">
+                    <form onSubmit={handleSubmit} className="space-y-6 text-slate-700">
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-400 mb-1">Price per Unit (₹)</label>
+                            <label className="block text-sm font-bold text-slate-700 mb-2">Price per Unit (₹)</label>
                             <input
                                 name="price"
                                 type="number"
                                 value={form.price}
                                 onChange={handleChange}
                                 placeholder="Price"
-                                className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500"
+                                className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-400 mb-1">Stock Level</label>
+                            <label className="block text-sm font-bold text-slate-700 mb-2">Stock Level</label>
                             <input
                                 name="stockLevel"
                                 type="number"
@@ -132,28 +131,28 @@ function EditProductContent() {
                                 onChange={handleChange}
                                 placeholder="Stock Level"
                                 disabled={!form.inStock}
-                                className={`border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500 ${!form.inStock ? "opacity-50 cursor-not-allowed" : ""}`}
+                                className={`w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium ${!form.inStock ? "opacity-50 cursor-not-allowed bg-slate-100" : ""}`}
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-400 mb-1">Unit</label>
+                            <label className="block text-sm font-bold text-slate-700 mb-2">Unit</label>
                             <select
                                 name="unit"
                                 value={form.unit}
                                 onChange={handleChange}
-                                className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100"
+                                className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium"
                             >
-                                <option value="mg" className="bg-slate-800">mg</option>
-                                <option value="ml" className="bg-slate-800">ml</option>
-                                <option value="g" className="bg-slate-800">g</option>
-                                <option value="l" className="bg-slate-800">L</option>
-                                <option value="kg" className="bg-slate-800">kg</option>
+                                <option value="mg">mg</option>
+                                <option value="ml">ml</option>
+                                <option value="g">g</option>
+                                <option value="l">L</option>
+                                <option value="kg">kg</option>
                             </select>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-400 mb-1">Availability</label>
+                            <label className="block text-sm font-bold text-slate-700 mb-2">Availability</label>
                             <select
                                 value={form.inStock ? "yes" : "no"}
                                 onChange={(e) =>
@@ -163,17 +162,17 @@ function EditProductContent() {
                                         stockLevel: e.target.value === "no" ? "0" : form.stockLevel
                                     })
                                 }
-                                className="border border-white/10 rounded-lg px-4 py-2.5 w-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100"
+                                className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all font-medium"
                             >
-                                <option value="yes" className="bg-slate-800">In Stock</option>
-                                <option value="no" className="bg-slate-800">Out of Stock</option>
+                                <option value="yes">In Stock</option>
+                                <option value="no">Out of Stock</option>
                             </select>
                         </div>
 
                         <button
                             type="submit"
                             disabled={loading}
-                            className={`w-full py-3.5 rounded-lg text-white font-bold shadow-lg shadow-primary/25 transition-all mt-4 active:scale-[0.99] ${loading ? "bg-primary/70 cursor-not-allowed" : "bg-primary hover:bg-sky-700 cursor-pointer hover:shadow-primary/40"}`}
+                            className={`w-full py-4 rounded-xl text-white font-bold shadow-md transition-all mt-4 active:scale-[0.98] text-lg ${loading ? "bg-[#14B8A6]/70 cursor-not-allowed" : "bg-[#14B8A6] hover:bg-[#0D9486] cursor-pointer"}`}
                         >
                             {loading ? "Updating..." : "Update Product"}
                         </button>
@@ -181,9 +180,7 @@ function EditProductContent() {
                     </form>
                 </div>
             </main>
-
-            <Footer />
-        </>
+        </div>
     );
 }
 

@@ -5,40 +5,37 @@ import { AlertTriangle, ArrowLeft } from "lucide-react";
 
 export default function NotFoundPage() {
   return (
-    <main className="min-h-screen bg-slate-950 relative flex items-center justify-center px-4">
-      {/* Background Gradient */}
-      <div className="absolute inset-0 -z-10 h-full w-full bg-slate-950 [background:radial-gradient(circle_at_50%_50%,#1e293b_10%,#020617_100%)] opacity-80"></div>
-
-      <div className="glass border border-white/20 rounded-2xl shadow-xl max-w-md w-full p-10 text-center">
+    <main className="min-h-screen bg-[#F4F8FA] relative flex items-center justify-center px-4 font-sans">
+      <div className="bg-white border border-slate-100 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] max-w-md w-full p-10 text-center">
 
         {/* ICON */}
         <div className="flex justify-center mb-6">
-          <div className="bg-rose-500/10 p-4 rounded-full shadow-inner ring-1 ring-rose-500/20">
+          <div className="bg-rose-50 p-4 rounded-full">
             <AlertTriangle className="w-12 h-12 text-rose-500" />
           </div>
         </div>
 
         {/* TITLE */}
-        <h1 className="text-4xl font-bold text-white mb-2">
+        <h1 className="text-4xl font-bold text-slate-800 mb-2">
           Page Not Found
         </h1>
 
         {/* DESCRIPTION */}
-        <p className="text-slate-400 text-base leading-relaxed">
+        <p className="text-slate-500 text-base leading-relaxed">
           The page you are looking for doesn’t exist or may have been moved.
         </p>
 
         {/* ACTION */}
         <Link
           href="/"
-          className="inline-flex items-center gap-2 mt-8 px-6 py-3 bg-primary hover:bg-sky-700 text-white rounded-xl font-semibold transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40 active:scale-[0.98]"
+          className="inline-flex items-center gap-2 mt-8 px-8 py-3.5 bg-[#14B8A6] hover:bg-[#0D9486] text-white rounded-xl font-bold transition-all shadow-md active:scale-[0.98]"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-5 h-5" />
           Go back to Home
         </Link>
 
         {/* FOOT NOTE */}
-        <p className="mt-8 text-xs text-slate-400 font-mono tracking-widest uppercase">
+        <p className="mt-8 text-xs text-slate-400 font-mono tracking-widest uppercase font-medium">
           Error Code: 404
         </p>
       </div>

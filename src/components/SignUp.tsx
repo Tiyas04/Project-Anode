@@ -68,53 +68,68 @@ export default function Signup({ switchToLogin }: SignupProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 text-slate-700">
-      <input
-        name="name"
-        placeholder="Full Name"
-        className="w-full border border-white/10 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
-        onChange={handleChange}
-      />
-      <input
-        name="email"
-        type="email"
-        placeholder="Email"
-        className="w-full border border-white/10 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
-        onChange={handleChange}
-      />
-      <input
-        name="phoneno"
-        placeholder="Phone Number"
-        className="w-full border border-white/10 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
-        onChange={handleChange}
-      />
-      <input
-        name="institution"
-        placeholder="Institution / Company"
-        className="w-full border border-white/10 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
-        onChange={handleChange}
-      />
-      <div className="relative">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label className="block text-sm font-bold text-slate-700 mb-1.5">Full Name</label>
         <input
-          name="password"
-          type={showPassword ? "text" : "password"}
-          placeholder="Password"
-          className="w-full border border-white/10 rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 backdrop-blur-sm text-slate-100 placeholder:text-slate-500"
+          name="name"
+          placeholder="John Doe"
+          className="w-full bg-[#FAFAFA] border border-slate-100 rounded-lg px-4 py-2 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all"
           onChange={handleChange}
         />
-        <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
-        >
-          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-        </button>
+      </div>
+      <div>
+        <label className="block text-sm font-bold text-slate-700 mb-1.5">Email</label>
+        <input
+          name="email"
+          type="email"
+          placeholder="your@email.com"
+          className="w-full bg-[#FAFAFA] border border-slate-100 rounded-lg px-4 py-2 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all"
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-bold text-slate-700 mb-1.5">Phone Number</label>
+        <input
+          name="phoneno"
+          placeholder="+1 234 567 8900"
+          className="w-full bg-[#FAFAFA] border border-slate-100 rounded-lg px-4 py-2 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all"
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-bold text-slate-700 mb-1.5">Institution / Company</label>
+        <input
+          name="institution"
+          placeholder="Your Organization"
+          className="w-full bg-[#FAFAFA] border border-slate-100 rounded-lg px-4 py-2 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all"
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-bold text-slate-700 mb-1.5">Password</label>
+        <div className="relative">
+          <input
+            name="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            className="w-full bg-[#FAFAFA] border border-slate-100 rounded-lg px-4 py-2 pr-10 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all"
+            onChange={handleChange}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+          >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        </div>
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-primary text-white py-2.5 rounded-lg font-semibold hover:bg-sky-700 transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-[0.98]"
+        className="w-full bg-[#20B9CE] text-white py-2.5 rounded-lg mt-2 font-medium hover:bg-[#1AA3B5] transition-all duration-200 shadow-sm disabled:opacity-50"
       >
         {loading ? "Creating account..." : "Sign Up"}
       </button>

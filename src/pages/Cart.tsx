@@ -7,7 +7,6 @@ import axios from "axios";
 import { Trash2, ArrowRight, ShoppingCart, Lock } from "lucide-react";
 import { toast } from "react-toastify";
 import Navbar from "@/components/NavBar";
-import Footer from "@/components/Footer";
 import Loading from "@/components/Loading";
 
 type CartItem = {
@@ -56,38 +55,34 @@ export default function CartPage() {
             <>
                 <Navbar />
                 <Loading />
-                <Footer />
             </>
         );
     }
 
     return (
-        <>
+        <div className="min-h-screen bg-[#F4F8FA] font-sans">
             <Navbar />
 
-            <main className="min-h-screen pt-24 px-6 pb-20">
+            <main className="pt-24 px-4 pb-16">
                 <div className="max-w-5xl mx-auto">
 
                     {/* HEADER */}
                     <div className="mb-8">
-                        <h1 className="text-3xl font-bold text-white">
+                        <h1 className="text-3xl font-bold text-slate-800">
                             Shopping Cart
                         </h1>
-                        <p className="text-slate-400 mt-2">
-                            Review your selected items before checkout.
-                        </p>
                     </div>
 
                     {cartItems.length === 0 ? (
-                        <div className="glass rounded-xl p-12 text-center border border-white/20">
-                            <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <div className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 p-20 text-center">
+                            <div className="w-16 h-16 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <ShoppingCart className="w-8 h-8 text-slate-400" />
                             </div>
-                            <h2 className="text-xl font-semibold text-white">Your cart is empty</h2>
-                            <p className="text-slate-400 mt-2 mb-6">Looks like you haven't added anything yet.</p>
+                            <h2 className="text-xl font-bold text-slate-800">Your cart is empty</h2>
+                            <p className="text-sm text-slate-500 mt-2 mb-6">Looks like you haven't added anything yet.</p>
                             <Link
                                 href="/products"
-                                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-sky-700 transition shadow-sm"
+                                className="inline-flex items-center gap-2 px-6 py-3 bg-[#14B8A6] text-white rounded-lg font-medium hover:bg-[#0D9486] transition shadow-sm"
                             >
                                 Browse Products
                                 <ArrowRight className="w-4 h-4" />
@@ -101,10 +96,10 @@ export default function CartPage() {
                                 {cartItems.map((item) => (
                                     <div
                                         key={item.product._id}
-                                        className="glass rounded-xl p-4 flex gap-4 border border-white/20 items-center"
+                                        className="bg-white rounded-xl p-4 flex gap-4 border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] items-center"
                                     >
                                         {/* IMAGE */}
-                                        <div className="relative w-24 h-24 bg-white/5 rounded-lg shrink-0 p-2">
+                                        <div className="relative w-24 h-24 bg-[#FAFAFA] border border-slate-50 rounded-lg shrink-0 p-2">
                                             <Image
                                                 src={item.product.image}
                                                 alt={item.product.name}
@@ -115,16 +110,16 @@ export default function CartPage() {
 
                                         {/* INFO */}
                                         <div className="flex-1 min-w-0">
-                                            <h2 className="text-lg font-semibold text-white truncate">
+                                            <h2 className="text-lg font-bold text-slate-800 truncate">
                                                 {item.product.name}
                                             </h2>
-                                            <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-sm text-slate-400">
-                                                <p>CAS: <span className="text-slate-300">{item.product.casNumber}</span></p>
-                                                <p>Purity: <span className="text-slate-300">{item.product.purity}</span></p>
+                                            <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-sm text-slate-500">
+                                                <p>CAS: <span className="text-slate-600">{item.product.casNumber}</span></p>
+                                                <p>Purity: <span className="text-slate-600">{item.product.purity}</span></p>
                                             </div>
                                             <div className="mt-2 flex items-center gap-2">
-                                                <div className="flex items-center bg-white/10 rounded-lg px-2 py-1">
-                                                    <span className="text-xs text-slate-400 mr-2">Qty:</span>
+                                                <div className="flex items-center bg-[#FAFAFA] border border-slate-100 rounded-lg px-2 py-1">
+                                                    <span className="text-xs font-bold text-slate-500 mr-2">Qty:</span>
                                                     <input
                                                         type="number"
                                                         value={item.quantity}
@@ -151,16 +146,16 @@ export default function CartPage() {
                                                                 toast.error("Failed to update cart");
                                                             }
                                                         }}
-                                                        className="w-20 bg-transparent text-slate-200 text-sm focus:outline-none"
+                                                        className="w-16 bg-transparent text-slate-800 text-sm focus:outline-none"
                                                     />
-                                                    <span className="text-xs text-slate-400 ml-1">{item.product.unit || 'mg'}</span>
+                                                    <span className="text-xs text-slate-500 ml-1">{item.product.unit || 'mg'}</span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         {/* PRICE & ACTION */}
                                         <div className="flex flex-col justify-between items-end gap-4">
-                                            <span className="font-bold text-white text-lg">
+                                            <span className="font-bold text-slate-800 text-lg">
                                                 ₹{item.price * item.quantity}
                                             </span>
 
@@ -181,7 +176,7 @@ export default function CartPage() {
                                                         toast.error("Failed to remove item");
                                                     }
                                                 }}
-                                                className="text-rose-400 hover:text-rose-300 text-sm flex items-center gap-1.5 transition-colors font-medium px-2 py-1 hover:bg-rose-500/10 rounded"
+                                                className="text-red-500 hover:text-red-600 text-sm flex items-center gap-1.5 transition-colors font-semibold px-2 py-1 hover:bg-red-50 rounded"
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                                 Remove
@@ -192,41 +187,41 @@ export default function CartPage() {
                             </div>
 
                             {/* SUMMARY */}
-                            <div className="glass rounded-xl p-6 h-fit border border-white/20 sticky top-24">
-                                <h3 className="text-lg font-bold text-white mb-6 border-b border-white/20 pb-4">
+                            <div className="bg-white rounded-xl p-6 h-fit border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] sticky top-24">
+                                <h3 className="text-lg font-bold text-slate-800 mb-6 border-b border-slate-100 pb-4">
                                     Order Summary
                                 </h3>
 
                                 <div className="space-y-3 mb-6">
-                                    <div className="flex justify-between text-slate-400">
+                                    <div className="flex justify-between text-sm text-slate-600">
                                         <span>Subtotal ({cartItems.length} items)</span>
-                                        <span className="font-medium text-white">₹{subTotal}</span>
+                                        <span className="font-bold text-slate-800">₹{subTotal}</span>
                                     </div>
-                                    <div className="flex justify-between text-slate-400">
+                                    <div className="flex justify-between text-sm text-slate-600">
                                         <span>Shipping</span>
-                                        <span className="text-emerald-400 font-medium">Free</span>
+                                        <span className="text-[#14B8A6] font-bold">Free</span>
                                     </div>
-                                    <div className="flex justify-between text-slate-400">
+                                    <div className="flex justify-between text-sm text-slate-600">
                                         <span>Tax (18% GST)</span>
-                                        <span className="text-slate-200">₹{tax}</span>
+                                        <span className="font-bold text-slate-800">₹{tax}</span>
                                     </div>
                                 </div>
 
-                                <div className="flex justify-between items-end border-t border-white/20 pt-4 mb-6">
-                                    <span className="font-semibold text-white">Total</span>
-                                    <span className="text-2xl font-bold text-white">₹{totalAmount}</span>
+                                <div className="flex justify-between items-end border-t border-slate-100 pt-4 mb-6">
+                                    <span className="font-bold text-slate-800">Total</span>
+                                    <span className="text-2xl font-bold text-slate-900">₹{totalAmount}</span>
                                 </div>
 
                                 <Link
                                     href="/checkout"
-                                    className="w-full inline-flex justify-center items-center gap-2 px-6 py-3.5 bg-primary text-white rounded-xl font-bold hover:bg-sky-700 transition-all shadow-lg shadow-primary/25 active:scale-[0.98]"
+                                    className="w-full inline-flex justify-center items-center gap-2 px-6 py-3.5 bg-[#20B9CE] text-white rounded-lg font-bold hover:bg-[#1AA3B5] transition-all shadow-sm active:scale-[0.98]"
                                 >
                                     Proceed to Checkout
                                     <ArrowRight className="w-5 h-5" />
                                 </Link>
 
-                                <div className="mt-6 flex items-center justify-center gap-2 text-xs text-slate-400">
-                                    <Lock className="w-3 h-3" />
+                                <div className="mt-6 flex items-center justify-center gap-2 text-xs font-semibold text-slate-500">
+                                    <Lock className="w-3.5 h-3.5" />
                                     Secure Checkout
                                 </div>
                             </div>
@@ -235,8 +230,7 @@ export default function CartPage() {
                     )}
                 </div>
             </main>
-
-            <Footer />
-        </>
+        </div>
     );
 }
+

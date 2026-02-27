@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ShoppingCart, LogIn, FlaskConical, Menu, X, Package, Home, LayoutDashboard } from "lucide-react";
+import { ShoppingCart, LogIn, FlaskConical, Menu, X, Package, Home, LayoutDashboard, User, Search } from "lucide-react";
 
 import axios from "axios";
 
@@ -67,87 +67,98 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="w-full glass fixed top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <nav className="w-full bg-white border-b border-gray-100 fixed top-0 z-50">
+      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
 
         {/* LOGO */}
         <Link
           href="/"
-          className="flex items-center gap-2 text-xl font-bold text-white tracking-tight"
+          className="flex items-center gap-3 z-20 relative"
         >
-          <div className="bg-primary/20 p-2 rounded-lg backdrop-blur-sm border border-primary/20">
-            <FlaskConical className="w-6 h-6 text-primary" />
+          <div className="w-10 h-10 flex items-center justify-center">
+            {/* Some colorful flask icon */}
+            <img src="/logo.png" alt="" className="w-8 h-8 object-contain hidden" />
+            <FlaskConical className="w-8 h-8 text-cyan-600 drop-shadow-sm" />
           </div>
-          <span className="bg-clip-text text-transparent bg-linear-to-r from-white to-slate-400">
-            Sai PSB Laboratory
-          </span>
+          <div className="flex flex-col">
+            <span className="text-xl font-bold text-slate-800 leading-tight">
+              Sai PSB Laboratory
+            </span>
+            <span className="text-xs text-slate-400 font-medium">
+              Premium Lab Chemicals
+            </span>
+          </div>
         </Link>
 
-        {/* DESKTOP NAV LINKS */}
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link
-            href="/"
-            className="flex items-center gap-1 text-slate-300 hover:text-primary transition-colors duration-200"
-          >
-            <Home className="w-4 h-4" />
-            Home
-          </Link>
+        {/* DESKTOP NAV LINKS (CENTERED) */}
+        <div className="hidden md:flex absolute inset-x-0 w-full justify-center pointer-events-none">
+          <div className="flex items-center gap-8 text-sm font-semibold text-slate-700 pointer-events-auto">
+            <Link
+              href="/"
+              className="hover:text-cyan-600 transition-colors"
+            >
+              Home
+            </Link>
+            <Link
+              href="/products"
+              className="hover:text-cyan-600 transition-colors"
+            >
+              Products
+            </Link>
+            <Link
+              href="/contact"
+              className="hover:text-cyan-600 transition-colors"
+            >
+              Contact Us
+            </Link>
+          </div>
+        </div>
 
-          <Link
-            href="/products"
-            className="flex items-center gap-1 text-slate-300 hover:text-primary transition-colors duration-200"
-          >
-            <Package className="w-4 h-4" />
-            Products
-          </Link>
-
+        {/* RIGHT SECTION: SEARCH & ICONS */}
+        <div className="hidden md:flex items-center gap-6 z-20 relative">
           <Link
             href="/cart"
-            className="group flex items-center gap-1 text-slate-300 hover:text-primary relative transition-colors duration-200"
+            className="group flex items-center gap-1 text-slate-600 hover:text-slate-900 relative transition-colors"
           >
             <div className="relative">
-              <ShoppingCart className="w-4 h-4" />
+              <ShoppingCart className="w-5 h-5" />
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-cyan-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
             </div>
-            Cart
           </Link>
 
           {isAdmin && (
             <Link
               href="/admin/dashboard"
-              className="flex items-center gap-1 text-slate-300 hover:text-primary transition-colors duration-200"
+              className="text-slate-600 hover:text-slate-900 transition-colors"
             >
-              <LayoutDashboard className="w-4 h-4" />
-              Dashboard
+              <LayoutDashboard className="w-5 h-5" />
             </Link>
           )}
 
           {isLoggedIn ? (
             <Link
               href="/user"
-              className="flex items-center gap-1 text-slate-300 hover:text-primary transition-colors duration-200"
+              className="text-slate-600 hover:text-slate-900 transition-colors"
             >
-              <FlaskConical className="w-4 h-4" />
-              Profile
+              <User className="w-5 h-5" />
             </Link>
           ) : (
             <Link
               href="/auth"
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-sky-700 transition-all duration-200 shadow-sm flex items-center gap-2"
+              className="text-slate-600 hover:text-slate-900 transition-colors"
             >
-              <LogIn className="w-4 h-4" />
-              Login
+              <User className="w-5 h-5" />
             </Link>
           )}
         </div>
 
         {/* MOBILE HAMBURGER BUTTON */}
         <button
-          className="md:hidden p-2 text-slate-300 hover:bg-white/10 rounded-md relative w-10 h-10 flex items-center justify-center"
+          className="md:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-md relative w-10 h-10 flex items-center justify-center z-20"
           onClick={() => setIsMobileOpen(!isMobileOpen)}
         >
           <Menu
@@ -163,13 +174,13 @@ export default function Navbar() {
 
       {/* MOBILE MENU DROPDOWN */}
       <div
-        className={`md:hidden absolute top-full left-0 w-full glass shadow-lg flex flex-col overflow-hidden transition-all duration-300 ease-in-out ${isMobileOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        className={`md:hidden absolute top-full left-0 w-full bg-white border-b border-gray-100 shadow-lg flex flex-col overflow-hidden transition-all duration-300 ease-in-out ${isMobileOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
           }`}
       >
         <div className="flex flex-col p-4 gap-4">
           <Link
             href="/"
-            className="flex items-center gap-2 text-slate-300 hover:text-primary font-medium p-2 hover:bg-white/5 rounded-md transition-colors"
+            className="flex items-center gap-2 text-slate-700 hover:text-cyan-600 font-medium p-2 hover:bg-slate-50 rounded-md transition-colors"
             onClick={() => setIsMobileOpen(false)}
           >
             <Home className="w-5 h-5" />
@@ -178,22 +189,31 @@ export default function Navbar() {
 
           <Link
             href="/products"
-            className="flex items-center gap-2 text-slate-300 hover:text-primary font-medium p-2 hover:bg-white/5 rounded-md transition-colors"
+            className="flex items-center gap-2 text-slate-700 hover:text-cyan-600 font-medium p-2 hover:bg-slate-50 rounded-md transition-colors"
             onClick={() => setIsMobileOpen(false)}
           >
             <Package className="w-5 h-5" />
             Products
           </Link>
+          
+          <Link
+            href="/contact"
+            className="flex items-center gap-2 text-slate-700 hover:text-cyan-600 font-medium p-2 hover:bg-slate-50 rounded-md transition-colors"
+            onClick={() => setIsMobileOpen(false)}
+          >
+            <Search className="w-5 h-5" />
+            Contact Us
+          </Link>
 
           <Link
             href="/cart"
-            className="flex items-center gap-2 text-slate-300 hover:text-primary font-medium p-2 hover:bg-white/5 rounded-md transition-colors"
+            className="flex items-center gap-2 text-slate-700 hover:text-cyan-600 font-medium p-2 hover:bg-slate-50 rounded-md transition-colors"
             onClick={() => setIsMobileOpen(false)}
           >
             <div className="relative">
               <ShoppingCart className="w-5 h-5" />
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-cyan-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
@@ -204,7 +224,7 @@ export default function Navbar() {
           {isAdmin && (
             <Link
               href="/admin/dashboard"
-              className="flex items-center gap-2 text-slate-300 hover:text-primary font-medium p-2 hover:bg-white/5 rounded-md transition-colors"
+              className="flex items-center gap-2 text-slate-700 hover:text-cyan-600 font-medium p-2 hover:bg-slate-50 rounded-md transition-colors"
               onClick={() => setIsMobileOpen(false)}
             >
               <LayoutDashboard className="w-5 h-5" />
@@ -215,16 +235,16 @@ export default function Navbar() {
           {isLoggedIn ? (
             <Link
               href="/user"
-              className="flex items-center gap-2 text-slate-300 hover:text-primary font-medium p-2 hover:bg-white/5 rounded-md transition-colors"
+              className="flex items-center gap-2 text-slate-700 hover:text-cyan-600 font-medium p-2 hover:bg-slate-50 rounded-md transition-colors"
               onClick={() => setIsMobileOpen(false)}
             >
-              <FlaskConical className="w-5 h-5" />
+              <User className="w-5 h-5" />
               Profile
             </Link>
           ) : (
             <Link
               href="/auth"
-              className="flex items-center gap-2 text-slate-300 hover:text-primary font-medium p-2 hover:bg-white/5 rounded-md transition-colors"
+              className="flex items-center gap-2 text-slate-700 hover:text-cyan-600 font-medium p-2 hover:bg-slate-50 rounded-md transition-colors"
               onClick={() => setIsMobileOpen(false)}
             >
               <LogIn className="w-5 h-5" />

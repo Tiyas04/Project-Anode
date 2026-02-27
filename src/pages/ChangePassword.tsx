@@ -6,7 +6,6 @@ import { Lock, Save, Eye, EyeOff } from "lucide-react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/NavBar";
-import Footer from "@/components/Footer";
 
 export default function ChangePasswordPage() {
   const router = useRouter();
@@ -64,21 +63,21 @@ export default function ChangePasswordPage() {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-[#F4F8FA] font-sans">
       <Navbar />
 
-      <main className="min-h-screen pt-24 px-6 pb-20">
-        <div className="max-w-md mx-auto glass rounded-xl p-8 border border-white/20">
+      <main className="pt-24 px-4 pb-20">
+        <div className="max-w-md mx-auto bg-white rounded-xl p-8 border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)]">
 
           {/* HEADER */}
-          <div className="flex items-center gap-3 mb-8 text-white border-b border-white/20 pb-4">
-            <div className="bg-primary/10 p-2 rounded-lg">
-              <Lock className="w-6 h-6 text-primary" />
+          <div className="flex items-center gap-3 mb-8 text-slate-800 border-b border-slate-100 pb-4">
+            <div className="bg-[#14B8A6]/10 p-2 rounded-lg">
+              <Lock className="w-6 h-6 text-[#14B8A6]" />
             </div>
             <h1 className="text-2xl font-bold">Change Password</h1>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6 text-slate-300">
+          <form onSubmit={handleSubmit} className="space-y-6 text-slate-700">
 
             <div className="relative">
               <input
@@ -87,14 +86,14 @@ export default function ChangePasswordPage() {
                 placeholder="Current Password"
                 value={form.oldpassword}
                 onChange={handleChange}
-                className="w-full border border-white/10 rounded-lg px-4 py-2.5 text-sm pr-10 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500"
+                className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm pr-10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all text-slate-800 placeholder:text-slate-400 font-medium"
               />
               <button
                 type="button"
                 onClick={() => setShowOldPass(!showOldPass)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-300 transition"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#14B8A6] transition-colors"
               >
-                {showOldPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                {showOldPass ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
 
@@ -105,14 +104,14 @@ export default function ChangePasswordPage() {
                 placeholder="New Password"
                 value={form.newpassword}
                 onChange={handleChange}
-                className="w-full border border-white/10 rounded-lg px-4 py-2.5 text-sm pr-10 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500"
+                className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm pr-10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all text-slate-800 placeholder:text-slate-400 font-medium"
               />
               <button
                 type="button"
                 onClick={() => setShowNewPass(!showNewPass)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-300 transition"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#14B8A6] transition-colors"
               >
-                {showNewPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                {showNewPass ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
 
@@ -123,30 +122,28 @@ export default function ChangePasswordPage() {
                 placeholder="Confirm New Password"
                 value={form.confirmPassword}
                 onChange={handleChange}
-                className="w-full border border-white/10 rounded-lg px-4 py-2.5 text-sm pr-10 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white/5 text-slate-100 placeholder:text-slate-500"
+                className="w-full bg-[#FAFAFA] border border-slate-200 rounded-lg px-4 py-3 text-sm pr-10 focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/50 focus:border-[#14B8A6] transition-all text-slate-800 placeholder:text-slate-400 font-medium"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPass(!showConfirmPass)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-300 transition"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#14B8A6] transition-colors"
               >
-                {showConfirmPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                {showConfirmPass ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3 rounded-lg text-white font-bold shadow-lg shadow-primary/25 transition-all flex items-center justify-center gap-2 active:scale-[0.99] ${loading ? "bg-primary/70 cursor-not-allowed" : "bg-primary hover:bg-sky-700 cursor-pointer hover:shadow-primary/40"}`}
+              className={`w-full py-3.5 rounded-xl text-white font-bold shadow-md transition-all flex items-center justify-center gap-2 mt-4 active:scale-[0.98] text-lg ${loading ? "bg-[#14B8A6]/70 cursor-not-allowed" : "bg-[#14B8A6] hover:bg-[#0D9486] cursor-pointer"}`}
             >
-              <Save className="w-4 h-4" />
+              <Save className="w-5 h-5" />
               {loading ? "Updating..." : "Update Password"}
             </button>
           </form>
         </div>
       </main>
-
-      <Footer />
-    </>
+    </div>
   );
 }
