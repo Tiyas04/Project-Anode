@@ -14,7 +14,7 @@ export const sendEmail = async (options: EmailOptions) => {
     }
 
     const resend = new Resend(apiKey);
-    const from = options.from || process.env.RESEND_FROM_EMAIL || process.env.SMTP_FROM || "Sai PSB Laboratory <onboarding@resend.dev>";
+    const from = options.from || process.env.RESEND_FROM_EMAIL || "";
 
     const { data, error } = await resend.emails.send({
         from,
