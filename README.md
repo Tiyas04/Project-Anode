@@ -21,7 +21,7 @@ A modern, full-stack e-commerce platform aimed at providing premium laboratory c
 - **Order & Communication Processing**:
   - **Tax Integration**: Automated 18% GST calculation on all orders.
   - **Receipt Generation**: Auto-generated digital receipts with Lab/Company details.
-  - **Email Notifications**: Automated email alerts for order confirmation, status updates, and new contact inquiries sent to admins via SMTP.
+  - **Email Notifications**: Automated email alerts for order confirmation, status updates, and new contact inquiries sent via Resend API.
 
 ## 🛠️ Tech Stack
 
@@ -33,7 +33,7 @@ A modern, full-stack e-commerce platform aimed at providing premium laboratory c
 - **Notifications**: [React Toastify](https://fkhadra.github.io/react-toastify/)
 - **Image Storage**: [Cloudinary](https://cloudinary.com/)
 - **PDF/Image Generation**: [Satori](https://github.com/vercel/satori) & [Resvg](https://github.com/yisibl/resvg-js)
-- **Email**: [Nodemailer](https://nodemailer.com/)
+- **Email**: [Resend](https://resend.com/)
 
 ## ⚙️ Environment Variables
 
@@ -54,11 +54,9 @@ NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 
-# SMTP (Email)
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your_email@gmail.com
-SMTP_PASS=your_app_password
+# Resend (Email Service)
+RESEND_API_KEY=re_your_resend_api_key
+RESEND_FROM_EMAIL=Sai PSB Laboratory <onboarding@resend.dev>
 ```
 
 ## 📦 Getting Started
